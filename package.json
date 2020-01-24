@@ -2,7 +2,7 @@
   "name": "planning-poker-angular",
   "version": "0.0.0",
   "scripts": {
-    "start": "ng serve --aot -o",
+    "start": "ng serve --aot -o --port=0888",
     "android": "tns run android",
     "ios": "tns run ios",
     "mobile": "tns run",
