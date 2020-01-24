@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { WelcomePageComponent } from '@src/app/pages/welcome-page/welcome-page.component';
 import { PageNotFoundComponent } from '@src/app/components/page-not-found/page-not-found.component';
+import { RoomsPageComponent } from './pages/rooms-page/rooms-page.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,13 @@ const routes: Routes = [
     }
   },
   {
+    path: 'rooms',
+    component: RoomsPageComponent,
+    data: {
+      title: 'Room'
+    }
+  },
+  {
     path: '**',
     component: PageNotFoundComponent,
     data: {
@@ -26,7 +34,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {enableTracing: true})],
+  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
