@@ -1,15 +1,32 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
-
+import { WelcomePageComponent } from '@src/app/pages/welcome-page/welcome-page.component';
+import { PageNotFoundComponent } from '@src/app/components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'welcome' },
-  { path: 'welcome', component: WelcomePageComponent }
+  {
+    path: '',
+    redirectTo: 'welcome',
+    pathMatch: 'full',
+  },
+  {
+    path: 'welcome',
+    component: WelcomePageComponent,
+    data: {
+      title: 'Welcome'
+    }
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
+    data: {
+      title: 'Page not found'
+    }
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {enableTracing: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
