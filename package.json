@@ -26,6 +26,7 @@
     "@microsoft/signalr": "^3.1.0",
     "@nativescript/schematics": "^1.0.0",
     "@nativescript/theme": "~2.2.1",
+    "bootstrap": "^4.4.1",
     "nativescript-angular": "~8.20.0",
     "reflect-metadata": "~0.1.12",
     "rxjs": "^6.4.0",

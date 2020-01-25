@@ -1,0 +1,12 @@
+@import 'variables';
+@import 'mixins';
+
+.btn-primary {
+    background-color: $primary;
+    border-color: $primary;
+
+    &:hover {
+        background-color: shade($primary, 30%);
+        border-color:shade($primary, 30%);
+    }
+}
