@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import * as signalR from '@microsoft/signalr';
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { VoteService } from '@src/app/services/vote.service';
+import { Vote } from '@src/app/model/dtos/vote';
 
 @Component({
   selector: 'app-rooms-page',
@@ -9,33 +11,19 @@ import * as signalR from '@microsoft/signalr';
 export class RoomsPageComponent implements OnInit {
   name = 'NAME';
   point = 'POINT';
+  connection: signalR.HubConnection;
 
-  constructor() { }
+  constructor(
+    private voteService: VoteService,
+  ) { }
 
   ngOnInit() {
-    this.signalRSetup();
-  }
+    this.connection = this.voteService.connection;
 
-  signalRSetup() {
-    const isMac = window.navigator.platform.includes('Mac');
-    const url = isMac
-      ? 'https://localhost:5001/notify'
-      : 'https://localhost:44394/notify';
-
-    const connection = new signalR.HubConnectionBuilder()
-      .withUrl(url)
-      .configureLogging(signalR.LogLevel.Debug)
-      .build();
-
-    connection.start().then(() => {
-      console.log('Connected!');
-    }).catch((err) => {
-      return console.error(err.toString());
-    });
-
-    connection.on('BroadcastVote', (name: string, point: string) => {
-      this.name = name;
-      this.point = point;
+    this.connection.on('BroadcastVote', (vote: Vote) => {
+      this.name = vote.name;
+      this.point = vote.point;
     });
   }
+
 }
