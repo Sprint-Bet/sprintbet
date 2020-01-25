@@ -7,8 +7,8 @@ import * as signalR from '@microsoft/signalr';
   styleUrls: ['./rooms-page.component.scss']
 })
 export class RoomsPageComponent implements OnInit {
-  name = "NAME";
-  point = "POINT";
+  name = 'NAME';
+  point = 'POINT';
 
   constructor() { }
 
@@ -17,7 +17,7 @@ export class RoomsPageComponent implements OnInit {
   }
 
   signalRSetup() {
-    const isMac = window.navigator.platform.includes("Mac");
+    const isMac = window.navigator.platform.includes('Mac');
     const url = isMac
       ? 'https://localhost:5001/notify'
       : 'https://localhost:44394/notify';
