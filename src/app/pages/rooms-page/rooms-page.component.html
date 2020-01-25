@@ -1,4 +1,5 @@
 <div>
-  <h1>Rooms page</h1>
-  <p>{{name}}: {{point}}</p>
+  <h1>Rooms page</h1>  
+  <p *ngIf="(vote$ | async) as vote; else waiting;">{{vote.name}}: {{vote.point}}</p>
+  <ng-template #waiting>Waiting for votes...</ng-template>
 </div>
