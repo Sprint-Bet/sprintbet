@@ -1,4 +1,12 @@
 <div>
     <h1>Welcome!</h1>
-    <a [routerLink]="['/rooms']" class="btn btn-primary">Join a room!</a>
+    <div class="input-group">
+        <div [ngClass]="{disabled: !name}" class="input-group-prepend">
+            <a [routerLink]="['/rooms']" [tabindex]="name ? 0 : -1" [queryParams]="{ name: name }"
+                class="btn btn-primary">
+                Join a room!
+            </a>
+        </div>
+        <input class="form-control" placeholder="Enter your name" [(ngModel)]="name">
+    </div>
 </div>
