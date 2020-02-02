@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { Observable, fromEvent, of } from 'rxjs';
-import { Vote } from '../model/dtos/vote';
+import { Observable, fromEvent, from } from 'rxjs';
 import { environment } from '@src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Voter } from '../model/dtos/voter';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,16 +18,13 @@ export class VoteService {
     }
     return this._connection;
   }
-
   set connection(connection: HubConnection) {
     this._connection = connection;
   }
 
-  constructor(private http: HttpClient) {
-    this.connection.start()
-      .then(() => console.log('Connected!'))
-      .catch((err) => console.error(err.toString()));
-  }
+  constructor(
+    private http: HttpClient,
+  ) { }
 
   /**
    * Create the Signal R Hub connection
@@ -53,8 +49,20 @@ export class VoteService {
    * @returns The other voters as observable of the dictionary of voters
    */
   setupVoter(name: string): Observable<{ Voter }> {
-    const id = this.connection.connectionId;
-    return this.http.post<{ Voter }>(`${this.baseUrl}/setup`, { name: name, id: id });
+    const voters$ = from(
+      this.connection.start()
+        .catch(err => console.error(err.toString()))
+    );
+
+    return voters$.pipe(
+      switchMap(() => {
+        const id = this.connection.connectionId;
+        return this.http.post<{ Voter }>(
+          `${this.baseUrl}/vote/setup`,
+          { name: name, id: id }
+        );
+      }),
+    );
   }
 
   /**

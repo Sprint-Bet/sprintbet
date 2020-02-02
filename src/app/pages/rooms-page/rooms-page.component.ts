@@ -12,13 +12,13 @@ import { Route, ActivatedRoute } from '@angular/router';
 })
 export class RoomsPageComponent implements OnInit {
   voters$: Observable<{ Voter }>;
-  vote$: Observable<Vote> = this.voteService.listenFor<Vote>('BroadcastVote');
+  // vote$: Observable<Vote> = this.voteService.listenFor<Vote>('BroadcastVote');
 
   constructor(
     private voteService: VoteService,
     private route: ActivatedRoute,
   ) {
-    const name = this.route.snapshot.queryParams.get('name');
+    const name = this.route.snapshot.queryParams['name'];
     this.voters$ = this.voteService.setupVoter(name);
   }
 
