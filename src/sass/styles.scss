@@ -1,3 +1,19 @@
-@import './variables.scss';
-@import './buttons.scss';
-@import './mixins.scss';
+@import "./variables.scss";
+@import "./buttons.scss";
+@import "./mixins.scss";
+
+/**
+ * Should be in buttons.scss, but it's a
+ * workaround for cursor/pointer events issue:
+ * https://stackoverflow.com/q/25654413/2501304
+ */
+.disabled,
+:disabled {
+  cursor: not-allowed;
+
+  a {
+    background-color: tint($primary, $tint-modifier);
+    border-color: tint($primary, $tint-modifier);
+    pointer-events: none;
+  }
+}

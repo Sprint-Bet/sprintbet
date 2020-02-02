@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { Observable, fromEvent } from 'rxjs';
+import { Observable, fromEvent, from } from 'rxjs';
+import { environment } from '@src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VoteService {
   private _connection: HubConnection;
+  private baseUrl;
 
   get connection(): HubConnection {
     if (!this._connection) {
@@ -14,32 +18,51 @@ export class VoteService {
     }
     return this._connection;
   }
-
   set connection(connection: HubConnection) {
     this._connection = connection;
   }
 
-  constructor() {
-    this.connection.start()
-      .then(() => console.log('Connected!'))
-      .catch((err) => console.error(err.toString()));
-  }
+  constructor(
+    private http: HttpClient,
+  ) { }
 
   /**
    * Create the Signal R Hub connection
    */
   signalRSetup(): HubConnection {
     const isMac = window.navigator.platform.includes('Mac');
-    const url = isMac
-      ? 'https://localhost:5001/notify'
-      : 'https://localhost:44394/notify';
+    this.baseUrl = isMac
+      ? environment.apiUrl.mac
+      : environment.apiUrl.windows
 
     const connection = new HubConnectionBuilder()
-      .withUrl(url)
+      .withUrl(`${this.baseUrl}/notify`)
       .configureLogging(LogLevel.Debug)
       .build();
 
     return connection;
+  }
+
+  /**
+   * Adds voter to the planning poker game!
+   * @param name The user's name supplied on the welcome page
+   * @returns The other voters as observable of the dictionary of voters
+   */
+  setupVoter(name: string): Observable<{ Voter }> {
+    const voters$ = from(
+      this.connection.start()
+        .catch(err => console.error(err.toString()))
+    );
+
+    return voters$.pipe(
+      switchMap(() => {
+        const id = this.connection.connectionId;
+        return this.http.post<{ Voter }>(
+          `${this.baseUrl}/vote/setup`,
+          { name: name, id: id }
+        );
+      }),
+    );
   }
 
   /**

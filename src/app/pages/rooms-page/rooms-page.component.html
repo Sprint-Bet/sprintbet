@@ -1,5 +1,9 @@
 <div>
-  <h1>Rooms page</h1>  
-  <p *ngIf="(vote$ | async) as vote; else waiting;">{{vote.name}}: {{vote.point}}</p>
-  <ng-template #waiting>Waiting for votes...</ng-template>
+  <h1>Rooms page</h1>
+  <ng-container *ngIf="(voters$ | async) as voters; else loadingVoters;">
+    <p *ngFor="let voter of voters | keyvalue">
+      {{voter.value.name}}: {{voter.value.point}}
+    </p>
+  </ng-container>
+  <ng-template #loadingVoters>Loading voters...</ng-template>
 </div>
