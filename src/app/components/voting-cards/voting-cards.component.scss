@@ -1,0 +1,41 @@
+@import "variables";
+
+.cards-container {
+  display: flex;
+  border: solid black $card-border-voted;
+  border-radius: 0.25rem;
+
+  &.locked {
+    border: solid $locked $card-border-voted;
+
+    .card.ready {
+      background-color: $locked;
+    }
+  }
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: $base;
+  width: $xlarge;
+  height: $card-height;
+  margin: $card-margin;
+  margin-right: $card-margin / 2;
+  border: solid black 1px;
+  font-size: $medium;
+}
+
+.card.estimating {
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.card.ready {
+  background-color: lightblue;
+}
+
+.card.revealed {
+  font-size: 26px;
+}
