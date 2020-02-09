@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./voting-cards.component.scss']
 })
 export class VotingCardsComponent implements OnInit {
+  tshirtSizes = ['XS', 'S', 'M', 'L', 'XL'];
+  fibonacci = ['1', '2', '3', '5', '8'];
+  selectedValue: string;
+  locked = true;
 
   constructor() { }
 

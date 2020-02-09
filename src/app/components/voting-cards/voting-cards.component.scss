@@ -1,4 +1,5 @@
 @import "variables";
+@import "mixins";
 
 .cards-container {
   display: flex;
@@ -6,10 +7,11 @@
   border-radius: 0.25rem;
 
   &.locked {
-    border: solid $locked $card-border-voted;
+    border: solid $locked-color $card-border-voted;
 
-    .card.ready {
-      background-color: $locked;
+    .card.selected {
+      border: solid $locked-color $card-border-voted;
+      background-color: tint($locked-color, $tint-modifier);
     }
   }
 }
@@ -25,17 +27,23 @@
   margin-right: $card-margin / 2;
   border: solid black 1px;
   font-size: $medium;
-}
 
-.card.estimating {
-  background-repeat: no-repeat;
-  background-position: center;
-}
+  &:hover:not(:disabled) {
+    background-color: tint($voted-color, $tint-modifier);
+  }
 
-.card.ready {
-  background-color: lightblue;
-}
+  &:active,
+  &.selected {
+    border: solid $voted-color $card-border-voted;
+    background-color: tint($voted-color, $tint-modifier);
+  }
 
-.card.revealed {
-  font-size: 26px;
+  &.estimating {
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  &.revealed {
+    font-size: 26px;
+  }
 }
