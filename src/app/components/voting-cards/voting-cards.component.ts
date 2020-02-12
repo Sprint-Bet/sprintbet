@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { VoteService } from '@src/app/services/vote.service';
 
 @Component({
   selector: 'app-voting-cards',
@@ -6,14 +7,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./voting-cards.component.scss']
 })
 export class VotingCardsComponent implements OnInit {
-  tshirtSizes = ['XS', 'S', 'M', 'L', 'XL'];
-  fibonacci = ['1', '2', '3', '5', '8'];
+  tshirtSizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '?'];
+  fibonacci = ['1', '2', '3', '5', '8', '13', '20', '?'];
   selectedValue: string;
-  locked = true;
+  locked = false;
 
-  constructor() { }
+  constructor(
+    private voteService: VoteService,
+  ) { }
 
   ngOnInit() {
+  }
+
+  clicked(value: string) {
+    this.selectedValue = value;
   }
 
 }
