@@ -2,8 +2,8 @@
 @import "mixins";
 
 .cards-container {
-  display: flex;
-  border: solid black $card-border-voted;
+  width: 242px;
+  border: solid $voted-color $card-border-voted;
   border-radius: 0.25rem;
 
   &.locked {
@@ -17,7 +17,7 @@
 }
 
 .card {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   font-size: $base;
@@ -26,7 +26,12 @@
   margin: $card-margin;
   margin-right: $card-margin / 2;
   border: solid black 1px;
+  border-radius: 0.25rem;
   font-size: $medium;
+
+  &:last-child {
+    margin-right: $card-margin;
+  }
 
   &:hover:not(:disabled) {
     background-color: tint($voted-color, $tint-modifier);
@@ -36,6 +41,12 @@
   &.selected {
     border: solid $voted-color $card-border-voted;
     background-color: tint($voted-color, $tint-modifier);
+    outline: none !important;
+  }
+
+  &:focus {
+    outline: ($xxsmall / 2) solid -webkit-focus-ring-color;
+    outline-offset: ($xxsmall / 2);
   }
 
   &.estimating {
