@@ -1,5 +1,6 @@
 <div>
   <h1>Rooms page</h1>
+  <app-voting-cards></app-voting-cards>
   <ng-container *ngIf="(voters$ | async) as voters; else loadingVoters;">
     <p *ngFor="let voter of voters | keyvalue">
       {{voter.value.name}}: {{voter.value.point}}

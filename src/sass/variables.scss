@@ -12,7 +12,14 @@ $xxlarge: 72px;
 $primary: #009999;
 $success-1: #009b3a;
 $success-2: #0f893d;
+$voted-color: #308cff;
+$locked-color: #fe6363;
 
 /* Modifiers */
 $shade-modifier: 30%;
 $tint-modifier: 50%;
+
+/* Cards */
+$card-border-voted: 5px;
+$card-height: 64px;
+$card-margin: 6px;
