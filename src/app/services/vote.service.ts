@@ -30,10 +30,10 @@ export class VoteService {
    * Create the Signal R Hub connection
    */
   signalRSetup(): HubConnection {
-    const isMac = window.navigator.platform.includes('Mac');
+    const isMac = true;// window.navigator.platform.includes('Mac');
     this.baseUrl = isMac
       ? environment.apiUrl.mac
-      : environment.apiUrl.windows
+      : environment.apiUrl.windows;
 
     const connection = new HubConnectionBuilder()
       .withUrl(`${this.baseUrl}/notify`)
@@ -57,10 +57,7 @@ export class VoteService {
     return voters$.pipe(
       switchMap(() => {
         const id = this.connection.connectionId;
-        return this.http.post<{ Voter }>(
-          `${this.baseUrl}/vote/setup`,
-          { name: name, id: id }
-        );
+        return this.http.post<{ Voter }>(`${this.baseUrl}/vote/setup`, { name, id });
       }),
     );
   }
