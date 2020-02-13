@@ -1,0 +1,27 @@
+@import 'variables';
+
+.voters-container {
+    font-size: $medium;
+    width: 242px;
+}
+
+.voter {
+    display: inline-flex;
+}
+
+.point-card {
+    text-align: center;
+    height: 43px;
+    width: 33px;
+    background-image: url("/assets/img/card-small.png");
+    border-color: black;
+
+    &.voted {
+        background-image: none;
+        font-weight: bold;
+    }
+
+    &.locked {
+        background-image: none;
+    }
+}
