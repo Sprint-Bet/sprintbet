@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { Observable, fromEvent, from } from 'rxjs';
+import { Observable, fromEvent, from, of } from 'rxjs';
 import { environment } from '@src/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, catchError } from 'rxjs/operators';
+import { HubMethods } from '@src/app/model/enums/hubMethods.enum';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VoteService {
+  private name = this.route.snapshot.queryParams.name;
   private _connection: HubConnection;
   private baseUrl;
 
@@ -23,14 +25,14 @@ export class VoteService {
   }
 
   constructor(
-    private http: HttpClient,
+    private route: ActivatedRoute,
   ) { }
 
   /**
    * Create the Signal R Hub connection
    */
   signalRSetup(): HubConnection {
-    const isMac = true;// window.navigator.platform.includes('Mac');
+    const isMac = false;// window.navigator.platform.includes('Mac');
     this.baseUrl = isMac
       ? environment.apiUrl.mac
       : environment.apiUrl.windows;
@@ -49,16 +51,10 @@ export class VoteService {
    * @returns The other voters as observable of the dictionary of voters
    */
   setupVoter(name: string): Observable<{ Voter }> {
-    const voters$ = from(
-      this.connection.start()
-        .catch(err => console.error(err.toString()))
-    );
+    const startConnection$ = from(this.connection.start());
 
-    return voters$.pipe(
-      switchMap(() => {
-        const id = this.connection.connectionId;
-        return this.http.post<{ Voter }>(`${this.baseUrl}/vote/setup`, { name, id });
-      }),
+    return startConnection$.pipe(
+      switchMap(_ => this.invoke<{ Voter }>(HubMethods.SetupVoter, this.name)),
     );
   }
 
@@ -69,5 +65,28 @@ export class VoteService {
    */
   listenFor<T>(eventName: string): Observable<T> {
     return fromEvent(this.connection, eventName);
+  }
+
+  /**
+   * Calls a method on the hub (doesn't wait for response)
+   * @param methodName The name of the hub method to call
+   * @param args The arguements to be passed to the hub method
+   */
+  send(methodName: string, args: any) {
+    this.connection.send(methodName, args);
+  }
+
+  /**
+   * Calls a method on the hub and waits for response
+   * @param methodName The name of the hub method to call
+   * @param args The arguments to be passed to the hub method
+   */
+  invoke<T>(methodName: string, args: any): Observable<T> {
+    return from(this.connection.invoke(methodName, args)).pipe(
+      catchError(error => {
+        console.error(error.toString());
+        return of(null);
+      }),
+    );
   }
 }
