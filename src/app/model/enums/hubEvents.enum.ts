@@ -1,5 +1,5 @@
-export enum HubMethods {
-    BroadcastVote = 'BroadcastVote',
+export enum HubEvents {
+    VoteUpdated = 'VoteUpdated',
     VoterAdded = 'VoterAdded',
     VotingLocked = 'VotingLocked',
 }
