@@ -3,15 +3,19 @@
   <h2>{{name}}</h2>
   <app-voting-cards [locked]="locked$ | async"></app-voting-cards>
   <div *ngIf="(initialVoters$ | async) as initialVoters else loadingVoters" class="voters-container">
-    <div *ngFor="let voter of (voters$ | async) | keyvalue" class="mr-2 mb-2 voter">
-      <span class="mr-2 name">{{voter.value.name}}</span>
-      <div class="card point-card locked"
-        [ngClass]="{'locked': locked$ | async, 'voted': !(locked$ | async) && voter.value.point}">
-        <span *ngIf="!(locked$ | async) && voter.value.point">✓</span>
-        <span *ngIf="locked$ | async">{{voter.value.point}}</span>
-        <span>{{voter.value.point}}</span>
+
+    <ng-container *ngIf="(voters$ | async) as voters;">
+      <div *ngFor="let voter of voters | keyvalue" class="mr-2 mb-2 voter">
+        <span class="mr-2 name">{{voter.value.name}}</span>
+        <div class="card point-card locked"
+          [ngClass]="{'locked': locked$ | async, 'voted': !(locked$ | async) && voter.value.point}">
+          <span *ngIf="!(locked$ | async) && voter.value.point">✓</span>
+          <span *ngIf="locked$ | async">{{voter.value.point}}</span>
+          <span>{{voter.value.point}}</span>
+        </div>
       </div>
-    </div>
+    </ng-container>
+
   </div>
   <ng-template #loadingVoters>Loading voters...</ng-template>
 </div>
