@@ -32,7 +32,7 @@ export class VoteService {
    * Create the Signal R Hub connection
    */
   signalRSetup(): HubConnection {
-    const isMac = false;// window.navigator.platform.includes('Mac');
+    const isMac = window.navigator.platform.includes('Mac');
     this.baseUrl = isMac
       ? environment.apiUrl.mac
       : environment.apiUrl.windows;

@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NewVoter } from '@src/app/model/dtos/new-voter';
 import { NewVote } from '@src/app/model/dtos/new-vote';
 import { HubEvents } from '@src/app/model/enums/hubEvents.enum';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-rooms-page',
@@ -14,8 +15,17 @@ import { HubEvents } from '@src/app/model/enums/hubEvents.enum';
 export class RoomsPageComponent implements OnInit {
   name = this.route.snapshot.queryParams.name;
 
-  voters$ = this.voteService.setupVoter(this.name);
+  initialVoters$ = this.voteService.setupVoter(this.name);
   newVoter$ = this.voteService.listenFor<NewVoter>(HubEvents.VoterAdded);
+  voters$ = combineLatest([this.initialVoters$, this.newVoter$]).pipe(
+    map(([voters, newVoter]) => {
+      return !voters[newVoter.id]
+        ? voters[newVoter.id] = { name: newVoter.name, point: '' }
+        : voters;
+    }),
+    tap(output => console.log(output)),
+  )
+
   newVote$ = this.voteService.listenFor<NewVote>(HubEvents.VoteUpdated);
 
   locked$ = of(false);
@@ -26,10 +36,13 @@ export class RoomsPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    combineLatest(this.voters$, this.newVoter$).subscribe(vals => {
-      console.log('New Voter');
-      console.log(vals);
-    });
+    // combineLatest([this.initialVoters$, this.newVoter$]).pipe(
+    //   map(([voters, newVoter]) => {
+    //     return !voters[newVoter.id]
+    //       ? voters[newVoter.id] = { name: newVoter.name, point: '' }
+    //       : voters;
+    //   }),
+    // );
   }
 
 }
