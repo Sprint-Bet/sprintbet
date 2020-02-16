@@ -22,12 +22,13 @@ export class RoomsPageComponent implements OnInit {
     this.newVoter$.pipe(startWith(null)),
   ]).pipe(
     map(([voters, newVoter]) => {
-      if (newVoter == null) return voters;
+      if (newVoter == null) {
+        return voters;
+      }
       return !voters[newVoter.id]
         ? voters[newVoter.id] = { name: newVoter.name, point: '' }
         : voters;
     }),
-    tap(output => console.log(output)),
   )
 
   newVote$ = this.voteService.listenFor<NewVote>(HubEvents.VoteUpdated);

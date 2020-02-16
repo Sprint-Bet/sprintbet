@@ -11,7 +11,6 @@
           [ngClass]="{'locked': locked$ | async, 'voted': !(locked$ | async) && voter.value.point}">
           <span *ngIf="!(locked$ | async) && voter.value.point">✓</span>
           <span *ngIf="locked$ | async">{{voter.value.point}}</span>
-          <span>{{voter.value.point}}</span>
         </div>
       </div>
     </ng-container>
