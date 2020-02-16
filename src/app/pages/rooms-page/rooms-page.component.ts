@@ -14,26 +14,38 @@ import { map, tap, startWith } from 'rxjs/operators';
 })
 export class RoomsPageComponent implements OnInit {
   name = this.route.snapshot.queryParams.name;
+  votingLocked$ = of(false);
 
   initialVoters$ = this.voteService.setupVoter(this.name);
-  newVoter$ = this.voteService.listenFor<NewVoter>(HubEvents.VoterAdded);
+  voterAdded$ = this.voteService.listenFor<NewVoter>(HubEvents.VoterAdded);
+  voterLeft$ = this.voteService.listenFor<string>(HubEvents.VoterLeft);
   voters$ = combineLatest([
     this.initialVoters$,
-    this.newVoter$.pipe(startWith(null)),
+    this.voterAdded$.pipe(startWith(null)),
+    this.voterLeft$.pipe(startWith(null)),
   ]).pipe(
-    map(([voters, newVoter]) => {
-      if (newVoter == null) {
+    map(([voters, newVoter, departedVoterId]) => {
+      let updatedVoters = voters;
+
+      const initialLoad = newVoter == null && departedVoterId == null;
+      if (initialLoad) {
         return voters;
       }
-      return !voters[newVoter.id]
-        ? voters[newVoter.id] = { name: newVoter.name, point: '' }
-        : voters;
+
+      const shouldAddVoter = newVoter && newVoter.id && !voters[newVoter.id];
+      if (shouldAddVoter) {
+        updatedVoters[newVoter.id] = { name: newVoter.name, point: '' }
+      }
+
+      if (departedVoterId) {
+        delete updatedVoters[departedVoterId];
+      }
+
+      return updatedVoters;
     }),
   )
 
   newVote$ = this.voteService.listenFor<NewVote>(HubEvents.VoteUpdated);
-
-  locked$ = of(false);
 
   constructor(
     private voteService: VoteService,

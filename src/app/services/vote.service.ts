@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { Observable, fromEvent, from, of } from 'rxjs';
 import { environment } from '@src/environments/environment';
-import { switchMap, catchError } from 'rxjs/operators';
+import { switchMap, catchError, tap } from 'rxjs/operators';
 import { HubMethods } from '@src/app/model/enums/hubMethods.enum';
 import { ActivatedRoute } from '@angular/router';
 
@@ -12,7 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 export class VoteService {
   private name = this.route.snapshot.queryParams.name;
   private _connection: HubConnection;
-  private baseUrl;
+  private baseUrl: string;
+  private connectionId: string;
 
   get connection(): HubConnection {
     if (!this._connection) {
@@ -39,19 +40,35 @@ export class VoteService {
 
     const connection = new HubConnectionBuilder()
       .withUrl(`${this.baseUrl}/notify`)
-      .configureLogging(LogLevel.Debug)
+      .configureLogging(LogLevel.Critical)
       .build();
 
     return connection;
   }
 
   /**
-   * Adds voter to the planning poker game!
+   * Adds voter to the room, setups up removing player on disconnect
    * @param name The user's name supplied on the welcome page
    * @returns The other voters as observable of the dictionary of voters
    */
   setupVoter(name: string): Observable<{ Voter }> {
-    const startConnection$ = from(this.connection.start());
+    this.connection.onreconnecting(_ => {
+      debugger;
+      console.log('Reconnecting...');
+    });
+    this.connection.onreconnected(id => {
+      debugger;
+      console.log(`Reconnected: ${id}`);
+    });
+    this.connection.onclose(error => {
+      debugger;
+      if (error) console.error(error);
+      this.send(HubMethods.RemoveVoter, this.connectionId);
+    });
+
+    const startConnection$ = from(this.connection.start()).pipe(
+      tap(_ => this.connectionId = this.connection.connectionId),
+    );
 
     return startConnection$.pipe(
       switchMap(_ => this.invoke<{ Voter }>(HubMethods.SetupVoter, this.name)),
