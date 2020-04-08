@@ -140,6 +140,7 @@
   },
   "defaultProject": "PlanningPokerAngular",
   "cli": {
-    "defaultCollection": "@nativescript/schematics"
+    "defaultCollection": "@nativescript/schematics",
+    "analytics": "d2d81604-b789-4597-aa14-885935de7941"
   }
 }
