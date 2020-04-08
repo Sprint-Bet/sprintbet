@@ -11,6 +11,7 @@ import { NavbarComponent } from '@src/app/components/navbar/navbar.component';
 import { PageNotFoundComponent } from '@src/app/components/page-not-found/page-not-found.component';
 import { RoomsPageComponent } from '@src/app/pages/rooms-page/rooms-page.component';
 import { VotingCardsComponent } from '@src/app/components/voting-cards/voting-cards.component';
+import { VotersComponent } from '@src/app/components/voters/voters.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { VotingCardsComponent } from '@src/app/components/voting-cards/voting-ca
     PageNotFoundComponent,
     RoomsPageComponent,
     VotingCardsComponent,
+    VotersComponent,
   ],
   imports: [
     BrowserModule,
