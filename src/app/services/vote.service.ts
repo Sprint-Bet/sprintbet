@@ -52,18 +52,13 @@ export class VoteService {
    * @returns The other voters as observable of the dictionary of voters
    */
   setupVoter(name: string): Observable<{ Voter }> {
-    this.connection.onreconnecting(_ => {
-      debugger;
-      console.log('Reconnecting...');
-    });
-    this.connection.onreconnected(id => {
-      debugger;
-      console.log(`Reconnected: ${id}`);
-    });
+    this.connection.onreconnecting(_ => console.log('Reconnecting...'));
+    this.connection.onreconnected(id => console.log(`Reconnected: ${id}`));
     this.connection.onclose(error => {
-      debugger;
-      if (error) console.error(error);
       this.send(HubMethods.RemoveVoter, this.connectionId);
+      if (error) {
+        console.error(error);
+      }
     });
 
     const startConnection$ = from(this.connection.start()).pipe(
