@@ -1,5 +1,6 @@
-<div *ngIf="initialVoters else loadingVoters" class="voters-container">
+<!-- <div *ngIf="initialVoters else loadingVoters" class="voters-container"> -->
 
+<div class="voters-container">
     <ng-container *ngIf="voters">
         <div *ngFor="let voter of voters | keyvalue" class="mr-2 mb-2 voter">
             <span class="mr-2 name">{{voter.value.name}}</span>
@@ -10,6 +11,7 @@
             </div>
         </div>
     </ng-container>
-
 </div>
-<ng-template #loadingVoters>Loading voters...</ng-template>
+
+<!-- </div>
+<ng-template #loadingVoters>Loading voters...</ng-template> -->

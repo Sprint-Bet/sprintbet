@@ -8,15 +8,16 @@ export enum ActionType {
 }
 
 export const roomPageNavigatedAction = createAction(
-    ActionType.ROOM_PAGE_NAVIGATED
+    ActionType.ROOM_PAGE_NAVIGATED,
+    props<{ newVoterName: string }>()
 );
 
-export const votersLoadedSuccess = createAction(
+export const votersLoadedSuccessAction = createAction(
     ActionType.VOTERS_LOADED_SUCCESS,
     props<{ voters: { Voter } }>()
 );
 
-export const votersLoadedFail = createAction(
+export const votersLoadedFailAction = createAction(
     ActionType.VOTERS_LOADED_FAIL,
     props<{ error: HttpErrorResponse }>()
 );

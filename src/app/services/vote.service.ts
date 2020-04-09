@@ -66,7 +66,7 @@ export class VoteService {
     );
 
     return startConnection$.pipe(
-      switchMap(_ => this.invoke<{ Voter }>(HubMethods.SetupVoter, this.name)),
+      switchMap(_ => this.invoke<{ Voter }>(HubMethods.SetupVoter, name)),
     );
   }
 

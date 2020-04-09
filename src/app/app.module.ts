@@ -12,6 +12,12 @@ import { PageNotFoundComponent } from '@src/app/components/page-not-found/page-n
 import { RoomsPageComponent } from '@src/app/pages/rooms-page/rooms-page.component';
 import { VotingCardsComponent } from '@src/app/components/voting-cards/voting-cards.component';
 import { VotersComponent } from '@src/app/components/voters/voters.component';
+import { StoreModule } from '@ngrx/store';
+import { reducer } from './state/app.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './state/app.effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '@src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -29,6 +35,13 @@ import { VotersComponent } from '@src/app/components/voters/voters.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    StoreModule.forRoot({ appState : reducer }),
+    EffectsModule.forRoot([AppEffects]),
+    StoreDevtoolsModule.instrument({
+      name: 'Planning poker Devtools',
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [
     Title
