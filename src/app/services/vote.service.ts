@@ -5,6 +5,7 @@ import { environment } from '@src/environments/environment';
 import { switchMap, catchError, tap } from 'rxjs/operators';
 import { HubMethods } from '@src/app/model/enums/hubMethods.enum';
 import { ActivatedRoute } from '@angular/router';
+import { Voter } from '../model/dtos/voter';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +52,7 @@ export class VoteService {
    * @param name The user's name supplied on the welcome page
    * @returns The other voters as observable of the dictionary of voters
    */
-  setupVoter(name: string): Observable<{ Voter }> {
+  setupVoter(name: string): Observable<Voter[]> {
     this.connection.onreconnecting(_ => console.log('Reconnecting...'));
     this.connection.onreconnected(id => console.log(`Reconnected: ${id}`));
     this.connection.onclose(error => {
@@ -66,7 +67,7 @@ export class VoteService {
     );
 
     return startConnection$.pipe(
-      switchMap(_ => this.invoke<{ Voter }>(HubMethods.SetupVoter, name)),
+      switchMap(_ => this.invoke<Voter[]>(HubMethods.SetupPlayer, name)),
     );
   }
 

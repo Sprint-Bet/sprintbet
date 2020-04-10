@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Voter } from '../model/dtos/voter';
 
 export enum ActionType {
     ROOM_PAGE_NAVIGATED = '[Room Page] Navigated to room page',
@@ -14,7 +15,7 @@ export const roomPageNavigatedAction = createAction(
 
 export const votersLoadedSuccessAction = createAction(
     ActionType.VOTERS_LOADED_SUCCESS,
-    props<{ voters: { Voter } }>()
+    props<{ voters: Voter[] }>()
 );
 
 export const votersLoadedFailAction = createAction(

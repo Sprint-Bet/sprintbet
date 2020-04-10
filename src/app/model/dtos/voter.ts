@@ -1,5 +1,8 @@
-import { Vote } from './vote';
+import { RoleType } from '../enums/role-type.enum';
 
 export interface Voter {
-  [id: string]: Vote;
+  name: string;
+  id: string;
+  role: RoleType;
+  point: string;
 }

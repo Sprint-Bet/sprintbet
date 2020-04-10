@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { Voter } from '../model/dtos/voter';
 
 export interface AppState {
     votingLocked: boolean;
-    voters: { Voter };
+    voters: Voter[];
     loading: boolean;
     error: HttpErrorResponse;
 }

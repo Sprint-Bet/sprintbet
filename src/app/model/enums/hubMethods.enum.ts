@@ -1,5 +1,5 @@
 export enum HubMethods {
     UpdateVote = 'UpdateVote',
-    SetupVoter = 'SetupVoter',
+    SetupPlayer = 'SetupPlayer',
     RemoveVoter = 'RemoveVoter',
 }
