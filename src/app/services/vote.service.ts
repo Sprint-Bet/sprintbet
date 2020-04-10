@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { Observable, fromEvent, from, of } from 'rxjs';
 import { environment } from '@src/environments/environment';
-import { switchMap, catchError, tap } from 'rxjs/operators';
+import { switchMap, catchError, tap, switchMapTo } from 'rxjs/operators';
 import { HubMethods } from '@src/app/model/enums/hubMethods.enum';
 import { ActivatedRoute } from '@angular/router';
 import { Voter } from '../model/dtos/voter';
+import { NewVoter } from '../model/dtos/new-voter';
+import { VoteRepositoryService } from '../repository-services/vote-repository.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VoteService {
-  private name = this.route.snapshot.queryParams.name;
   private _connection: HubConnection;
   private baseUrl: string;
-  private connectionId: string;
 
   get connection(): HubConnection {
     if (!this._connection) {
@@ -28,6 +28,7 @@ export class VoteService {
 
   constructor(
     private route: ActivatedRoute,
+    private voteRepositoryService: VoteRepositoryService,
   ) { }
 
   /**
@@ -41,7 +42,7 @@ export class VoteService {
 
     const connection = new HubConnectionBuilder()
       .withUrl(`${this.baseUrl}/notify`)
-      .configureLogging(LogLevel.Critical)
+      .configureLogging(LogLevel.Debug)
       .build();
 
     return connection;
@@ -55,20 +56,19 @@ export class VoteService {
   setupVoter(name: string): Observable<Voter[]> {
     this.connection.onreconnecting(_ => console.log('Reconnecting...'));
     this.connection.onreconnected(id => console.log(`Reconnected: ${id}`));
-    this.connection.onclose(error => {
-      this.send(HubMethods.RemoveVoter, this.connectionId);
-      if (error) {
-        console.error(error);
-      }
-    });
+    this.connection.onclose(error => console.log(`Closing: ${error}`));
 
     const startConnection$ = from(this.connection.start()).pipe(
-      tap(_ => this.connectionId = this.connection.connectionId),
+      tap(connection => console.log(`connected: ${connection}`)),
     );
 
     return startConnection$.pipe(
       switchMap(_ => this.invoke<Voter[]>(HubMethods.SetupPlayer, name)),
     );
+  }
+
+  registerVoter(newVoter: NewVoter) {
+    return this.voteRepositoryService.registerVoter(newVoter);
   }
 
   /**

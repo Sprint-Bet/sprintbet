@@ -1,4 +1,5 @@
 export interface NewVoter {
     name: string;
-    id: string;
+    role: string;
+    group: string;
 }
