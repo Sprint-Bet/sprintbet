@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { VoteService } from '@src/app/services/vote.service';
 import { NewVoter } from '@src/app/model/dtos/new-voter';
-import { tap } from 'rxjs/operators';
+import { AppState } from '@src/app/state/app.state';
+import { Store, select } from '@ngrx/store';
+import { welcomePageJoinRoomClickedAction } from '@src/app/state/app.actions';
+import { loadingSelector } from '@src/app/state/app.selectors';
 
 @Component({
   selector: 'app-welcome-page',
@@ -19,9 +21,11 @@ export class WelcomePageComponent implements OnInit {
     group: '',
   });
 
+  loading$ = this.store.pipe(select(loadingSelector));
+
   constructor(
     private formBuilder: FormBuilder,
-    private voteService: VoteService,
+    private store: Store<AppState>,
   ) { }
 
   ngOnInit() {
@@ -34,7 +38,7 @@ export class WelcomePageComponent implements OnInit {
       group: form['group'],
     };
 
-    this.voteService.registerVoter(registrationInfo).subscribe(res => console.log(res));
+    this.store.dispatch(welcomePageJoinRoomClickedAction({registrationInfo}));
   }
 
   roleChange() {

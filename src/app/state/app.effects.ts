@@ -4,7 +4,14 @@ import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { VoteService } from '../services/vote.service';
-import { roomPageNavigatedAction, votersLoadedFailAction, votersLoadedSuccessAction } from './app.actions';
+import {
+    roomPageNavigatedAction,
+    votersLoadedFailAction,
+    votersLoadedSuccessAction,
+    welcomePageJoinRoomClickedAction,
+    welcomePageJoinRoomSuccessAction,
+    welcomePageJoinRoomFailAction,
+} from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
@@ -13,6 +20,16 @@ export class AppEffects {
         private actions$: Actions,
         private voterService: VoteService,
     ) {}
+
+    registerVoters$: Observable<Action> = createEffect(
+        () => this.actions$.pipe(
+            ofType(welcomePageJoinRoomClickedAction),
+            mergeMap(action => this.voterService.registerVoter(action.registrationInfo).pipe(
+                map(sessionId => welcomePageJoinRoomSuccessAction({ sessionId })),
+                catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
+            ))
+        )
+    );
 
     getVoters$: Observable<Action> = createEffect(
         () => this.actions$.pipe(

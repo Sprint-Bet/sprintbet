@@ -1,11 +1,20 @@
 import { AppState } from './app.state';
 import { Action, createReducer, on } from '@ngrx/store';
 import { intitialAppState } from './app.state';
-import { votersLoadedSuccessAction, votersLoadedFailAction, roomPageNavigatedAction } from './app.actions';
+import { votersLoadedSuccessAction, votersLoadedFailAction, roomPageNavigatedAction, welcomePageJoinRoomClickedAction, welcomePageJoinRoomSuccessAction, welcomePageJoinRoomFailAction } from './app.actions';
 
 
 const appReducer = createReducer(
     intitialAppState,
+    on(welcomePageJoinRoomClickedAction,
+        (state, { registrationInfo }): AppState => ({ ...state, loading: true, role: registrationInfo.role })
+    ),
+    on(welcomePageJoinRoomSuccessAction,
+        (state, { sessionId }): AppState => ({ ...state, loading: false, sessionId })
+    ),
+    on(welcomePageJoinRoomFailAction,
+        (state, { error }): AppState => ({ ...state, loading: false, error })
+    ),
     on(roomPageNavigatedAction,
         (state): AppState => ({ ...state, loading: true })
     ),

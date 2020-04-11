@@ -56,15 +56,22 @@ export class RoomsPageComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(roomPageNavigatedAction({ newVoterName: this.name }));
 
-    // TODO: Make setup voter endpoint store and then return sessionId (guid)
+    // DONE: DONE
+    // DONE: Make setup voter endpoint store and then return sessionId (guid)
+    // DONE: Add 'room name' field to the form
+    // DONE: Add 'role' information to the form, and API dto
+    // DONE: Store the 'role' in state store
+
+    // TODO: PRIORITY
+    // TODO: Move getVoters() to controller
+    // TODO: Call getVoters() by passing in sessionId as Bearer token
+    // TODO: Once getVoters() is complete, listen for updates using signalR
+
+    // TODO: EXTRAS
     // TODO: Add sessionId guard on the welcome page ('leave room' wipes sessionId and routes to welcome)
-    // TODO: Add 'room name' field to the form
     // TODO: Add 'room name' capability to the API
     // TODO: Change the room route to include room name
-    // TODO: Add 'role' information to the form, and API dto
-    // TODO: Store the 'role' in state store
     // TODO: Add 'dealer' functionality to the frontend
-    // TODO: Add 'dealer' functionality to the API (might require auth)
   }
 
 }

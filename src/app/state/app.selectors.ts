@@ -7,3 +7,8 @@ export const votersSelector = createSelector(
     appStateSelector,
     state => state.voters
 );
+
+export const loadingSelector = createSelector(
+    appStateSelector,
+    state => state.loading
+);
