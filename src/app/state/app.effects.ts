@@ -11,22 +11,29 @@ import {
     welcomePageJoinRoomClickedAction,
     welcomePageJoinRoomSuccessAction,
     welcomePageJoinRoomFailAction,
+    signalRConnectionSuccessAction,
+    signalRConnectionFailAction,
+    signalRVotingUpdatedAction,
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { VoteHubService } from '../services/hub-services/vote-hub.service';
+import { HubEvents } from '../model/enums/hubEvents.enum';
+import { Voter } from '../model/dtos/voter';
 
 @Injectable()
 export class AppEffects {
     constructor(
         private actions$: Actions,
-        private voterService: VoteService,
+        private voteService: VoteService,
+        private voteHubService: VoteHubService,
         private router: Router,
     ) {}
 
     registerVoters$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageJoinRoomClickedAction),
-            mergeMap(action => this.voterService.registerVoter(action.registrationInfo).pipe(
+            mergeMap(action => this.voteService.registerVoter(action.registrationInfo).pipe(
                 map(sessionId => welcomePageJoinRoomSuccessAction({ sessionId })),
                 catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
             ))
@@ -36,19 +43,36 @@ export class AppEffects {
     getVoters$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(roomPageNavigatedAction),
-            mergeMap(_ => this.voterService.getAllVoters().pipe(
+            mergeMap(_ => this.voteService.getAllVoters().pipe(
                 map(initialVoters => votersLoadedSuccessAction({ voters: initialVoters })),
                 catchError((error: HttpErrorResponse) => of(votersLoadedFailAction({ error }))),
             ))
         )
     );
 
-    // TODO: Setup signalr updateVoters() effect here 
+    startSignalR$: Observable<Action> = createEffect(
+        () => this.actions$.pipe(
+            ofType(roomPageNavigatedAction),
+            mergeMap(() => this.voteHubService.startConnection().pipe(
+                map(() => signalRConnectionSuccessAction()),
+                catchError(error => of(signalRConnectionFailAction(error))),
+            ))
+        )
+    );
+
+    // TODO: Might need to get rid of listenFor<> method and simply use connection.on()
+    updateVoters$: Observable<Action> = createEffect(
+        () => this.actions$.pipe(
+            ofType(signalRConnectionSuccessAction),
+            switchMap(() => this.voteHubService.listenFor<Voter[]>(HubEvents.VotingUpdated)),
+            map(updatedVoters => signalRVotingUpdatedAction({ updatedVoters })),
+        )
+    );
 
     routeToRoomPage$: Observable<boolean> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageJoinRoomSuccessAction),
-            switchMap(_ => this.router.navigate(['rooms' ], { queryParams: { name: 'Random' } })),
+            switchMap(() => this.router.navigate(['rooms'], { queryParams: { name: 'Random' } })),
         ),
         { dispatch: false }
     );

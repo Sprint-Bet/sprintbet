@@ -10,6 +10,9 @@ export enum ActionType {
     ROOM_PAGE_NAVIGATED = '[Room page] Navigated to room page',
     VOTERS_LOADED_SUCCESS = '[Room page] Voters loaded successfully',
     VOTERS_LOADED_FAIL = '[Room page] Voters failed to load',
+    SIGNAL_R_CONNECTION_SUCCESS = '[Signal R] Signal R connected successfully',
+    SIGNAL_R_CONNECTION_FAIL = '[Signal R] Signal R failed to connect',
+    SIGNAL_R_VOTING_UPDATED = '[Signal R] Signal R voting updated event received'
 }
 
 export const welcomePageJoinRoomClickedAction = createAction(
@@ -40,4 +43,18 @@ export const votersLoadedSuccessAction = createAction(
 export const votersLoadedFailAction = createAction(
     ActionType.VOTERS_LOADED_FAIL,
     props<{ error: HttpErrorResponse }>()
+);
+
+export const signalRConnectionSuccessAction = createAction(
+    ActionType.SIGNAL_R_CONNECTION_SUCCESS
+);
+
+export const signalRConnectionFailAction = createAction(
+    ActionType.SIGNAL_R_CONNECTION_FAIL,
+    props<{ error: HttpErrorResponse }>()
+);
+
+export const signalRVotingUpdatedAction = createAction(
+    ActionType.SIGNAL_R_VOTING_UPDATED,
+    props<{ updatedVoters: Voter[] }>()
 );

@@ -1,7 +1,15 @@
 import { AppState } from './app.state';
 import { Action, createReducer, on } from '@ngrx/store';
 import { intitialAppState } from './app.state';
-import { votersLoadedSuccessAction, votersLoadedFailAction, roomPageNavigatedAction, welcomePageJoinRoomClickedAction, welcomePageJoinRoomSuccessAction, welcomePageJoinRoomFailAction } from './app.actions';
+import {
+    votersLoadedSuccessAction,
+    votersLoadedFailAction,
+    roomPageNavigatedAction,
+    welcomePageJoinRoomClickedAction,
+    welcomePageJoinRoomSuccessAction,
+    welcomePageJoinRoomFailAction,
+    signalRVotingUpdatedAction
+} from './app.actions';
 
 
 const appReducer = createReducer(
@@ -24,6 +32,9 @@ const appReducer = createReducer(
     on(votersLoadedFailAction,
         (state, { error }): AppState => ({ ...state, loading: false, error })
     ),
+    on(signalRVotingUpdatedAction,
+        (state, { updatedVoters }): AppState => ({ ...state, voters: updatedVoters })
+    )
 );
 
 export function reducer(state: AppState | undefined, action: Action) {
