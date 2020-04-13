@@ -12,6 +12,7 @@ import { votersSelector } from '@src/app/state/app.selectors';
   styleUrls: ['./rooms-page.component.scss']
 })
 export class RoomsPageComponent implements OnInit {
+  //TODO: Remove this and from html, create an 'identifySelf' pipe
   name = this.route.snapshot.queryParams.name;
   votingLocked$ = of(false);
   voters$ = this.store.pipe(select(votersSelector));
