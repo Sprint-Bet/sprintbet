@@ -14,6 +14,7 @@ import { votersSelector } from '@src/app/state/app.selectors';
 export class RoomsPageComponent implements OnInit {
   name = this.route.snapshot.queryParams.name;
   votingLocked$ = of(false);
+  voters$ = this.store.pipe(select(votersSelector));
 
   // initialVoters$ = this.voteService.setupVoter(this.name);
   // voterAdded$ = this.voteService.listenFor<NewVoter>(HubEvents.VoterAdded);
@@ -50,8 +51,6 @@ export class RoomsPageComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store<AppState>
   ) { }
-
-  voters$ = this.store.pipe(select(votersSelector));
 
   ngOnInit() {
     this.store.dispatch(roomPageNavigatedAction({ newVoterName: this.name }));

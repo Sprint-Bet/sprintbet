@@ -12,3 +12,8 @@ export const loadingSelector = createSelector(
     appStateSelector,
     state => state.loading
 );
+
+export const sessionIdSelector = createSelector(
+    appStateSelector,
+    state => state.sessionId
+)

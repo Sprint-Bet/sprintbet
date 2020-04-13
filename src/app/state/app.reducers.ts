@@ -8,7 +8,8 @@ import {
     welcomePageJoinRoomClickedAction,
     welcomePageJoinRoomSuccessAction,
     welcomePageJoinRoomFailAction,
-    signalRVotingUpdatedAction
+    signalRVotingUpdatedAction,
+    roomPageVoteFailAction
 } from './app.actions';
 
 
@@ -25,6 +26,9 @@ const appReducer = createReducer(
     ),
     on(roomPageNavigatedAction,
         (state): AppState => ({ ...state, loading: true })
+    ),
+    on(roomPageVoteFailAction,
+        (state, { error }): AppState => ({ ...state, error })
     ),
     on(votersLoadedSuccessAction,
         (state, { voters }): AppState => ({ ...state, loading: false, voters })

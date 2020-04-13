@@ -14,6 +14,9 @@ import {
     signalRConnectionSuccessAction,
     signalRConnectionFailAction,
     signalRVotingUpdatedAction,
+    roomPageVoteClickedAction,
+    roomPageVoteFailAction,
+    roomPageVoteSuccessAction,
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -66,6 +69,16 @@ export class AppEffects {
             ofType(signalRConnectionSuccessAction),
             switchMap(() => this.voteHubService.listenFor<Voter[]>(HubEvents.VotingUpdated)),
             map(updatedVoters => signalRVotingUpdatedAction({ updatedVoters })),
+        )
+    );
+
+    castVote$: Observable<Action> = createEffect(
+        () => this.actions$.pipe(
+            ofType(roomPageVoteClickedAction),
+            mergeMap(action => this.voteService.castVote(action.vote).pipe(
+                map(() => roomPageVoteSuccessAction()),
+                catchError(error => of(roomPageVoteFailAction(error))),
+            ))
         )
     );
 

@@ -2,12 +2,16 @@ import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Voter } from '../model/dtos/voter';
 import { NewVoter } from '../model/dtos/new-voter';
+import { Vote } from '../model/dtos/vote';
 
 export enum ActionType {
     WELCOME_PAGE_JOIN_ROOM_CLICKED = '[Welcome page] Clicked to join room',
     WELCOME_PAGE_JOIN_ROOM_SUCCESS = '[Welcome page] Joined room successfully',
     WELCOME_PAGE_JOIN_ROOM_FAIL = '[Welcome page] Failed to join room',
     ROOM_PAGE_NAVIGATED = '[Room page] Navigated to room page',
+    ROOM_PAGE_VOTE_CLICKED = '[Room page] Clicked to vote',
+    ROOM_PAGE_VOTE_SUCCESS = '[Room page] Voted successfully',
+    ROOM_PAGE_VOTE_FAIL = '[Room page] Failed to vote',
     VOTERS_LOADED_SUCCESS = '[Room page] Voters loaded successfully',
     VOTERS_LOADED_FAIL = '[Room page] Voters failed to load',
     SIGNAL_R_CONNECTION_SUCCESS = '[Signal R] Signal R connected successfully',
@@ -33,6 +37,20 @@ export const welcomePageJoinRoomFailAction = createAction(
 export const roomPageNavigatedAction = createAction(
     ActionType.ROOM_PAGE_NAVIGATED,
     props<{ newVoterName: string }>()
+);
+
+export const roomPageVoteClickedAction = createAction(
+    ActionType.ROOM_PAGE_VOTE_CLICKED,
+    props<{ vote: Vote }>()
+);
+
+export const roomPageVoteSuccessAction = createAction(
+    ActionType.ROOM_PAGE_VOTE_SUCCESS
+);
+
+export const roomPageVoteFailAction = createAction(
+    ActionType.ROOM_PAGE_VOTE_FAIL,
+    props<{ error: HttpErrorResponse }>()
 );
 
 export const votersLoadedSuccessAction = createAction(

@@ -12,7 +12,6 @@ import { Voter } from '@src/app/model/dtos/voter';
 export class VoteHubService {
   private connection: HubConnection;
   private baseUrl: string;
-  private connectionStarted$: Observable<any>;
 
   constructor() {
     this.connection = this.setupConnection();
@@ -25,8 +24,6 @@ export class VoteHubService {
     // - (or this could be a new effect that listens to a new startsignalr success action)
     // - switchMap to listen for voting updates, as normal
     // - update the store with a new votingUpdated({voters: Voter[]}) action
-
-    this.connectionStarted$ = this.startConnection();
   }
 
   /**
