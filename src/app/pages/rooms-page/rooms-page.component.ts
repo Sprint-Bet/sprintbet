@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
 import { roomPageNavigatedAction } from '@src/app/state/app.actions';
-import { votersSelector } from '@src/app/state/app.selectors';
+import { votersSelector, sessionIdSelector } from '@src/app/state/app.selectors';
 
 @Component({
   selector: 'app-rooms-page',
@@ -14,6 +14,7 @@ import { votersSelector } from '@src/app/state/app.selectors';
 export class RoomsPageComponent implements OnInit {
   votingLocked$ = of(false);
   voters$ = this.store.pipe(select(votersSelector));
+  sessionId$ = this.store.pipe(select(sessionIdSelector));
 
   constructor(
     private store: Store<AppState>
