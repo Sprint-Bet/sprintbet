@@ -35,8 +35,7 @@ export const welcomePageJoinRoomFailAction = createAction(
 );
 
 export const roomPageNavigatedAction = createAction(
-    ActionType.ROOM_PAGE_NAVIGATED,
-    props<{ newVoterName: string }>()
+    ActionType.ROOM_PAGE_NAVIGATED
 );
 
 export const roomPageVoteClickedAction = createAction(
