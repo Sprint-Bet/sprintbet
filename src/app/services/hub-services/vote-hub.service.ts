@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { Observable, fromEvent, from, of } from 'rxjs';
 import { environment } from '@src/environments/environment';
-import { switchMap, catchError, tap } from 'rxjs/operators';
-import { HubMethods } from '@src/app/model/enums/hubMethods.enum';
-import { Voter } from '@src/app/model/dtos/voter';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +13,6 @@ export class VoteHubService {
 
   constructor() {
     this.connection = this.setupConnection();
-
-    // TODO: Consider replacing connectionStarted$ with:
-    // - a new startSignalR action
-    // - a new listenToHubEvents$ effect for ofType(startSignalR)
-    // - listenToHubEvents$ maps to this.startConnection()
-    // - checks if connection is ready for event subscriptions
-    // - (or this could be a new effect that listens to a new startsignalr success action)
-    // - switchMap to listen for voting updates, as normal
-    // - update the store with a new votingUpdated({voters: Voter[]}) action
   }
 
   /**
@@ -60,28 +49,6 @@ export class VoteHubService {
 
     return connectionStarted$;
   }
-
-  /**
-   * Adds voter to the room, setups up removing player on disconnect
-   * @param name The user's name supplied on the welcome page
-   * @returns The other voters as observable of the dictionary of voters
-   */
-
-  /*
-  setupVoter(name: string): Observable<Voter[]> {
-    this.connection.onreconnecting(_ => console.log('Reconnecting...'));
-    this.connection.onreconnected(id => console.log(`Reconnected: ${id}`));
-    this.connection.onclose(error => console.log(`Closing: ${error}`));
-
-    const startConnection$ = from(this.connection.start()).pipe(
-      tap(connection => console.log(`connected: ${connection}`)),
-    );
-
-    return startConnection$.pipe(
-      switchMap(_ => this.invoke<Voter[]>(HubMethods.SetupPlayer, name)),
-    );
-  }
-  */
 
   /**
    * Sets up observable to return whatever is requested from signal R Hub
