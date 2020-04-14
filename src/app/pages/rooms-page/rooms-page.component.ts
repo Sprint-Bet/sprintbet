@@ -30,6 +30,7 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Store the 'role' in state store
     // DONE: Once getVoters() is complete, listen for updates using signalR
     // DONE: Move getVoters() to controller
+    // DONE: Display which voter is you!
 
     // TODO: PRIORITY
     // TODO: Call getVoters() by passing in sessionId as Bearer token
