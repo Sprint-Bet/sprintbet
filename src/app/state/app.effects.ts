@@ -21,8 +21,8 @@ import {
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { VoteHubService } from '../services/hub-services/vote-hub.service';
-import { HubEvents } from '../model/enums/hubEvents.enum';
 import { Voter } from '../model/dtos/voter';
+import { HubEvents } from '../services/hub-services/hubEvents.enum';
 
 @Injectable()
 export class AppEffects {
