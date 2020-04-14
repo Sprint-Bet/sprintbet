@@ -38,11 +38,12 @@ import { environment } from '@src/environments/environment';
     HttpClientModule,
     StoreModule.forRoot({ appState : reducer }),
     EffectsModule.forRoot([AppEffects]),
-    StoreDevtoolsModule.instrument({
-      name: 'Planning poker Devtools',
-      maxAge: 25,
-      logOnly: environment.production
-    })
+    // https://github.com/ngrx/platform/issues/1054
+    // StoreDevtoolsModule.instrument({
+    //   name: 'Planning poker Devtools',
+    //   maxAge: 25,
+    //   logOnly: environment.production
+    // })
   ],
   providers: [
     Title
