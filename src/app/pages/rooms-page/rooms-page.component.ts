@@ -15,55 +15,23 @@ export class RoomsPageComponent implements OnInit {
   votingLocked$ = of(false);
   voters$ = this.store.pipe(select(votersSelector));
 
-  // initialVoters$ = this.voteService.setupVoter(this.name);
-  // voterAdded$ = this.voteService.listenFor<NewVoter>(HubEvents.VoterAdded);
-  // voterLeft$ = this.voteService.listenFor<string>(HubEvents.VoterLeft);
-  // voters$ = combineLatest([
-  //   this.initialVoters$,
-  //   this.voterAdded$.pipe(startWith(null)),
-  //   this.voterLeft$.pipe(startWith(null)),
-  // ]).pipe(
-  //   map(([voters, newVoter, departedVoterId]) => {
-  //     let updatedVoters = voters;
-
-  //     const initialLoad = newVoter == null && departedVoterId == null;
-  //     if (initialLoad) {
-  //       return voters;
-  //     }
-
-  //     const shouldAddVoter = newVoter && newVoter.id && !voters[newVoter.id];
-  //     if (shouldAddVoter) {
-  //       updatedVoters[newVoter.id] = { name: newVoter.name, point: '' };
-  //     }
-
-  //     if (departedVoterId) {
-  //       delete updatedVoters[departedVoterId];
-  //     }
-
-  //     return updatedVoters;
-  //   }),
-  // );
-
-  // newVote$ = this.voteService.listenFor<NewVote>(HubEvents.VoteUpdated);
-
   constructor(
-    private route: ActivatedRoute,
     private store: Store<AppState>
   ) { }
 
   ngOnInit() {
-    this.store.dispatch(roomPageNavigatedAction({ newVoterName: this.name }));
+    this.store.dispatch(roomPageNavigatedAction());
 
     // DONE: DONE
     // DONE: Make setup voter endpoint store and then return sessionId (guid)
     // DONE: Add 'room name' field to the form
     // DONE: Add 'role' information to the form, and API dto
     // DONE: Store the 'role' in state store
+    // DONE: Once getVoters() is complete, listen for updates using signalR
+    // DONE: Move getVoters() to controller
 
     // TODO: PRIORITY
-    // TODO: Move getVoters() to controller
     // TODO: Call getVoters() by passing in sessionId as Bearer token
-    // TODO: Once getVoters() is complete, listen for updates using signalR
 
     // TODO: EXTRAS
     // TODO: Add sessionId guard on the welcome page ('leave room' wipes sessionId and routes to welcome)
