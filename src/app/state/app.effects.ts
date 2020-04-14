@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { mergeMap, map, catchError, switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
 import { VoteService } from '../services/vote.service';
 import {
     roomPageNavigatedAction,
@@ -23,6 +23,7 @@ import { Router } from '@angular/router';
 import { VoteHubService } from '../services/hub-services/vote-hub.service';
 import { Voter } from '../model/dtos/voter';
 import { HubEvents } from '../services/hub-services/hubEvents.enum';
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Injectable()
 export class AppEffects {
@@ -31,7 +32,8 @@ export class AppEffects {
         private voteService: VoteService,
         private voteHubService: VoteHubService,
         private router: Router,
-    ) {}
+        private localStorageService: LocalStorageService,
+    ) { }
 
     registerVoters$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
@@ -41,6 +43,22 @@ export class AppEffects {
                 catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
             ))
         )
+    );
+
+    saveIdToLocalStorage$: Observable<void> = createEffect(
+        () => this.actions$.pipe(
+            ofType(welcomePageJoinRoomSuccessAction),
+            map(action => this.localStorageService.setItem('sessionId', action.sessionId)),
+        ),
+        { dispatch: false }
+    );
+
+    routeToRoomPage$: Observable<boolean> = createEffect(
+        () => this.actions$.pipe(
+            ofType(welcomePageJoinRoomSuccessAction),
+            switchMap(() => this.router.navigate(['rooms'], { queryParams: { name: 'GROUP_NAME' } })),
+        ),
+        { dispatch: false }
     );
 
     getVoters$: Observable<Action> = createEffect(
@@ -63,7 +81,6 @@ export class AppEffects {
         )
     );
 
-    // TODO: Might need to get rid of listenFor<> method and simply use connection.on()
     updateVoters$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(signalRConnectionSuccessAction),
@@ -82,11 +99,4 @@ export class AppEffects {
         )
     );
 
-    routeToRoomPage$: Observable<boolean> = createEffect(
-        () => this.actions$.pipe(
-            ofType(welcomePageJoinRoomSuccessAction),
-            switchMap(() => this.router.navigate(['rooms'], { queryParams: { name: 'GROUP_NAME' } })),
-        ),
-        { dispatch: false }
-    );
 }

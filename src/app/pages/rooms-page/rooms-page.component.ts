@@ -32,7 +32,7 @@ export class RoomsPageComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(roomPageNavigatedAction());
 
-    // DONE: DONE
+    // DONE
     // DONE: Make setup voter endpoint store and then return sessionId (guid)
     // DONE: Add 'room name' field to the form
     // DONE: Add 'role' information to the form, and API dto
@@ -40,15 +40,16 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Once getVoters() is complete, listen for updates using signalR
     // DONE: Move getVoters() to controller
     // DONE: Display which voter is you!
+    // DONE: Display separate role controls on frontend
 
-    // TODO: PRIORITY
-    // TODO: Call getVoters() by passing in sessionId as Bearer token
-
-    // TODO: EXTRAS
-    // TODO: Add sessionId guard on the welcome page ('leave room' wipes sessionId and routes to welcome)
+    // TODO
+    // TODO: Add generic <T> functions to support connection.on() in vote-hub service
+    // TODO: Add sessionId to local storage when retrieved from vote-service
+    // TODO: leave room should wipe sessionId and routes to welcome
+    // TODO: Add room guard (checks state for sessionId, then local storage, redirects if neither)
     // TODO: Add 'room name' capability to the API
     // TODO: Change the room route to include room name
-    // TODO: Add 'dealer' functionality to the frontend
+    // TODO: Call getVoters() by passing in sessionId as Bearer token
   }
 
 }
