@@ -85,7 +85,7 @@ export class AppEffects {
     routeToRoomPage$: Observable<boolean> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageJoinRoomSuccessAction),
-            switchMap(() => this.router.navigate(['rooms'], { queryParams: { name: 'Random' } })),
+            switchMap(() => this.router.navigate(['rooms'], { queryParams: { name: 'GROUP_NAME' } })),
         ),
         { dispatch: false }
     );
