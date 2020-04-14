@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
 import { roomPageNavigatedAction } from '@src/app/state/app.actions';
-import { votersSelector, sessionIdSelector } from '@src/app/state/app.selectors';
+import { votersSelector, sessionIdSelector, roleSelector } from '@src/app/state/app.selectors';
+import { map, tap } from 'rxjs/operators';
+import { RoleType } from '@src/app/model/enums/role-type.enum';
 
 @Component({
   selector: 'app-rooms-page',
@@ -15,6 +16,14 @@ export class RoomsPageComponent implements OnInit {
   votingLocked$ = of(false);
   voters$ = this.store.pipe(select(votersSelector));
   sessionId$ = this.store.pipe(select(sessionIdSelector));
+  isDealer$ = this.store.pipe(
+    select(roleSelector),
+    map(role => role === RoleType.DEALER),
+  );
+  isParticipant$ = this.store.pipe(
+    select(roleSelector),
+    map(role => role === RoleType.PARTICIPANT),
+  );
 
   constructor(
     private store: Store<AppState>

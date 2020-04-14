@@ -16,4 +16,9 @@ export const loadingSelector = createSelector(
 export const sessionIdSelector = createSelector(
     appStateSelector,
     state => state.sessionId
-)
+);
+
+export const roleSelector = createSelector(
+    appStateSelector,
+    state => state.role
+);

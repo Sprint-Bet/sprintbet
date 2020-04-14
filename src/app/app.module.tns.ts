@@ -10,6 +10,8 @@ import { PageNotFoundComponent } from '@src/app/components/page-not-found/page-n
 import { RoomsPageComponent } from '@src/app/pages/rooms-page/rooms-page.component';
 import { VotingCardsComponent } from '@src/app/components/voting-cards/voting-cards.component';
 import { VotersComponent } from '@src/app/components/voters/voters.component';
+import { DealerControlsComponent } from '@src/app/components/dealer-controls/dealer-controls.component';
+import { RoomControlsComponent } from '@src/app/components/room-controls/room-controls.component';
 
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
@@ -28,6 +30,8 @@ import { VotersComponent } from '@src/app/components/voters/voters.component';
     RoomsPageComponent,
     VotingCardsComponent,
     VotersComponent,
+    DealerControlsComponent,
+    RoomControlsComponent,
   ],
   imports: [
     NativeScriptModule,

@@ -13,11 +13,13 @@ import { RoomsPageComponent } from '@src/app/pages/rooms-page/rooms-page.compone
 import { VotingCardsComponent } from '@src/app/components/voting-cards/voting-cards.component';
 import { VotersComponent } from '@src/app/components/voters/voters.component';
 import { StoreModule } from '@ngrx/store';
-import { reducer } from './state/app.reducers';
+import { reducer } from '@src/app/state/app.reducers';
 import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './state/app.effects';
+import { AppEffects } from '@src/app/state/app.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '@src/environments/environment';
+import { DealerControlsComponent } from '@src/app/components/dealer-controls/dealer-controls.component';
+import { RoomControlsComponent } from '@src/app/components/room-controls/room-controls.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { environment } from '@src/environments/environment';
     RoomsPageComponent,
     VotingCardsComponent,
     VotersComponent,
+    DealerControlsComponent,
+    RoomControlsComponent,
   ],
   imports: [
     ReactiveFormsModule,
