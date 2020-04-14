@@ -38,6 +38,9 @@ import { environment } from '@src/environments/environment';
     HttpClientModule,
     StoreModule.forRoot({ appState : reducer }),
     EffectsModule.forRoot([AppEffects]),
+    // Should really look into
+    // Not injecting state to get latest
+    // value from store
     // https://github.com/ngrx/platform/issues/1054
     // StoreDevtoolsModule.instrument({
     //   name: 'Planning poker Devtools',
