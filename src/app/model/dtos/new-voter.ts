@@ -1,4 +1,4 @@
-import { RoleType } from '../enums/role-type.enum';
+import { RoleType } from '../../enums/role-type.enum';
 
 export interface NewVoter {
     name: string;

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AppState } from '@src/app/state/app.state';
+import { Store } from '@ngrx/store';
+import { roomPageLeaveConfirmedAction } from '@src/app/state/app.actions';
 
 @Component({
   selector: 'app-room-controls',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoomControlsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private store: Store<AppState>
+  ) { }
 
   ngOnInit() {
   }
 
+  leaveRoom() {
+    if (confirm('Leave room?')) {
+      this.store.dispatch(roomPageLeaveConfirmedAction());
+    }
+  }
 }

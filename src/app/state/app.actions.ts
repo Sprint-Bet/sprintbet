@@ -12,6 +12,7 @@ export enum ActionType {
     ROOM_PAGE_VOTE_CLICKED = '[Room page] Clicked to vote',
     ROOM_PAGE_VOTE_SUCCESS = '[Room page] Voted successfully',
     ROOM_PAGE_VOTE_FAIL = '[Room page] Failed to vote',
+    ROOM_PAGE_LEAVE_CONFIRMED = '[Room page] Clicked confirm to leave room',
     VOTERS_LOADED_SUCCESS = '[Room page] Voters loaded successfully',
     VOTERS_LOADED_FAIL = '[Room page] Voters failed to load',
     SIGNAL_R_CONNECTION_SUCCESS = '[Signal R] Signal R connected successfully',
@@ -50,6 +51,10 @@ export const roomPageVoteSuccessAction = createAction(
 export const roomPageVoteFailAction = createAction(
     ActionType.ROOM_PAGE_VOTE_FAIL,
     props<{ error: HttpErrorResponse }>()
+);
+
+export const roomPageLeaveConfirmedAction = createAction(
+    ActionType.ROOM_PAGE_LEAVE_CONFIRMED
 );
 
 export const votersLoadedSuccessAction = createAction(

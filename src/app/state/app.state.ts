@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Voter } from '../model/dtos/voter';
-import { RoleType } from '../model/enums/role-type.enum';
+import { RoleType } from '../enums/role-type.enum';
 
 export interface AppState {
     votingLocked: boolean;

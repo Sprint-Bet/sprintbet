@@ -17,6 +17,7 @@ import {
     roomPageVoteClickedAction,
     roomPageVoteFailAction,
     roomPageVoteSuccessAction,
+    roomPageLeaveConfirmedAction,
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -24,6 +25,7 @@ import { VoteHubService } from '../services/hub-services/vote-hub.service';
 import { Voter } from '../model/dtos/voter';
 import { HubEvents } from '../services/hub-services/hubEvents.enum';
 import { LocalStorageService } from '../services/local-storage.service';
+import { StorageKey } from '@src/app/enums/storage-key.enum';
 
 @Injectable()
 export class AppEffects {
@@ -48,7 +50,7 @@ export class AppEffects {
     saveIdToLocalStorage$: Observable<void> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageJoinRoomSuccessAction),
-            map(action => this.localStorageService.setItem('sessionId', action.sessionId)),
+            map(action => this.localStorageService.setItem(StorageKey.SESSION_ID, action.sessionId)),
         ),
         { dispatch: false }
     );
@@ -99,4 +101,19 @@ export class AppEffects {
         )
     );
 
+    routeToWelcomePage$: Observable<boolean> = createEffect(
+        () => this.actions$.pipe(
+            ofType(roomPageLeaveConfirmedAction),
+            switchMap(() => this.router.navigate(['/'])),
+        ),
+        { dispatch: false }
+    );
+
+    wipeIdFromLocalStorage$: Observable<void> = createEffect(
+        () => this.actions$.pipe(
+            ofType(roomPageLeaveConfirmedAction),
+            map(_ => this.localStorageService.deleteItem(StorageKey.SESSION_ID)),
+        ),
+        { dispatch: false }
+    );
 }

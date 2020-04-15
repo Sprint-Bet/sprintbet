@@ -5,7 +5,7 @@ import { AppState } from '@src/app/state/app.state';
 import { roomPageNavigatedAction } from '@src/app/state/app.actions';
 import { votersSelector, sessionIdSelector, roleSelector } from '@src/app/state/app.selectors';
 import { map, tap } from 'rxjs/operators';
-import { RoleType } from '@src/app/model/enums/role-type.enum';
+import { RoleType } from '@src/app/enums/role-type.enum';
 
 @Component({
   selector: 'app-rooms-page',
