@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { WelcomePageComponent } from '@src/app/pages/welcome-page/welcome-page.component';
 import { PageNotFoundComponent } from '@src/app/components/page-not-found/page-not-found.component';
 import { RoomsPageComponent } from './pages/rooms-page/rooms-page.component';
+import { RoomGuard } from './guards/room.guard';
 
 const routes: Routes = [
   {
@@ -22,7 +23,8 @@ const routes: Routes = [
     component: RoomsPageComponent,
     data: {
       title: 'Room'
-    }
+    },
+    canActivate: [RoomGuard]
   },
   {
     path: '**',
