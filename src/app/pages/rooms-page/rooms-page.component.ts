@@ -41,12 +41,13 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Move getVoters() to controller
     // DONE: Display which voter is you!
     // DONE: Display separate role controls on frontend
+    // DONE: Add sessionId to local storage when retrieved from vote-service
+    // DONE: leave room should wipe sessionId and routes to welcome
 
     // TODO
     // TODO: Add generic <T> functions to support connection.on() in vote-hub service
-    // TODO: Add sessionId to local storage when retrieved from vote-service
-    // TODO: leave room should wipe sessionId and routes to welcome
     // TODO: Add room guard (checks state for sessionId, then local storage, redirects if neither)
+    // TODO: In room guard check whether the sessionId token is valid (i.e. the sessionId you have is for the right room)
     // TODO: Add 'room name' capability to the API
     // TODO: Change the room route to include room name
     // TODO: Call getVoters() by passing in sessionId as Bearer token
