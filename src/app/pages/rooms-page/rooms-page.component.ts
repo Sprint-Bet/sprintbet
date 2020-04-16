@@ -16,10 +16,12 @@ export class RoomsPageComponent implements OnInit {
   votingLocked$ = of(false);
   voters$ = this.store.pipe(select(votersSelector));
   sessionId$ = this.store.pipe(select(sessionIdSelector));
+
   isDealer$ = this.store.pipe(
     select(roleSelector),
     map(role => role === RoleType.DEALER),
   );
+
   isParticipant$ = this.store.pipe(
     select(roleSelector),
     map(role => role === RoleType.PARTICIPANT),
@@ -46,11 +48,12 @@ export class RoomsPageComponent implements OnInit {
     // DONE: leave room should wipe sessionId and routes to welcome
     // DONE: Add room guard (checks state for sessionId, then local storage, redirects if neither)
     // DONE: Add welcome guard (checks state for sessionId, then local storage, redirects if found)
+    // DONE: In room/welcome guard check (with api?) create action/reducer to set sessionId if found only in local storage
 
     // TODO
     // TODO: Add generic <T> functions to support connection.on() in vote-hub service
+    // TODO: Need to account for other role/room state information etc in the matchStateIdToStoredId method
     // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
-    // TODO: In room/welcome guard check (with api?) create action/reducer to set sessionId if found only in local storage
     // TODO: Add 'room name' capability to the API
     // TODO: Change the room route to include room name
     // TODO: Call getVoters() by passing in sessionId as Bearer token
