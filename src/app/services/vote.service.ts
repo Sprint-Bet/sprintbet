@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Voter } from '../model/dtos/voter';
 import { NewVoter } from '../model/dtos/new-voter';
 import { VoteRepositoryService } from './repository-services/vote-repository.service';
-import { Store, select, State } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { AppState } from '../state/app.state';
 import { sessionIdSelector } from '../state/app.selectors';
 import { Vote } from '../model/dtos/vote';
@@ -17,7 +17,7 @@ export class VoteService {
 
   constructor(
     private voteRepositoryService: VoteRepositoryService,
-    private state: State<AppState>,
+    private store: Store<AppState>,
   ) { }
 
   /**
@@ -40,9 +40,10 @@ export class VoteService {
    * @param vote Vote from the vote card clicked
    */
   castVote(vote: Vote): Observable<HttpResponse<any>> {
-    // TODO: convert to using pipe
-    const sessionId = sessionIdSelector(this.state.value);
-    return this.voteRepositoryService.castVote(sessionId, vote);
+    return this.store.pipe(
+      select(sessionIdSelector),
+      switchMap(sessionId => this.voteRepositoryService.castVote(sessionId, vote)),
+    );
   }
 
   leaveRoom(sessionId: string): Observable<HttpResponse<any>> {

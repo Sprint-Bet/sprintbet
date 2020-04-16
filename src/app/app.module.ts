@@ -42,15 +42,13 @@ import { RoomControlsComponent } from '@src/app/components/room-controls/room-co
     HttpClientModule,
     StoreModule.forRoot({ appState : reducer }),
     EffectsModule.forRoot([AppEffects]),
-    // Should really look into
-    // Not injecting state to get latest
-    // value from store
+    // Hopefully this is fixed now...
     // https://github.com/ngrx/platform/issues/1054
-    // StoreDevtoolsModule.instrument({
-    //   name: 'Planning poker Devtools',
-    //   maxAge: 25,
-    //   logOnly: environment.production
-    // })
+    StoreDevtoolsModule.instrument({
+      name: 'Planning poker Devtools',
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [
     Title
