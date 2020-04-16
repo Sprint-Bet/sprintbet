@@ -18,6 +18,8 @@ import {
     roomPageVoteFailAction,
     roomPageVoteSuccessAction,
     roomPageLeaveConfirmedAction,
+    roomPageLeaveSuccessAction,
+    roomPageLeaveFailAction,
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -101,9 +103,19 @@ export class AppEffects {
         )
     );
 
-    routeToWelcomePage$: Observable<boolean> = createEffect(
+    leaveRoom$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(roomPageLeaveConfirmedAction),
+            mergeMap(action => this.voteService.leaveRoom(action.sessionId).pipe(
+                map(() => roomPageLeaveSuccessAction()),
+                catchError(error => of(roomPageLeaveFailAction(error))),
+            )),
+        )
+    );
+
+    routeToWelcomePage$: Observable<boolean> = createEffect(
+        () => this.actions$.pipe(
+            ofType(roomPageLeaveSuccessAction),
             switchMap(() => this.router.navigate(['/'])),
         ),
         { dispatch: false }
@@ -111,7 +123,7 @@ export class AppEffects {
 
     wipeIdFromLocalStorage$: Observable<void> = createEffect(
         () => this.actions$.pipe(
-            ofType(roomPageLeaveConfirmedAction),
+            ofType(roomPageLeaveSuccessAction),
             map(_ => this.localStorageService.deleteItem(StorageKey.SESSION_ID)),
         ),
         { dispatch: false }

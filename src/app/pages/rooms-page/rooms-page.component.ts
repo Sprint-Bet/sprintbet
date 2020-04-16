@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
 import { roomPageNavigatedAction } from '@src/app/state/app.actions';
 import { votersSelector, sessionIdSelector, roleSelector } from '@src/app/state/app.selectors';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { RoleType } from '@src/app/enums/role-type.enum';
 
 @Component({
@@ -42,12 +42,13 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Display which voter is you!
     // DONE: Display separate role controls on frontend
     // DONE: Add sessionId to local storage when retrieved from vote-service
+    // DONE: leave room should remove the voter from the room via the API
     // DONE: leave room should wipe sessionId and routes to welcome
+    // DONE: Add room guard (checks state for sessionId, then local storage, redirects if neither)
 
     // TODO
     // TODO: Add generic <T> functions to support connection.on() in vote-hub service
-    // TODO: Add room guard (checks state for sessionId, then local storage, redirects if neither)
-    // TODO: In room guard check whether the sessionId token is valid (i.e. the sessionId you have is for the right room)
+    // TODO: In room guard check (with api?) whether the sessionId token is valid (i.e. the sessionId you have is for the right room)
     // TODO: Add 'room name' capability to the API
     // TODO: Change the room route to include room name
     // TODO: Call getVoters() by passing in sessionId as Bearer token

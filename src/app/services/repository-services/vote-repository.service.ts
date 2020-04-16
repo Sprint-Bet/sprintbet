@@ -32,4 +32,9 @@ export class VoteRepositoryService {
     const url = `${this.baseUrl}/vote/voters/${voterId}/cast`;
     return this.httpClient.put(url, vote, { observe: 'response' });
   }
+
+  leaveRoom(voterId: string): Observable<HttpResponse<any>> {
+    const url = `${this.baseUrl}/vote/voters/${voterId}/leave`;
+    return this.httpClient.delete(url, { observe: 'response' });
+  }
 }

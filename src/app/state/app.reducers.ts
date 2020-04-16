@@ -10,7 +10,9 @@ import {
     welcomePageJoinRoomFailAction,
     signalRVotingUpdatedAction,
     roomPageVoteFailAction,
-    roomPageLeaveConfirmedAction
+    roomPageLeaveConfirmedAction,
+    roomPageLeaveSuccessAction,
+    roomPageLeaveFailAction
 } from './app.actions';
 
 
@@ -29,10 +31,16 @@ const appReducer = createReducer(
         (state): AppState => ({ ...state, loading: true })
     ),
     on(roomPageVoteFailAction,
-        (state, { error }): AppState => ({ ...state, error })
+        (state, { error }): AppState => ({ ...state, loading: false, error })
     ),
     on(roomPageLeaveConfirmedAction,
+        (state): AppState => ({ ...state, loading: true })
+    ),
+    on(roomPageLeaveSuccessAction,
         (): AppState => (intitialAppState)
+    ),
+    on(roomPageLeaveFailAction,
+        (state, { error }): AppState => ({ ...state, loading: false, error })
     ),
     on(votersLoadedSuccessAction,
         (state, { voters }): AppState => ({ ...state, loading: false, voters })

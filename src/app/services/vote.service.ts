@@ -40,8 +40,13 @@ export class VoteService {
    * @param vote Vote from the vote card clicked
    */
   castVote(vote: Vote): Observable<HttpResponse<any>> {
+    // TODO: convert to using pipe
     const sessionId = sessionIdSelector(this.state.value);
     return this.voteRepositoryService.castVote(sessionId, vote);
+  }
+
+  leaveRoom(sessionId: string): Observable<HttpResponse<any>> {
+    return this.voteRepositoryService.leaveRoom(sessionId);
   }
 
 }
