@@ -53,6 +53,7 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Add generic <T> functions to support connection.on() in vote-hub service
 
     // TODO
+    // TODO: Once allVotersLoadedSucess, get the voter matching sessionId, set those details in the state
     // TODO: Need to account for other role/room state information etc in the matchStateIdToStoredId method
     // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
     // TODO: Add 'room name' capability to the API
