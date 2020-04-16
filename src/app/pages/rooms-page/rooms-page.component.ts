@@ -45,10 +45,12 @@ export class RoomsPageComponent implements OnInit {
     // DONE: leave room should remove the voter from the room via the API
     // DONE: leave room should wipe sessionId and routes to welcome
     // DONE: Add room guard (checks state for sessionId, then local storage, redirects if neither)
+    // DONE: Add welcome guard (checks state for sessionId, then local storage, redirects if found)
 
     // TODO
     // TODO: Add generic <T> functions to support connection.on() in vote-hub service
-    // TODO: In room guard check (with api?) whether the sessionId token is valid (i.e. the sessionId you have is for the right room)
+    // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
+    // TODO: In room/welcome guard check (with api?) create action/reducer to set sessionId if found only in local storage
     // TODO: Add 'room name' capability to the API
     // TODO: Change the room route to include room name
     // TODO: Call getVoters() by passing in sessionId as Bearer token
