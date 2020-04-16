@@ -6,6 +6,7 @@ import { roomPageNavigatedAction } from '@src/app/state/app.actions';
 import { votersSelector, sessionIdSelector, roleSelector } from '@src/app/state/app.selectors';
 import { map } from 'rxjs/operators';
 import { RoleType } from '@src/app/enums/role-type.enum';
+import { VoteHubService } from '@src/app/services/hub-services/vote-hub.service';
 
 @Component({
   selector: 'app-rooms-page',
@@ -28,7 +29,7 @@ export class RoomsPageComponent implements OnInit {
   );
 
   constructor(
-    private store: Store<AppState>
+    private store: Store<AppState>,
   ) { }
 
   ngOnInit() {
@@ -49,9 +50,9 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Add room guard (checks state for sessionId, then local storage, redirects if neither)
     // DONE: Add welcome guard (checks state for sessionId, then local storage, redirects if found)
     // DONE: In room/welcome guard check (with api?) create action/reducer to set sessionId if found only in local storage
+    // DONE: Add generic <T> functions to support connection.on() in vote-hub service
 
     // TODO
-    // TODO: Add generic <T> functions to support connection.on() in vote-hub service
     // TODO: Need to account for other role/room state information etc in the matchStateIdToStoredId method
     // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
     // TODO: Add 'room name' capability to the API

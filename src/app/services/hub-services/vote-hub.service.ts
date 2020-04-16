@@ -51,6 +51,23 @@ export class VoteHubService {
   }
 
   /**
+   * Runs the provided callback function when the hub event occurs
+   * @param hubMethodName hub method name to listen for
+   * @param callback handler for when event occurs
+   * @example
+   * // Example callback function
+   * const updatedVotersCallback = (voters: Voter[]) => {
+   *  voters.forEach(voter => console.log(voter.name));
+   * };
+   *
+   * // Run the callback when the event occurs
+   * this.voteHub.handleEvent<Voter[]>(HubEvents.VotingUpdated, updatedVotersCallback);
+   */
+  handleEvent<T>(hubMethodName: string, callback: (T) => void) {
+    this.connection.on(hubMethodName, callback);
+  }
+
+  /**
    * Sets up observable to return whatever is requested from signal R Hub
    * @param eventName Name of SignalR Hub event to listen for
    * @returns The return object but as an observable
