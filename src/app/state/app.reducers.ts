@@ -12,7 +12,8 @@ import {
     roomPageVoteFailAction,
     roomPageLeaveConfirmedAction,
     roomPageLeaveSuccessAction,
-    roomPageLeaveFailAction
+    roomPageLeaveFailAction,
+    storedIdNotFoundInStateAction
 } from './app.actions';
 
 
@@ -21,7 +22,7 @@ const appReducer = createReducer(
     on(welcomePageJoinRoomClickedAction,
         (state, { registrationInfo }): AppState => ({ ...state, loading: true, role: registrationInfo.role })
     ),
-    on(welcomePageJoinRoomSuccessAction,
+    on(welcomePageJoinRoomSuccessAction, storedIdNotFoundInStateAction,
         (state, { sessionId }): AppState => ({ ...state, loading: false, sessionId })
     ),
     on(welcomePageJoinRoomFailAction,

@@ -8,6 +8,7 @@ export enum ActionType {
     WELCOME_PAGE_JOIN_ROOM_CLICKED = '[Welcome page] Clicked to join room',
     WELCOME_PAGE_JOIN_ROOM_SUCCESS = '[Welcome page] Joined room successfully',
     WELCOME_PAGE_JOIN_ROOM_FAIL = '[Welcome page] Failed to join room',
+    STORED_ID_NOT_FOUND_IN_STATE = '[Welcome guard] Adding local storage id to the state',
     ROOM_PAGE_NAVIGATED = '[Room page] Navigated to room page',
     ROOM_PAGE_VOTE_CLICKED = '[Room page] Clicked to vote',
     ROOM_PAGE_VOTE_SUCCESS = '[Room page] Voted successfully',
@@ -29,6 +30,11 @@ export const welcomePageJoinRoomClickedAction = createAction(
 
 export const welcomePageJoinRoomSuccessAction = createAction(
     ActionType.WELCOME_PAGE_JOIN_ROOM_SUCCESS,
+    props<{ sessionId: string }>()
+);
+
+export const storedIdNotFoundInStateAction = createAction(
+    ActionType.STORED_ID_NOT_FOUND_IN_STATE,
     props<{ sessionId: string }>()
 );
 
