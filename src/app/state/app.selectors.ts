@@ -22,3 +22,8 @@ export const roleSelector = createSelector(
     appStateSelector,
     state => state.role
 );
+
+export const votingLockedSelector = createSelector(
+    appStateSelector,
+    state => state.votingLocked
+);

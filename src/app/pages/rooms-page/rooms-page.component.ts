@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
 import { roomPageNavigatedAction } from '@src/app/state/app.actions';
-import { votersSelector, sessionIdSelector, roleSelector } from '@src/app/state/app.selectors';
+import { votersSelector, sessionIdSelector, roleSelector, votingLockedSelector } from '@src/app/state/app.selectors';
 import { map } from 'rxjs/operators';
 import { RoleType } from '@src/app/enums/role-type.enum';
-import { VoteHubService } from '@src/app/services/hub-services/vote-hub.service';
 
 @Component({
   selector: 'app-rooms-page',
@@ -14,7 +12,7 @@ import { VoteHubService } from '@src/app/services/hub-services/vote-hub.service'
   styleUrls: ['./rooms-page.component.scss']
 })
 export class RoomsPageComponent implements OnInit {
-  votingLocked$ = of(false);
+  votingLocked$ = this.store.pipe(select(votingLockedSelector));
   voters$ = this.store.pipe(select(votersSelector));
   sessionId$ = this.store.pipe(select(sessionIdSelector));
 
@@ -51,13 +49,16 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Add welcome guard (checks state for sessionId, then local storage, redirects if found)
     // DONE: In room/welcome guard check (with api?) create action/reducer to set sessionId if found only in local storage
     // DONE: Add generic <T> functions to support connection.on() in vote-hub service
+    // DONE: Add dealer locking controls
 
     // TODO
+    // TODO: Add dealer finishing game to the api (starting game comes with the room)
+    // TODO: Add dealer finishing game to the api (starting game comes with the room)
+    // TODO: Add 'room name' capability to the API
+    // TODO: Change the room route to include room name
     // TODO: Once allVotersLoadedSucess, get the voter matching sessionId, set those details in the state
     // TODO: Need to account for other role/room state information etc in the matchStateIdToStoredId method
     // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
-    // TODO: Add 'room name' capability to the API
-    // TODO: Change the room route to include room name
     // TODO: Call getVoters() by passing in sessionId as Bearer token
   }
 

@@ -1,6 +1,9 @@
 <div>
   <h1>Room: GROUP_NAME</h1>
-  <app-dealer-controls *ngIf="isDealer$ | async">
+  <app-dealer-controls
+    *ngIf="isDealer$ | async"
+    [voters]="voters$ | async"
+    [votingLocked]="votingLocked$ | async">
   </app-dealer-controls>
   <app-room-controls
     *ngIf="!(isDealer$ | async)"

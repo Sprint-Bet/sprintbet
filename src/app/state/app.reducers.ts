@@ -13,7 +13,9 @@ import {
     roomPageLeaveConfirmedAction,
     roomPageLeaveSuccessAction,
     roomPageLeaveFailAction,
-    storedIdNotFoundInStateAction
+    storedIdNotFoundInStateAction,
+    signalRVotingLockedAction,
+    roomPageLockSuccessAction
 } from './app.actions';
 
 
@@ -51,6 +53,9 @@ const appReducer = createReducer(
     ),
     on(signalRVotingUpdatedAction,
         (state, { updatedVoters }): AppState => ({ ...state, voters: updatedVoters })
+    ),
+    on(signalRVotingLockedAction, roomPageLockSuccessAction,
+        (state): AppState => ({ ...state, votingLocked: true })
     )
 );
 

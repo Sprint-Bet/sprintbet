@@ -46,8 +46,19 @@ export class VoteService {
     );
   }
 
+  /**
+   * Leave the current game / room
+   * @param sessionId id of the voter to remove from room
+   */
   leaveRoom(sessionId: string): Observable<HttpResponse<any>> {
     return this.voteRepositoryService.leaveRoom(sessionId);
+  }
+
+  /**
+   * Dealer locks voting
+   */
+  lockVoting(): Observable<HttpResponse<any>> {
+    return this.voteRepositoryService.lockVoting();
   }
 
 }

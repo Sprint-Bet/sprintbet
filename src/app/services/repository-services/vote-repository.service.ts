@@ -37,4 +37,9 @@ export class VoteRepositoryService {
     const url = `${this.baseUrl}/vote/voters/${voterId}/leave`;
     return this.httpClient.delete(url, { observe: 'response' });
   }
+
+  lockVoting(): Observable<HttpResponse<any>> {
+    const url = `${this.baseUrl}/dealer/lock`;
+    return this.httpClient.post(url, {}, { observe: 'response' });
+  }
 }
