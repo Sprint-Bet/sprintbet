@@ -19,12 +19,16 @@ export enum ActionType {
     ROOM_PAGE_LOCK_CLICKED = '[Room page] Clicked to lock voting',
     ROOM_PAGE_LOCK_SUCCESS = '[Room page] Locked voting successfully',
     ROOM_PAGE_LOCK_FAIL = '[Room page] Failed to lock voting',
+    ROOM_PAGE_CLEAR_VOTES_CLICKED = '[Room page] Clicked to clear votes',
+    ROOM_PAGE_CLEAR_VOTES_SUCCESS = '[Room page] Cleared votes successfully',
+    ROOM_PAGE_CLEAR_VOTES_FAIL = '[Room page] Failed to clear votes',
     VOTERS_LOADED_SUCCESS = '[Room page] Voters loaded successfully',
     VOTERS_LOADED_FAIL = '[Room page] Voters failed to load',
     SIGNAL_R_CONNECTION_SUCCESS = '[Signal R] Signal R connected successfully',
     SIGNAL_R_CONNECTION_FAIL = '[Signal R] Signal R failed to connect',
     SIGNAL_R_VOTING_UPDATED = '[Signal R] Signal R voting updated event received',
     SIGNAL_R_VOTING_LOCKED = '[Signal R] Signal R voting locked event received',
+    SIGNAL_R_VOTING_UNLOCKED = '[Signal R] Signal R voting unlocked event received',
 }
 
 export const welcomePageJoinRoomClickedAction = createAction(
@@ -92,6 +96,19 @@ export const roomPageLockFailAction = createAction(
     props<{ error: HttpErrorResponse }>()
 );
 
+export const roomPageClearVotesClickedAction = createAction(
+    ActionType.ROOM_PAGE_CLEAR_VOTES_CLICKED
+);
+
+export const roomPageClearVotesSuccessAction = createAction(
+    ActionType.ROOM_PAGE_CLEAR_VOTES_SUCCESS
+);
+
+export const roomPageClearVotesFailAction = createAction(
+    ActionType.ROOM_PAGE_CLEAR_VOTES_FAIL,
+    props<{ error: HttpErrorResponse }>()
+);
+
 export const votersLoadedSuccessAction = createAction(
     ActionType.VOTERS_LOADED_SUCCESS,
     props<{ voters: Voter[] }>()
@@ -118,4 +135,8 @@ export const signalRVotingUpdatedAction = createAction(
 
 export const signalRVotingLockedAction = createAction(
     ActionType.SIGNAL_R_VOTING_LOCKED
+);
+
+export const signalRVotingUnlockedAction = createAction(
+    ActionType.SIGNAL_R_VOTING_UNLOCKED
 );

@@ -42,4 +42,9 @@ export class VoteRepositoryService {
     const url = `${this.baseUrl}/dealer/lock`;
     return this.httpClient.post(url, {}, { observe: 'response' });
   }
+
+  clearVotes(): Observable<HttpResponse<any>> {
+    const url = `${this.baseUrl}/dealer/clear`;
+    return this.httpClient.post(url, {}, { observe: 'response' });
+  }
 }

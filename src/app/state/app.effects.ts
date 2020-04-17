@@ -24,6 +24,10 @@ import {
     roomPageLockClickedAction,
     roomPageLockSuccessAction,
     roomPageLockFailAction,
+    roomPageClearVotesClickedAction,
+    roomPageClearVotesSuccessAction,
+    roomPageClearVotesFailAction,
+    signalRVotingUnlockedAction,
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -105,6 +109,14 @@ export class AppEffects {
         )
     );
 
+    updateVotingUnlocked$: Observable<Action> = createEffect(
+        () => this.actions$.pipe(
+            ofType(signalRConnectionSuccessAction),
+            switchMap(() => this.voteHubService.listenFor(HubEvents.VotingUnlocked)),
+            map(() => signalRVotingUnlockedAction()),
+        )
+    );
+
     castVote$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(roomPageVoteClickedAction),
@@ -147,6 +159,16 @@ export class AppEffects {
             mergeMap(() => this.voteService.lockVoting().pipe(
                 map(() => roomPageLockSuccessAction()),
                 catchError(error => of(roomPageLockFailAction(error))),
+            ))
+        )
+    );
+
+    clearVotes$: Observable<Action> = createEffect(
+        () => this.actions$.pipe(
+            ofType(roomPageClearVotesClickedAction),
+            mergeMap(() => this.voteService.clearVotes().pipe(
+                map(() => roomPageClearVotesSuccessAction()),
+                catchError(error => of(roomPageClearVotesFailAction(error))),
             ))
         )
     );

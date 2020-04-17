@@ -3,7 +3,7 @@
         <div *ngFor="let voter of voters" class="mr-2 mb-2 voter">
             <span class="mr-2 name">{{voter.name}}</span>
             <span class="mr-2" *ngIf="voter.id === sessionId">(me)</span>
-            <div class="card point-card locked"
+            <div class="d-flex flex-row align-items-center justify-content-center card point-card locked"
                 [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && voter.point}">
                 <span *ngIf="!votingLocked && voter.point">✓</span>
                 <span *ngIf="votingLocked">{{voter.point}}</span>

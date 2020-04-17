@@ -61,4 +61,11 @@ export class VoteService {
     return this.voteRepositoryService.lockVoting();
   }
 
+  /**
+   * Dealer clears votes
+   */
+  clearVotes(): Observable<HttpResponse<any>> {
+    return this.voteRepositoryService.clearVotes();
+  }
+
 }

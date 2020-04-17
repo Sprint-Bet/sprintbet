@@ -28,5 +28,6 @@ $voter-container-width: 242px;
 
   &.locked {
     background-image: none;
+    font-size: $base;
   }
 }
