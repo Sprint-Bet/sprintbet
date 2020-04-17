@@ -52,6 +52,7 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Add dealer locking controls
 
     // TODO
+    // TODO: Style the voting card correctly (when revealed)
     // TODO: Add dealer finishing game to the api (starting game comes with the room)
     // TODO: Add dealer finishing game to the api (starting game comes with the room)
     // TODO: Add 'room name' capability to the API
