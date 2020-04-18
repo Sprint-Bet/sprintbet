@@ -24,7 +24,10 @@ export class VoteService {
    * Registers a new voter with a post request, returns sessionId token
    * @param newVoter voter info used for setup
    */
-  registerVoter(newVoter: NewVoter): Observable<string> {
+  // registerVoter(newVoter: NewVoter): Observable<string> {
+  //   return this.voteRepositoryService.registerVoter(newVoter);
+  // }
+  registerVoter(newVoter: NewVoter): Observable<Voter> {
     return this.voteRepositoryService.registerVoter(newVoter);
   }
 

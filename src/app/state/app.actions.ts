@@ -22,8 +22,9 @@ export enum ActionType {
     ROOM_PAGE_CLEAR_VOTES_CLICKED = '[Room page] Clicked to clear votes',
     ROOM_PAGE_CLEAR_VOTES_SUCCESS = '[Room page] Cleared votes successfully',
     ROOM_PAGE_CLEAR_VOTES_FAIL = '[Room page] Failed to clear votes',
-    VOTERS_LOADED_SUCCESS = '[Room page] Voters loaded successfully',
-    VOTERS_LOADED_FAIL = '[Room page] Voters failed to load',
+    ROOM_PAGE_VOTERS_LOADED_SUCCESS = '[Room page] Voters loaded successfully',
+    ROOM_PAGE_VOTERS_LOADED_FAIL = '[Room page] Voters failed to load',
+    ROOM_PAGE_SET_MY_INFORMATION = '[Room page] Set my voting information',
     SIGNAL_R_CONNECTION_SUCCESS = '[Signal R] Signal R connected successfully',
     SIGNAL_R_CONNECTION_FAIL = '[Signal R] Signal R failed to connect',
     SIGNAL_R_VOTING_UPDATED = '[Signal R] Signal R voting updated event received',
@@ -38,7 +39,7 @@ export const welcomePageJoinRoomClickedAction = createAction(
 
 export const welcomePageJoinRoomSuccessAction = createAction(
     ActionType.WELCOME_PAGE_JOIN_ROOM_SUCCESS,
-    props<{ sessionId: string }>()
+    props<{ createdVoter: Voter }>()
 );
 
 export const storedIdNotFoundInStateAction = createAction(
@@ -109,14 +110,19 @@ export const roomPageClearVotesFailAction = createAction(
     props<{ error: HttpErrorResponse }>()
 );
 
-export const votersLoadedSuccessAction = createAction(
-    ActionType.VOTERS_LOADED_SUCCESS,
+export const roomPageVotersLoadedSuccessAction = createAction(
+    ActionType.ROOM_PAGE_VOTERS_LOADED_SUCCESS,
     props<{ voters: Voter[] }>()
 );
 
-export const votersLoadedFailAction = createAction(
-    ActionType.VOTERS_LOADED_FAIL,
+export const roomPageVotersLoadedFailAction = createAction(
+    ActionType.ROOM_PAGE_VOTERS_LOADED_FAIL,
     props<{ error: HttpErrorResponse }>()
+);
+
+export const roomPageSetMyInformationAction = createAction(
+    ActionType.ROOM_PAGE_SET_MY_INFORMATION,
+    props<{ myInformation: Voter }>()
 );
 
 export const signalRConnectionSuccessAction = createAction(

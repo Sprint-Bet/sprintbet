@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
-import { Action } from '@ngrx/store';
-import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
+import { Action, Store, select } from '@ngrx/store';
+import { mergeMap, map, catchError, switchMap, withLatestFrom } from 'rxjs/operators';
 import { VoteService } from '../services/vote.service';
 import {
     roomPageNavigatedAction,
-    votersLoadedFailAction,
-    votersLoadedSuccessAction,
+    roomPageVotersLoadedFailAction,
+    roomPageVotersLoadedSuccessAction,
     welcomePageJoinRoomClickedAction,
     welcomePageJoinRoomSuccessAction,
     welcomePageJoinRoomFailAction,
@@ -28,6 +28,7 @@ import {
     roomPageClearVotesSuccessAction,
     roomPageClearVotesFailAction,
     signalRVotingUnlockedAction,
+    roomPageSetMyInformationAction,
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -36,6 +37,8 @@ import { Voter } from '../model/dtos/voter';
 import { HubEvents } from '../services/hub-services/hubEvents.enum';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKey } from '@src/app/enums/storage-key.enum';
+import { AppState } from './app.state';
+import { sessionIdSelector } from './app.selectors';
 
 @Injectable()
 export class AppEffects {
@@ -45,13 +48,14 @@ export class AppEffects {
         private voteHubService: VoteHubService,
         private router: Router,
         private localStorageService: LocalStorageService,
+        private store: Store<AppState>,
     ) { }
 
     registerVoters$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageJoinRoomClickedAction),
             mergeMap(action => this.voteService.registerVoter(action.registrationInfo).pipe(
-                map(sessionId => welcomePageJoinRoomSuccessAction({ sessionId })),
+                map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
                 catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
             ))
         )
@@ -60,7 +64,7 @@ export class AppEffects {
     saveIdToLocalStorage$: Observable<void> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageJoinRoomSuccessAction),
-            map(action => this.localStorageService.setItem(StorageKey.SESSION_ID, action.sessionId)),
+            map(action => this.localStorageService.setItem(StorageKey.SESSION_ID, action.createdVoter.id)),
         ),
         { dispatch: false }
     );
@@ -77,9 +81,18 @@ export class AppEffects {
         () => this.actions$.pipe(
             ofType(roomPageNavigatedAction),
             mergeMap(_ => this.voteService.getAllVoters().pipe(
-                map(initialVoters => votersLoadedSuccessAction({ voters: initialVoters })),
-                catchError((error: HttpErrorResponse) => of(votersLoadedFailAction({ error }))),
+                map(initialVoters => roomPageVotersLoadedSuccessAction({ voters: initialVoters })),
+                catchError((error: HttpErrorResponse) => of(roomPageVotersLoadedFailAction({ error }))),
             ))
+        )
+    );
+
+    getMyInformation$: Observable<Action> = createEffect(
+        () => this.actions$.pipe(
+            ofType(roomPageVotersLoadedSuccessAction),
+            withLatestFrom(this.store.pipe(select(sessionIdSelector))),
+            map(([action, sessionId]) => action.voters.find(voter => voter.id === sessionId)),
+            map(myInformation => roomPageSetMyInformationAction({ myInformation }))
         )
     );
 

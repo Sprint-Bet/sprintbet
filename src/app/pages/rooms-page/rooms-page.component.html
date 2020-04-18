@@ -7,7 +7,7 @@
   </app-dealer-controls>
   <app-room-controls
     *ngIf="!(isDealer$ | async)"
-    [sessionId]="sessionId$ | async">
+    [myInformation]="myInformation$ | async">
   </app-room-controls>
   <app-voting-cards *ngIf="isParticipant$ | async"
     [locked]="votingLocked$ | async">
@@ -15,6 +15,6 @@
   <app-voters
     [votingLocked]="votingLocked$ | async"
     [voters]="voters$ | async"
-    [sessionId]="sessionId$ | async">
+    [myInformation]="myInformation$ | async">
   </app-voters>
 </div>

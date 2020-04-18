@@ -1,13 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Voter } from '../model/dtos/voter';
-import { RoleType } from '../enums/role-type.enum';
 
 export interface AppState {
     votingLocked: boolean;
     voters: Voter[];
     loading: boolean;
     error: HttpErrorResponse;
-    role: RoleType;
+    myInformation: Voter;
     sessionId: string;
 }
 
@@ -16,6 +15,6 @@ export const intitialAppState: AppState = {
     voters: null,
     loading: false,
     error: null,
-    role: null,
+    myInformation: null,
     sessionId: null,
 };

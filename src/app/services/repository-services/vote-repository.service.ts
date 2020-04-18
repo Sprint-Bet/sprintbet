@@ -16,11 +16,16 @@ export class VoteRepositoryService {
     private httpClient: HttpClient,
   ) { }
 
-  registerVoter(newVoter: NewVoter): Observable<string> {
+  // registerVoter(newVoter: NewVoter): Observable<string> {
+  //   const url = `${this.baseUrl}/vote/register`;
+  //   return this.httpClient.post(url, newVoter, {
+  //     responseType: 'text',
+  //   });
+  // }
+
+  registerVoter(newVoter: NewVoter): Observable<Voter> {
     const url = `${this.baseUrl}/vote/register`;
-    return this.httpClient.post(url, newVoter, {
-      responseType: 'text',
-    });
+    return this.httpClient.post<Voter>(url, newVoter);
   }
 
   getAllVoters(): Observable<Voter[]> {

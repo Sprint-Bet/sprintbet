@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
 import { roomPageNavigatedAction } from '@src/app/state/app.actions';
-import { votersSelector, sessionIdSelector, roleSelector, votingLockedSelector } from '@src/app/state/app.selectors';
-import { map } from 'rxjs/operators';
+import { votersSelector, votingLockedSelector, myInformationSelector } from '@src/app/state/app.selectors';
+import { map, filter } from 'rxjs/operators';
 import { RoleType } from '@src/app/enums/role-type.enum';
 
 @Component({
@@ -14,16 +14,18 @@ import { RoleType } from '@src/app/enums/role-type.enum';
 export class RoomsPageComponent implements OnInit {
   votingLocked$ = this.store.pipe(select(votingLockedSelector));
   voters$ = this.store.pipe(select(votersSelector));
-  sessionId$ = this.store.pipe(select(sessionIdSelector));
 
-  isDealer$ = this.store.pipe(
-    select(roleSelector),
-    map(role => role === RoleType.DEALER),
+  myInformation$ = this.store.pipe(
+    select(myInformationSelector),
+    filter(myInformation => !!myInformation),
   );
 
-  isParticipant$ = this.store.pipe(
-    select(roleSelector),
-    map(role => role === RoleType.PARTICIPANT),
+  isDealer$ = this.myInformation$.pipe(
+    map(myInformation => +myInformation.role === +RoleType.DEALER),
+  );
+
+  isParticipant$ = this.myInformation$.pipe(
+    map(myInformation => +myInformation.role === +RoleType.PARTICIPANT),
   );
 
   constructor(
@@ -52,6 +54,8 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Add dealer locking controls
 
     // TODO
+    // TODO: Return all voters, not just participants, for now
+
     // TODO: Style the voting card correctly (when revealed)
     // TODO: Add dealer finishing game to the api (starting game comes with the room)
     // TODO: Add dealer finishing game to the api (starting game comes with the room)

@@ -9,8 +9,7 @@ import { Voter } from '@src/app/model/dtos/voter';
 export class VotersComponent implements OnInit {
   @Input() votingLocked: boolean;
   @Input() voters: Voter[];
-  @Input() initialVoters: Voter[];
-  @Input() sessionId: string;
+  @Input() myInformation: Voter;
 
   constructor() { }
 

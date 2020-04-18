@@ -1,7 +1,9 @@
-import { createSelector, createFeatureSelector } from "@ngrx/store";
+import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { AppState } from './app.state';
+import { Voter } from '../model/dtos/voter';
 
 export const appStateSelector = createFeatureSelector<AppState>('appState');
+// export const myInformationStateSelector = createFeatureSelector<AppState, Voter>('myInformation');
 
 export const votersSelector = createSelector(
     appStateSelector,
@@ -18,12 +20,17 @@ export const sessionIdSelector = createSelector(
     state => state.sessionId
 );
 
-export const roleSelector = createSelector(
-    appStateSelector,
-    state => state.role
-);
-
 export const votingLockedSelector = createSelector(
     appStateSelector,
     state => state.votingLocked
 );
+
+export const myInformationSelector = createSelector(
+    appStateSelector,
+    state => state.myInformation
+);
+
+// export const roleSelector = createSelector(
+//     myInformationStateSelector,
+//     myInformation => myInformation.role
+// );

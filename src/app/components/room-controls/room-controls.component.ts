@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AppState } from '@src/app/state/app.state';
 import { Store } from '@ngrx/store';
 import { roomPageLeaveConfirmedAction } from '@src/app/state/app.actions';
+import { Voter } from '@src/app/model/dtos/voter';
 
 @Component({
   selector: 'app-room-controls',
@@ -9,7 +10,7 @@ import { roomPageLeaveConfirmedAction } from '@src/app/state/app.actions';
   styleUrls: ['./room-controls.component.scss']
 })
 export class RoomControlsComponent implements OnInit {
-  @Input() sessionId: string;
+  @Input() myInformation: Voter;
 
   constructor(
     private store: Store<AppState>
@@ -20,7 +21,7 @@ export class RoomControlsComponent implements OnInit {
 
   leaveRoom() {
     if (confirm('Leave room?')) {
-      this.store.dispatch(roomPageLeaveConfirmedAction({ sessionId: this.sessionId }));
+      this.store.dispatch(roomPageLeaveConfirmedAction({ sessionId: this.myInformation.id }));
     }
   }
 }

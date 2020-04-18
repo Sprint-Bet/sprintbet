@@ -3,6 +3,7 @@ import { AppState } from '@src/app/state/app.state';
 import { Store } from '@ngrx/store';
 import { roomPageLockClickedAction, roomPageClearVotesClickedAction } from '@src/app/state/app.actions';
 import { Voter } from '@src/app/model/dtos/voter';
+import { RoleType } from '@src/app/enums/role-type.enum';
 
 @Component({
   selector: 'app-dealer-controls',
@@ -21,7 +22,11 @@ export class DealerControlsComponent implements OnInit {
   }
 
   lockVoting() {
-    if (this.voters.some(voter => !voter.point)) {
+    const haventAllVoted = this.voters
+      .filter(v => +v.role === +RoleType.PARTICIPANT)
+      .some(voter => !voter.point);
+
+    if (haventAllVoted) {
       alert('Not all participants have casted a vote!');
       return;
     }

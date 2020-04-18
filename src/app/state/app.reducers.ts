@@ -1,8 +1,8 @@
 import { AppState } from './app.state';
 import { Action, createReducer, on } from '@ngrx/store';
 import { intitialAppState } from './app.state';
-import { votersLoadedSuccessAction,
-    votersLoadedFailAction,
+import { roomPageVotersLoadedSuccessAction,
+    roomPageVotersLoadedFailAction,
     roomPageNavigatedAction,
     welcomePageJoinRoomClickedAction,
     welcomePageJoinRoomSuccessAction,
@@ -21,15 +21,18 @@ import { votersLoadedSuccessAction,
     signalRVotingUpdatedAction,
     signalRVotingLockedAction,
     signalRVotingUnlockedAction,
+    roomPageSetMyInformationAction,
 } from './app.actions';
-
 
 const appReducer = createReducer(
     intitialAppState,
     on(welcomePageJoinRoomClickedAction,
-        (state, { registrationInfo }): AppState => ({ ...state, loading: true, role: registrationInfo.role })
+        (state): AppState => ({ ...state, loading: true })
     ),
-    on(welcomePageJoinRoomSuccessAction, storedIdNotFoundInStateAction,
+    on(welcomePageJoinRoomSuccessAction,
+        (state, { createdVoter }): AppState => ({ ...state, loading: false, myInformation: createdVoter, error: null })
+    ),
+    on(storedIdNotFoundInStateAction,
         (state, { sessionId }): AppState => ({ ...state, loading: false, sessionId, error: null })
     ),
     on(welcomePageJoinRoomFailAction,
@@ -68,11 +71,14 @@ const appReducer = createReducer(
     on(roomPageClearVotesFailAction,
         (state, { error }): AppState => ({ ...state, loading: false, error })
     ),
-    on(votersLoadedSuccessAction,
+    on(roomPageVotersLoadedSuccessAction,
         (state, { voters }): AppState => ({ ...state, loading: false, voters, error: null })
     ),
-    on(votersLoadedFailAction,
+    on(roomPageVotersLoadedFailAction,
         (state, { error }): AppState => ({ ...state, loading: false, error })
+    ),
+    on(roomPageSetMyInformationAction,
+        (state, { myInformation }): AppState => ({ ...state, myInformation })
     ),
     on(signalRVotingUpdatedAction,
         (state, { updatedVoters }): AppState => ({ ...state, voters: updatedVoters })
