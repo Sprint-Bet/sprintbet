@@ -10,7 +10,7 @@ export interface AppState {
     sessionId: string;
 }
 
-export const intitialAppState: AppState = {
+export const initialAppState: AppState = {
     votingLocked: false,
     voters: null,
     loading: false,

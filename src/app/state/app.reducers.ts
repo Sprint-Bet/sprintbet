@@ -1,6 +1,6 @@
 import { AppState } from './app.state';
 import { Action, createReducer, on } from '@ngrx/store';
-import { intitialAppState } from './app.state';
+import { initialAppState } from './app.state';
 import { roomPageVotersLoadedSuccessAction,
     roomPageVotersLoadedFailAction,
     roomPageNavigatedAction,
@@ -25,7 +25,7 @@ import { roomPageVotersLoadedSuccessAction,
 } from './app.actions';
 
 const appReducer = createReducer(
-    intitialAppState,
+    initialAppState,
     on(welcomePageJoinRoomClickedAction,
         (state): AppState => ({ ...state, loading: true })
     ),
@@ -57,10 +57,10 @@ const appReducer = createReducer(
         (state): AppState => ({ ...state, loading: true })
     ),
     on(roomPageLeaveSuccessAction,
-        (): AppState => (intitialAppState)
+        (): AppState => (initialAppState)
     ),
     on(roomPageLeaveFailAction,
-        (state, { error }): AppState => ({ ...state, loading: false, error })
+        (_, { error }): AppState => ({ ...initialAppState, error })
     ),
     on(roomPageClearVotesClickedAction,
         (state): AppState => ({ ...state, loading: true })
