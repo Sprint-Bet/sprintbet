@@ -13,7 +13,7 @@ import { loadingSelector } from '@src/app/state/app.selectors';
 })
 export class WelcomePageComponent implements OnInit {
   name = '';
-  showGroupField = false;
+  dealerNotSelected = false;
 
   registrationForm = this.formBuilder.group({
     name: ['', Validators.required],
@@ -42,11 +42,11 @@ export class WelcomePageComponent implements OnInit {
   }
 
   roleChange() {
-    this.showGroupField =
+    this.dealerNotSelected =
       this.registrationForm.get('role').value === '0' ||
       this.registrationForm.get('role').value === '1';
 
-    this.showGroupField ?
+    this.dealerNotSelected ?
       this.registrationForm.get('group').setValidators(Validators.required) :
       this.registrationForm.get('group').clearValidators();
 
