@@ -52,17 +52,16 @@ export class RoomsPageComponent implements OnInit {
     // DONE: In room/welcome guard check (with api?) create action/reducer to set sessionId if found only in local storage
     // DONE: Add generic <T> functions to support connection.on() in vote-hub service
     // DONE: Add dealer locking controls
+    // DONE: Return all voters
+    // DONE: Style the voting card correctly (when revealed)
+    // DONE: Once allVotersLoadedSucess, get the voter matching sessionId, set those details in the state
+    // DONE: Need to account for other role/room state information etc in the matchStateIdToStoredId method
 
     // TODO
-    // TODO: Return all voters, not just participants, for now
-
-    // TODO: Style the voting card correctly (when revealed)
     // TODO: Add dealer finishing game to the api (starting game comes with the room)
     // TODO: Add dealer finishing game to the api (starting game comes with the room)
     // TODO: Add 'room name' capability to the API
     // TODO: Change the room route to include room name
-    // TODO: Once allVotersLoadedSucess, get the voter matching sessionId, set those details in the state
-    // TODO: Need to account for other role/room state information etc in the matchStateIdToStoredId method
     // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
     // TODO: Call getVoters() by passing in sessionId as Bearer token
   }
