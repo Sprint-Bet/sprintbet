@@ -63,7 +63,9 @@ export class RoomsPageComponent implements OnInit {
     // TODO: Add 'room name' capability to the API
     // TODO: Change the room route to include room name
     // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
-    // TODO: Call getVoters() by passing in sessionId as Bearer token
+    // TODO: Add 'wakeup' call to to API
+    // TODO: Add 'loadingApi' element that is on form submission && api not woken up
+    // TODO: Push angular codebase to heroku, push asp.net codebase to angular
   }
 
 }
