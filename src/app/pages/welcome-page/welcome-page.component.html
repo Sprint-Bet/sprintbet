@@ -1,16 +1,3 @@
-<!-- <div>
-    <h1>Welcome!</h1>
-    <div class="input-group">
-        <div [ngClass]="{disabled: !name}" class="input-group-prepend">
-            <a [routerLink]="['/rooms']" [queryParams]="{ name: name }"
-                class="btn btn-primary"> [tabindex]="name ? 0 : -1"
-                Join a room!
-            </a>
-        </div>
-        <input class="form-control" placeholder="Enter your name" [(ngModel)]="name">
-    </div>
-</div> -->
-
 <h1>Welcome!</h1>
 <form [formGroup]="registrationForm" (ngSubmit)="onSubmit(registrationForm.value)">
     <div class="form-group">
@@ -29,7 +16,7 @@
     </div>
 
     <div *ngIf="showGroupField" class="form-group">
-        <label for="groupInput">Group</label>
+        <label for="groupInput">Group to join</label>
         <input formControlName="group" type="text" class="form-control" id="groupInput" placeholder="Enter the group id">
     </div>
 

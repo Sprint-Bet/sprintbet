@@ -58,7 +58,7 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Need to account for other role/room state information etc in the matchStateIdToStoredId method
 
     // TODO
-    // TODO: Add dealer finishing game to the api (starting game comes with the room)
+    // TODO: Bug (null voter id) when part partipant leaves group
     // TODO: Add dealer finishing game to the api (starting game comes with the room)
     // TODO: Add 'room name' capability to the API
     // TODO: Change the room route to include room name
