@@ -59,6 +59,7 @@ export class RoomsPageComponent implements OnInit {
 
     // TODO
     // TODO: Bug (null voter id) when part partipant leaves group
+    // TODO: Add a roomService to api, check whether a room with that name exists before creating
     // TODO: Add dealer finishing game to the api (starting game comes with the room)
     // TODO: Add 'room name' capability to the API
     // TODO: Change the room route to include room name
