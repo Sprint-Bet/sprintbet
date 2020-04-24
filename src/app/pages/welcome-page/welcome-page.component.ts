@@ -41,7 +41,11 @@ export class WelcomePageComponent implements OnInit {
     this.store.dispatch(welcomePageJoinRoomClickedAction({registrationInfo}));
   }
 
-  roleChange() {
+  roleChange(tnsPickerIndex?: number) {
+    if (!!tnsPickerIndex) {
+      this.registrationForm.get('role').setValue(tnsPickerIndex.toString());
+    }
+
     this.dealerNotSelected =
       this.registrationForm.get('role').value === '0' ||
       this.registrationForm.get('role').value === '1';

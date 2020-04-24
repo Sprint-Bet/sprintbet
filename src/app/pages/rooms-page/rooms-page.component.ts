@@ -67,6 +67,9 @@ export class RoomsPageComponent implements OnInit {
     // TODO: Add 'wakeup' call to to API
     // TODO: Add 'loadingApi' element that is on form submission && api not woken up
     // TODO: Push angular codebase to heroku, push asp.net codebase to angular
+
+    // TODO:
+    // TODO: Nativescript setup (https://docs.nativescript.org/angular/code-sharing/migrating-a-web-project)
   }
 
 }

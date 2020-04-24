@@ -13,6 +13,8 @@ import { VotersComponent } from '@src/app/components/voters/voters.component';
 import { DealerControlsComponent } from '@src/app/components/dealer-controls/dealer-controls.component';
 import { RoomControlsComponent } from '@src/app/components/room-controls/room-controls.component';
 
+import { NativeScriptFormsModule } from 'nativescript-angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
 // import { NativeScriptFormsModule } from 'nativescript-angular/forms';
@@ -36,6 +38,8 @@ import { RoomControlsComponent } from '@src/app/components/room-controls/room-co
   imports: [
     NativeScriptModule,
     AppRoutingModule,
+    NativeScriptFormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
