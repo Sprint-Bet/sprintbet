@@ -15,8 +15,8 @@
         </select>
     </div>
 
-    <div *ngIf="dealerNotSelected" class="form-group">
-        <label for="groupInput">Group to join</label>
+    <div *ngIf="registrationForm.get('role').valid" class="form-group">
+        <label for="groupInput">{{ dealerNotSelected ? 'Group to join' : 'New group name' }}</label>
         <input formControlName="group" type="text" class="form-control" id="groupInput" placeholder="Enter the group id">
     </div>
 

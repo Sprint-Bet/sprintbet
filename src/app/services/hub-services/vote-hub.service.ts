@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class VoteHubService {
-  private connection: HubConnection;
+  connection: HubConnection;
   private baseUrl: string;
 
   constructor() {

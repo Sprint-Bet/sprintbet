@@ -29,6 +29,9 @@ import {
     roomPageClearVotesFailAction,
     signalRVotingUnlockedAction,
     roomPageSetMyInformationAction,
+    welcomePageCreateRoomClickedAction,
+    welcomePageCreateRoomSuccessAction,
+    welcomePageCreateRoomFailAction,
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -57,6 +60,16 @@ export class AppEffects {
             mergeMap(action => this.voteService.registerVoter(action.registrationInfo).pipe(
                 map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
                 catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
+            ))
+        )
+    );
+
+    createRoom$: Observable<Action> = createEffect(
+        () => this.actions$.pipe(
+            ofType(welcomePageCreateRoomClickedAction),
+            mergeMap(action => this.voteService.createRoom(action.roomName).pipe(
+                map(createdRoom => welcomePageCreateRoomSuccessAction({ createdRoom })),
+                catchError((error: HttpErrorResponse) => of(welcomePageCreateRoomFailAction({ error }))),
             ))
         )
     );

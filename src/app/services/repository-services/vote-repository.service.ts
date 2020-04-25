@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { NewVoter } from '../../model/dtos/new-voter';
 import { Voter } from '../../model/dtos/voter';
 import { Vote } from '@src/app/model/dtos/vote';
+import { VoteHubService } from '../hub-services/vote-hub.service';
+import { Room } from '@src/app/model/dtos/room';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,7 @@ export class VoteRepositoryService {
 
   constructor(
     private httpClient: HttpClient,
+    private voteHubService: VoteHubService,
   ) { }
 
   registerVoter(newVoter: NewVoter): Observable<Voter> {
@@ -36,13 +39,19 @@ export class VoteRepositoryService {
     return this.httpClient.delete(url, { observe: 'response' });
   }
 
+  createRoom(name: string): Observable<Room> {
+    const url = `${this.baseUrl}/rooms/create`;
+    const connectionId = this.voteHubService.connection.connectionId;
+    return this.httpClient.post<Room>(url, { name, connectionId });
+  }
+
   lockVoting(): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/dealer/lock`;
+    const url = `${this.baseUrl}/rooms/lock`;
     return this.httpClient.post(url, {}, { observe: 'response' });
   }
 
   clearVotes(): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/dealer/clear`;
+    const url = `${this.baseUrl}/rooms/clear`;
     return this.httpClient.post(url, {}, { observe: 'response' });
   }
 }

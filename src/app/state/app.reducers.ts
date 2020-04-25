@@ -22,6 +22,9 @@ import { roomPageVotersLoadedSuccessAction,
     signalRVotingLockedAction,
     signalRVotingUnlockedAction,
     roomPageSetMyInformationAction,
+    welcomePageCreateRoomClickedAction,
+    welcomePageCreateRoomSuccessAction,
+    welcomePageCreateRoomFailAction,
 } from './app.actions';
 
 const appReducer = createReducer(
@@ -32,12 +35,24 @@ const appReducer = createReducer(
     on(welcomePageJoinRoomSuccessAction,
         (state, { createdVoter }): AppState => ({ ...state, loading: false, myInformation: createdVoter, error: null })
     ),
-    on(storedIdNotFoundInStateAction,
-        (state, { sessionId }): AppState => ({ ...state, loading: false, sessionId, error: null })
-    ),
     on(welcomePageJoinRoomFailAction,
         (state, { error }): AppState => ({ ...state, loading: false, error })
     ),
+
+    on(welcomePageCreateRoomClickedAction,
+        (state): AppState => ({ ...state, loading: true })
+    ),
+    on(welcomePageCreateRoomSuccessAction,
+        (state, { createdRoom }): AppState => ({ ...state, loading: false, room: createdRoom, error: null })
+    ),
+    on(welcomePageCreateRoomFailAction,
+        (state, { error }): AppState => ({ ...state, loading: false, error })
+    ),
+
+    on(storedIdNotFoundInStateAction,
+        (state, { sessionId }): AppState => ({ ...state, loading: false, sessionId, error: null })
+    ),
+
     on(roomPageNavigatedAction,
         (state): AppState => ({ ...state, loading: true })
     ),
@@ -80,6 +95,7 @@ const appReducer = createReducer(
     on(roomPageSetMyInformationAction,
         (state, { myInformation }): AppState => ({ ...state, myInformation })
     ),
+
     on(signalRVotingUpdatedAction,
         (state, { updatedVoters }): AppState => ({ ...state, voters: updatedVoters })
     ),

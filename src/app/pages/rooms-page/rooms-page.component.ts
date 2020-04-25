@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
 import { roomPageNavigatedAction } from '@src/app/state/app.actions';
-import { votersSelector, votingLockedSelector, myInformationSelector } from '@src/app/state/app.selectors';
+import { votersSelector, votingLockedSelector, myInformationSelector, roomSelector } from '@src/app/state/app.selectors';
 import { map, filter } from 'rxjs/operators';
 import { RoleType } from '@src/app/enums/role-type.enum';
 
@@ -14,6 +14,7 @@ import { RoleType } from '@src/app/enums/role-type.enum';
 export class RoomsPageComponent implements OnInit {
   votingLocked$ = this.store.pipe(select(votingLockedSelector));
   voters$ = this.store.pipe(select(votersSelector));
+  room$ = this.store.pipe(select(roomSelector));
 
   myInformation$ = this.store.pipe(
     select(myInformationSelector),

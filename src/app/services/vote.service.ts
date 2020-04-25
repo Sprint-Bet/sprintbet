@@ -9,6 +9,7 @@ import { AppState } from '../state/app.state';
 import { sessionIdSelector } from '../state/app.selectors';
 import { Vote } from '../model/dtos/vote';
 import { HttpResponse } from '@angular/common/http';
+import { Room } from '../model/dtos/room';
 
 @Injectable({
   providedIn: 'root'
@@ -24,11 +25,16 @@ export class VoteService {
    * Registers a new voter with a post request, returns sessionId token
    * @param newVoter voter info used for setup
    */
-  // registerVoter(newVoter: NewVoter): Observable<string> {
-  //   return this.voteRepositoryService.registerVoter(newVoter);
-  // }
   registerVoter(newVoter: NewVoter): Observable<Voter> {
     return this.voteRepositoryService.registerVoter(newVoter);
+  }
+
+  /**
+   * Creates a new room
+   * @param roomName room info used for setup
+   */
+  createRoom(roomName: string): Observable<Room> {
+    return this.voteRepositoryService.createRoom(roomName);
   }
 
   /**

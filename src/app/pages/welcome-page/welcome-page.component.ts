@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NewVoter } from '@src/app/model/dtos/new-voter';
 import { AppState } from '@src/app/state/app.state';
 import { Store, select } from '@ngrx/store';
-import { welcomePageJoinRoomClickedAction } from '@src/app/state/app.actions';
+import { welcomePageJoinRoomClickedAction, welcomePageCreateRoomClickedAction } from '@src/app/state/app.actions';
 import { loadingSelector } from '@src/app/state/app.selectors';
 
 @Component({
@@ -18,7 +18,7 @@ export class WelcomePageComponent implements OnInit {
   registrationForm = this.formBuilder.group({
     name: ['', Validators.required],
     role: ['', Validators.required],
-    group: '',
+    group: ['', Validators.required],
   });
 
   loading$ = this.store.pipe(select(loadingSelector));
@@ -32,13 +32,12 @@ export class WelcomePageComponent implements OnInit {
   }
 
   onSubmit(form: FormGroup) {
-    const registrationInfo: NewVoter = {
-      name: form['name'],
-      role: form['role'],
-      group: form['group'],
-    };
+    if (this.dealerNotSelected) {
+      this.registerVoter(form);
+      return;
+    }
 
-    this.store.dispatch(welcomePageJoinRoomClickedAction({registrationInfo}));
+    this.store.dispatch(welcomePageCreateRoomClickedAction({ roomName: form['group']}));
   }
 
   roleChange(tnsPickerIndex?: number) {
@@ -49,12 +48,16 @@ export class WelcomePageComponent implements OnInit {
     this.dealerNotSelected =
       this.registrationForm.get('role').value === '0' ||
       this.registrationForm.get('role').value === '1';
+  }
 
-    this.dealerNotSelected ?
-      this.registrationForm.get('group').setValidators(Validators.required) :
-      this.registrationForm.get('group').clearValidators();
+  registerVoter(form: FormGroup) {
+    const registrationInfo: NewVoter = {
+      name: form['name'],
+      role: form['role'],
+      group: form['group'],
+    };
 
-    this.registrationForm.get('group').updateValueAndValidity();
+    this.store.dispatch(welcomePageJoinRoomClickedAction({registrationInfo}));
   }
 
 }
