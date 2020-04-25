@@ -1,20 +1,20 @@
 <div>
-  <h1>Rooms page</h1>
-  <h2>{{name}}</h2>
-  <app-voting-cards [locked]="votingLocked$ | async"></app-voting-cards>
-  <div *ngIf="(initialVoters$ | async) as initialVoters else loadingVoters" class="voters-container">
-
-    <ng-container *ngIf="(voters$ | async) as voters;">
-      <div *ngFor="let voter of voters | keyvalue" class="mr-2 mb-2 voter">
-        <span class="mr-2 name">{{voter.value.name}}</span>
-        <div class="card point-card locked"
-          [ngClass]="{'locked': votingLocked$ | async, 'voted': !(votingLocked$ | async) && voter.value.point}">
-          <span *ngIf="!(votingLocked$ | async) && voter.value.point">✓</span>
-          <span *ngIf="votingLocked$ | async">{{voter.value.point}}</span>
-        </div>
-      </div>
-    </ng-container>
-
-  </div>
-  <ng-template #loadingVoters>Loading voters...</ng-template>
+  <h1>Room: GROUP_NAME</h1>
+  <app-dealer-controls
+    *ngIf="isDealer$ | async"
+    [voters]="voters$ | async"
+    [votingLocked]="votingLocked$ | async">
+  </app-dealer-controls>
+  <app-room-controls
+    *ngIf="!(isDealer$ | async)"
+    [myInformation]="myInformation$ | async">
+  </app-room-controls>
+  <app-voting-cards *ngIf="isParticipant$ | async"
+    [locked]="votingLocked$ | async">
+  </app-voting-cards>
+  <app-voters
+    [votingLocked]="votingLocked$ | async"
+    [voters]="voters$ | async"
+    [myInformation]="myInformation$ | async">
+  </app-voters>
 </div>

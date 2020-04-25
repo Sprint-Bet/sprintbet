@@ -1,0 +1,13 @@
+<div class="mb-3">
+    <button class="btn btn-primary"
+        (click)="lockVoting()"
+        [disabled]="votingLocked">
+        Lock voting
+    </button>
+    <button class="btn btn-primary ml-2"
+        (click)="clearVotes()"
+        [disabled]="!votingLocked">
+        Clear votes
+    </button>
+    <button class="btn btn-primary ml-2">Finish game</button>
+</div>

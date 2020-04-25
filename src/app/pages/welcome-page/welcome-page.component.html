@@ -1,12 +1,33 @@
-<div>
-    <h1>Welcome!</h1>
-    <div class="input-group">
-        <div [ngClass]="{disabled: !name}" class="input-group-prepend">
-            <a [routerLink]="['/rooms']" [tabindex]="name ? 0 : -1" [queryParams]="{ name: name }"
-                class="btn btn-primary">
-                Join a room!
-            </a>
-        </div>
-        <input class="form-control" placeholder="Enter your name" [(ngModel)]="name">
+<h1>Welcome!</h1>
+<form [formGroup]="registrationForm" (ngSubmit)="onSubmit(registrationForm.value)">
+    <div class="form-group">
+        <label for="nameInput">Name</label>
+        <input formControlName="name" type="text" class="form-control" id="nameInput" placeholder="Enter your name">
     </div>
-</div>
+
+    <div class="form-group">
+        <label for="roleInput">Role</label>
+        <select formControlName="role" class="form-control" id="roleInput" (change)="roleChange()">
+            <option disabled selected value="">Select your role</option>
+            <option value="0">Participant</option>
+            <option value="1">Spectator</option>
+            <option value="2">Dealer</option>
+        </select>
+    </div>
+
+    <div *ngIf="dealerNotSelected" class="form-group">
+        <label for="groupInput">Group to join</label>
+        <input formControlName="group" type="text" class="form-control" id="groupInput" placeholder="Enter the group id">
+    </div>
+
+    <div class="form-group d-flex mt-4"
+        [ngClass]="{'disabled': registrationForm.invalid || (loading$ | async)}">
+        <button type="submit" class="btn btn-primary" [disabled]="registrationForm.invalid || (loading$ | async)">
+            <span *ngIf="dealerNotSelected">Join the game!</span>
+            <span *ngIf="!dealerNotSelected">Start a new game!</span>
+        </button>
+        <div *ngIf="(loading$ | async)" class="spinner-border ml-2" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</form>

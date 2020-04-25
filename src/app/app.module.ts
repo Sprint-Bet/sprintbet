@@ -1,6 +1,6 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from '@src/app/app-routing.module';
@@ -11,6 +11,15 @@ import { NavbarComponent } from '@src/app/components/navbar/navbar.component';
 import { PageNotFoundComponent } from '@src/app/components/page-not-found/page-not-found.component';
 import { RoomsPageComponent } from '@src/app/pages/rooms-page/rooms-page.component';
 import { VotingCardsComponent } from '@src/app/components/voting-cards/voting-cards.component';
+import { VotersComponent } from '@src/app/components/voters/voters.component';
+import { StoreModule } from '@ngrx/store';
+import { reducer } from '@src/app/state/app.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from '@src/app/state/app.effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '@src/environments/environment';
+import { DealerControlsComponent } from '@src/app/components/dealer-controls/dealer-controls.component';
+import { RoomControlsComponent } from '@src/app/components/room-controls/room-controls.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +30,25 @@ import { VotingCardsComponent } from '@src/app/components/voting-cards/voting-ca
     PageNotFoundComponent,
     RoomsPageComponent,
     VotingCardsComponent,
+    VotersComponent,
+    DealerControlsComponent,
+    RoomControlsComponent,
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    StoreModule.forRoot({ appState : reducer }),
+    EffectsModule.forRoot([AppEffects]),
+    // Hopefully this is fixed now...
+    // https://github.com/ngrx/platform/issues/1054
+    StoreDevtoolsModule.instrument({
+      name: 'Planning poker Devtools',
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [
     Title

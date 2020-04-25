@@ -1,1 +1,23 @@
-<Button text="auto-generated works!" class="btn btn-primary"></Button>
+<ActionBar title="Welcome!"></ActionBar>
+
+<ScrollView orientation="vertical">
+    <FlexboxLayout class="container">
+        <StackLayout [formGroup]="registrationForm">
+            <Label text="Name"></Label>
+            <TextField formControlName="name" hint="Enter your name" autocorrect="false" autocapitalizationType="words">
+            </TextField>
+            <StackLayout class="role-container">
+                <Label text="Role"></Label>
+                <ListPicker #rolePicker formControlName="role" [items]="['Participant', 'Spectator', 'Dealer']"
+                    (selectedIndexChange)="roleChange(rolePicker.selectedIndex)">
+                </ListPicker>
+            </StackLayout>
+            <Label text="Room">
+            </Label>
+            <TextField formControlName="group" hint="Enter room to join" autocorrect="false">
+            </TextField>
+            <Button [isEnabled]="registrationForm.valid" (tap)="onSubmit(registrationForm.value)" text="Join a room!">
+            </Button>
+        </StackLayout>
+    </FlexboxLayout>
+</ScrollView>
