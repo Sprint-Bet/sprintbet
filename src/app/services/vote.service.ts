@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, filter } from 'rxjs/operators';
 import { Voter } from '../model/dtos/voter';
 import { NewVoter } from '../model/dtos/new-voter';
 import { VoteRepositoryService } from './repository-services/vote-repository.service';
@@ -45,6 +45,7 @@ export class VoteService {
   castVote(vote: Vote): Observable<HttpResponse<any>> {
     return this.store.pipe(
       select(sessionIdSelector),
+      filter(sessionId => !!sessionId),
       switchMap(sessionId => this.voteRepositoryService.castVote(sessionId, vote)),
     );
   }
