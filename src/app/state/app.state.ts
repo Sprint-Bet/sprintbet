@@ -1,9 +1,20 @@
+import { HttpErrorResponse } from '@angular/common/http';
+import { Voter } from '../model/dtos/voter';
+
 export interface AppState {
     votingLocked: boolean;
-    voters: { Voter };
+    voters: Voter[];
+    loading: boolean;
+    error: HttpErrorResponse;
+    myInformation: Voter;
+    sessionId: string;
 }
 
-export const intitialState = {
+export const initialAppState: AppState = {
     votingLocked: false,
-    voters: {},
+    voters: null,
+    loading: false,
+    error: null,
+    myInformation: null,
+    sessionId: null,
 };

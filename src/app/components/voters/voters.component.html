@@ -1,15 +1,14 @@
-<div *ngIf="initialVoters else loadingVoters" class="voters-container">
-
+<div class="voters-container">
     <ng-container *ngIf="voters">
-        <div *ngFor="let voter of voters | keyvalue" class="mr-2 mb-2 voter">
-            <span class="mr-2 name">{{voter.value.name}}</span>
-            <div class="card point-card locked"
-                [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && voter.value.point}">
-                <span *ngIf="!votingLocked && voter.value.point">✓</span>
-                <span *ngIf="votingLocked">{{voter.value.point}}</span>
+        <div *ngFor="let voter of voters" class="mr-2 mb-2 voter">
+            <span class="mr-2 name">{{voter.name}}</span>
+            <span class="mr-2" *ngIf="voter.id === myInformation?.id">(me)</span>
+            <div *ngIf="voter.role.toString() === '0'" 
+                class="d-flex flex-row align-items-center justify-content-center card point-card locked"
+                [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && voter.point}">
+                <span *ngIf="!votingLocked && voter.point">✓</span>
+                <span *ngIf="votingLocked">{{voter.point}}</span>
             </div>
         </div>
     </ng-container>
-
 </div>
-<ng-template #loadingVoters>Loading voters...</ng-template>

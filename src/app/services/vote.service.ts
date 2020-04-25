@@ -1,104 +1,75 @@
 import { Injectable } from '@angular/core';
-import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { Observable, fromEvent, from, of } from 'rxjs';
-import { environment } from '@src/environments/environment';
-import { switchMap, catchError, tap } from 'rxjs/operators';
-import { HubMethods } from '@src/app/model/enums/hubMethods.enum';
-import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { switchMap, filter } from 'rxjs/operators';
+import { Voter } from '../model/dtos/voter';
+import { NewVoter } from '../model/dtos/new-voter';
+import { VoteRepositoryService } from './repository-services/vote-repository.service';
+import { Store, select } from '@ngrx/store';
+import { AppState } from '../state/app.state';
+import { sessionIdSelector } from '../state/app.selectors';
+import { Vote } from '../model/dtos/vote';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VoteService {
-  private name = this.route.snapshot.queryParams.name;
-  private _connection: HubConnection;
-  private baseUrl: string;
-  private connectionId: string;
-
-  get connection(): HubConnection {
-    if (!this._connection) {
-      this._connection = this.signalRSetup();
-    }
-    return this._connection;
-  }
-  set connection(connection: HubConnection) {
-    this._connection = connection;
-  }
 
   constructor(
-    private route: ActivatedRoute,
+    private voteRepositoryService: VoteRepositoryService,
+    private store: Store<AppState>,
   ) { }
 
   /**
-   * Create the Signal R Hub connection
+   * Registers a new voter with a post request, returns sessionId token
+   * @param newVoter voter info used for setup
    */
-  signalRSetup(): HubConnection {
-    const isMac = window.navigator.platform.includes('Mac');
-    this.baseUrl = isMac
-      ? environment.apiUrl.mac
-      : environment.apiUrl.windows;
-
-    const connection = new HubConnectionBuilder()
-      .withUrl(`${this.baseUrl}/notify`)
-      .configureLogging(LogLevel.Critical)
-      .build();
-
-    return connection;
+  // registerVoter(newVoter: NewVoter): Observable<string> {
+  //   return this.voteRepositoryService.registerVoter(newVoter);
+  // }
+  registerVoter(newVoter: NewVoter): Observable<Voter> {
+    return this.voteRepositoryService.registerVoter(newVoter);
   }
 
   /**
-   * Adds voter to the room, setups up removing player on disconnect
-   * @param name The user's name supplied on the welcome page
-   * @returns The other voters as observable of the dictionary of voters
+   * Gets all voters from the voter repository
    */
-  setupVoter(name: string): Observable<{ Voter }> {
-    this.connection.onreconnecting(_ => console.log('Reconnecting...'));
-    this.connection.onreconnected(id => console.log(`Reconnected: ${id}`));
-    this.connection.onclose(error => {
-      this.send(HubMethods.RemoveVoter, this.connectionId);
-      if (error) {
-        console.error(error);
-      }
-    });
+  getAllVoters(): Observable<Voter[]> {
+    return this.voteRepositoryService.getAllVoters();
+  }
 
-    const startConnection$ = from(this.connection.start()).pipe(
-      tap(_ => this.connectionId = this.connection.connectionId),
-    );
-
-    return startConnection$.pipe(
-      switchMap(_ => this.invoke<{ Voter }>(HubMethods.SetupVoter, this.name)),
+  /**
+   * Casts a vote using the current session ID from the state
+   * @param vote Vote from the vote card clicked
+   */
+  castVote(vote: Vote): Observable<HttpResponse<any>> {
+    return this.store.pipe(
+      select(sessionIdSelector),
+      filter(sessionId => !!sessionId),
+      switchMap(sessionId => this.voteRepositoryService.castVote(sessionId, vote)),
     );
   }
 
   /**
-   * Sets up observable to return whatever is requested from signal R Hub
-   * @param eventName Name of SignalR Hub event to listen for
-   * @returns The return object but as an observable
+   * Leave the current game / room
+   * @param sessionId id of the voter to remove from room
    */
-  listenFor<T>(eventName: string): Observable<T> {
-    return fromEvent(this.connection, eventName);
+  leaveRoom(sessionId: string): Observable<HttpResponse<any>> {
+    return this.voteRepositoryService.leaveRoom(sessionId);
   }
 
   /**
-   * Calls a method on the hub (doesn't wait for response)
-   * @param methodName The name of the hub method to call
-   * @param args The arguements to be passed to the hub method
+   * Dealer locks voting
    */
-  send(methodName: string, args: any) {
-    this.connection.send(methodName, args);
+  lockVoting(): Observable<HttpResponse<any>> {
+    return this.voteRepositoryService.lockVoting();
   }
 
   /**
-   * Calls a method on the hub and waits for response
-   * @param methodName The name of the hub method to call
-   * @param args The arguments to be passed to the hub method
+   * Dealer clears votes
    */
-  invoke<T>(methodName: string, args: any): Observable<T> {
-    return from(this.connection.invoke(methodName, args)).pipe(
-      catchError(error => {
-        console.error(error.toString());
-        return of(null);
-      }),
-    );
+  clearVotes(): Observable<HttpResponse<any>> {
+    return this.voteRepositoryService.clearVotes();
   }
+
 }

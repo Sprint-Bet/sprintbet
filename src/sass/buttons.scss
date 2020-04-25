@@ -4,6 +4,7 @@
 .btn-primary {
   background-color: $primary;
   border-color: $primary;
+  color: $primary-text;
 
   &:hover {
     background-color: shade($primary, $shade-modifier);
@@ -14,4 +15,12 @@
     background-color: $primary;
     border-color: $primary;
   }
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  cursor: not-allowed;
+
+  background-color: tint($primary, $tint-modifier);
+  border-color: tint($primary, $tint-modifier);
+  pointer-events: none;
 }

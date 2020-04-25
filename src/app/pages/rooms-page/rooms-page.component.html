@@ -1,12 +1,20 @@
 <div>
-  <h1>Rooms page</h1>
-  <h2>{{name}}</h2>
-  <app-voting-cards
+  <h1>Room: GROUP_NAME</h1>
+  <app-dealer-controls
+    *ngIf="isDealer$ | async"
+    [voters]="voters$ | async"
+    [votingLocked]="votingLocked$ | async">
+  </app-dealer-controls>
+  <app-room-controls
+    *ngIf="!(isDealer$ | async)"
+    [myInformation]="myInformation$ | async">
+  </app-room-controls>
+  <app-voting-cards *ngIf="isParticipant$ | async"
     [locked]="votingLocked$ | async">
   </app-voting-cards>
   <app-voters
     [votingLocked]="votingLocked$ | async"
-    [initialVoters]="initialVoters$ | async"
-    [voters]="voters$ | async">
+    [voters]="voters$ | async"
+    [myInformation]="myInformation$ | async">
   </app-voters>
 </div>

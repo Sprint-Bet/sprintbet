@@ -1,1 +1,29 @@
-/* Add mobile styles for the component here.  */
+@import '../../sass/variables.scss';
+
+ScrollView {
+    margin: 32 0;
+}
+
+FlexboxLayout.container {
+    justify-content: center;
+    align-items: center;
+}
+
+Label {
+    margin: 16;
+    font-size: 16;
+}
+
+StackLayout {
+    width: 300;
+    background-color: #ffffff;
+}
+
+StackLayout.role-container {
+    ListPicker {
+        margin: 16;
+        margin-top: 0;
+        border-width: 4;
+        border-color: $primary;
+    }
+}
