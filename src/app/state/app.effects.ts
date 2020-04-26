@@ -75,7 +75,7 @@ export class AppEffects {
         )
     );
 
-    registerVoters$: Observable<Action> = createEffect(
+    registerVoter$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageJoinRoomClickedAction),
             mergeMap(action => this.voteService.registerVoter(action.registrationInfo).pipe(
@@ -96,7 +96,7 @@ export class AppEffects {
     routeToRoomPage$: Observable<boolean> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageJoinRoomSuccessAction),
-            switchMap(() => this.router.navigate(['rooms'], { queryParams: { name: 'GROUP_NAME' } })),
+            switchMap(action => this.router.navigate(['rooms'], { queryParams: { id: action.createdVoter.room.id } })),
         ),
         { dispatch: false }
     );
@@ -104,7 +104,7 @@ export class AppEffects {
     getVoters$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(roomPageNavigatedAction),
-            mergeMap(_ => this.voteService.getAllVoters().pipe(
+            mergeMap(_ => this.voteService.getVoters().pipe(
                 map(initialVoters => roomPageVotersLoadedSuccessAction({ voters: initialVoters })),
                 catchError((error: HttpErrorResponse) => of(roomPageVotersLoadedFailAction({ error }))),
             ))
@@ -120,25 +120,25 @@ export class AppEffects {
         )
     );
 
-    updateVoters$: Observable<Action> = createEffect(
+    listenForVoterUpdates$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
-            ofType(roomPageNavigatedAction),
+            ofType(roomPageVotersLoadedSuccessAction),
             switchMap(() => this.voteHubService.listenFor<Voter[]>(HubEvents.VotingUpdated)),
             map(updatedVoters => signalRVotingUpdatedAction({ updatedVoters })),
         )
     );
 
-    updateVotingLocked$: Observable<Action> = createEffect(
+    listenForVotingLocked$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
-            ofType(roomPageNavigatedAction),
+            ofType(roomPageVotersLoadedSuccessAction),
             switchMap(() => this.voteHubService.listenFor(HubEvents.VotingLocked)),
             map(() => signalRVotingLockedAction()),
         )
     );
 
-    updateVotingUnlocked$: Observable<Action> = createEffect(
+    listenForVotingUnlocked$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
-            ofType(roomPageNavigatedAction),
+            ofType(roomPageVotersLoadedSuccessAction),
             switchMap(() => this.voteHubService.listenFor(HubEvents.VotingUnlocked)),
             map(() => signalRVotingUnlockedAction()),
         )
@@ -180,6 +180,9 @@ export class AppEffects {
         { dispatch: false }
     );
 
+    /**
+     * Dealer actions
+     */
     lockVoting$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(roomPageLockClickedAction),

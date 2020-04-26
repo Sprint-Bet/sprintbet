@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { NewVoter } from '../../model/dtos/new-voter';
 import { Voter } from '../../model/dtos/voter';
 import { Vote } from '@src/app/model/dtos/vote';
-import { VoteHubService } from '../hub-services/vote-hub.service';
 import { Room } from '@src/app/model/dtos/room';
 
 @Injectable({
@@ -16,19 +15,16 @@ export class VoteRepositoryService {
 
   constructor(
     private httpClient: HttpClient,
-    private voteHubService: VoteHubService,
   ) { }
 
-  registerVoter(newVoter: NewVoter): Observable<Voter> {
+  registerVoter(newVoter: NewVoter, connectionId: string): Observable<Voter> {
     const url = `${this.baseUrl}/vote/register`;
-    const body = { ...newVoter, connectionId: this.voteHubService.connection.connectionId};
-    debugger;
-    return this.httpClient.post<Voter>(url, body);
+    return this.httpClient.post<Voter>(url, { ...newVoter, connectionId});
   }
 
-  getAllVoters(): Observable<Voter[]> {
+  getVotersForRoom(roomId: string): Observable<Voter[]> {
     const url = `${this.baseUrl}/vote/voters`;
-    return this.httpClient.get<Voter[]>(url);
+    return this.httpClient.get<Voter[]>(url, { params: { roomId } });
   }
 
   castVote(voterId: string, vote: Vote): Observable<HttpResponse<any>> {
@@ -41,9 +37,8 @@ export class VoteRepositoryService {
     return this.httpClient.delete(url, { observe: 'response' });
   }
 
-  createRoom(name: string): Observable<Room> {
+  createRoom(name: string, connectionId): Observable<Room> {
     const url = `${this.baseUrl}/rooms/create`;
-    const connectionId = this.voteHubService.connection.connectionId;
     return this.httpClient.post<Room>(url, { name, connectionId });
   }
 

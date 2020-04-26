@@ -4,6 +4,7 @@ import { AppState } from '@src/app/state/app.state';
 import { votersSelector, votingLockedSelector, myInformationSelector, roomSelector } from '@src/app/state/app.selectors';
 import { map, filter } from 'rxjs/operators';
 import { RoleType } from '@src/app/enums/role-type.enum';
+import { roomPageNavigatedAction } from '@src/app/state/app.actions';
 
 @Component({
   selector: 'app-rooms-page',
@@ -33,6 +34,8 @@ export class RoomsPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.store.dispatch(roomPageNavigatedAction());
+
     // DONE
     // DONE: Make setup voter endpoint store and then return sessionId (guid)
     // DONE: Add 'room name' field to the form
@@ -55,15 +58,16 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Once allVotersLoadedSucess, get the voter matching sessionId, set those details in the state
     // DONE: Need to account for other role/room state information etc in the matchStateIdToStoredId method
     // DONE: Nativescript setup (https://docs.nativescript.org/angular/code-sharing/migrating-a-web-project)
+    // DONE: Bug (null voter id) when part partipant leaves group
+    // DONE: Get voters by room id
+    // DONE: Get listenFor working for dealer
+    // DONE: Add a roomService to api, check whether a room with that name exists before creating
+    // DONE: Add 'room name' (id) capability to the API
+    // DONE: Change the room route to include room name (id)
 
     // TODO
-    // TODO: Get voters by room id
-    // TODO: Get listenFor working for dealer
-    // TODO: Bug (null voter id) when part partipant leaves group
-    // TODO: Add a roomService to api, check whether a room with that name exists before creating
+    // TODO: refactor 'castVote' AND OTHER METHODS to update hub client only for their group
     // TODO: Add dealer finishing game to the api (starting game comes with the room)
-    // TODO: Add 'room name' capability to the API
-    // TODO: Change the room route to include room name
     // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
     // TODO: Add 'wakeup' call to to API
     // TODO: Add 'loadingApi' element that is on form submission && api not woken up

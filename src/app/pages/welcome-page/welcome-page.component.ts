@@ -26,7 +26,9 @@ export class WelcomePageComponent implements OnInit {
   room$ = this.store.pipe(
     select(roomSelector),
     filter(room => !!room),
-    tap(room => this.registrationForm.get('group').setValue(room.id)),
+    tap(room => {
+      this.registrationForm.get('group').setValue(room.id);
+    }),
   );
 
   constructor(

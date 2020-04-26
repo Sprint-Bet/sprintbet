@@ -6,10 +6,11 @@ import { NewVoter } from '../model/dtos/new-voter';
 import { VoteRepositoryService } from './repository-services/vote-repository.service';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../state/app.state';
-import { sessionIdSelector } from '../state/app.selectors';
+import { sessionIdSelector, roomSelector } from '../state/app.selectors';
 import { Vote } from '../model/dtos/vote';
 import { HttpResponse } from '@angular/common/http';
 import { Room } from '../model/dtos/room';
+import { VoteHubService } from './hub-services/vote-hub.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class VoteService {
   constructor(
     private voteRepositoryService: VoteRepositoryService,
     private store: Store<AppState>,
+    private voteHubService: VoteHubService,
   ) { }
 
   /**
@@ -26,7 +28,8 @@ export class VoteService {
    * @param newVoter voter info used for setup
    */
   registerVoter(newVoter: NewVoter): Observable<Voter> {
-    return this.voteRepositoryService.registerVoter(newVoter);
+    const connectionId = this.voteHubService.connection.connectionId;
+    return this.voteRepositoryService.registerVoter(newVoter, connectionId);
   }
 
   /**
@@ -34,14 +37,18 @@ export class VoteService {
    * @param roomName room info used for setup
    */
   createRoom(roomName: string): Observable<Room> {
-    return this.voteRepositoryService.createRoom(roomName);
+    const connectionId = this.voteHubService.connection.connectionId;
+    return this.voteRepositoryService.createRoom(roomName, connectionId);
   }
 
   /**
-   * Gets all voters from the voter repository
+   * Gets voters from the voter repository for the current room
    */
-  getAllVoters(): Observable<Voter[]> {
-    return this.voteRepositoryService.getAllVoters();
+  getVoters(): Observable<Voter[]> {
+    return this.store.pipe(
+      select(roomSelector),
+      switchMap(room => this.voteRepositoryService.getVotersForRoom(room.id)),
+    );
   }
 
   /**
