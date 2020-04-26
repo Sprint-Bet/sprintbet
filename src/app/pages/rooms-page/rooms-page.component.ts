@@ -54,6 +54,7 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Style the voting card correctly (when revealed)
     // DONE: Once allVotersLoadedSucess, get the voter matching sessionId, set those details in the state
     // DONE: Need to account for other role/room state information etc in the matchStateIdToStoredId method
+    // DONE: Nativescript setup (https://docs.nativescript.org/angular/code-sharing/migrating-a-web-project)
 
     // TODO
     // TODO: Get voters by room id
@@ -69,7 +70,9 @@ export class RoomsPageComponent implements OnInit {
     // TODO: Push angular codebase to heroku, push asp.net codebase to angular
 
     // TODO:
-    // TODO: Nativescript setup (https://docs.nativescript.org/angular/code-sharing/migrating-a-web-project)
+    // TODO: Nativescript initial routing - consider shared route (docs.nativescript.org/angular/code-sharing/migrating-a-web-project)
+    // TODO: Rename api to voter controller (and voter/voting hub?)
+    // TODO: Use Interface pattern for services (and rename IHub?)
   }
 
 }
