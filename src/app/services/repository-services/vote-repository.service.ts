@@ -21,7 +21,9 @@ export class VoteRepositoryService {
 
   registerVoter(newVoter: NewVoter): Observable<Voter> {
     const url = `${this.baseUrl}/vote/register`;
-    return this.httpClient.post<Voter>(url, newVoter);
+    const body = { ...newVoter, connectionId: this.voteHubService.connection.connectionId};
+    debugger;
+    return this.httpClient.post<Voter>(url, body);
   }
 
   getAllVoters(): Observable<Voter[]> {

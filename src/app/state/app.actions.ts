@@ -6,6 +6,7 @@ import { Vote } from '../model/dtos/vote';
 import { Room } from '../model/dtos/room';
 
 export enum ActionType {
+    APP_COMPONENT_NAVIGATED = '[App component] Started the app',
     WELCOME_PAGE_JOIN_ROOM_CLICKED = '[Welcome page] Clicked to join room',
     WELCOME_PAGE_JOIN_ROOM_SUCCESS = '[Welcome page] Joined room successfully',
     WELCOME_PAGE_JOIN_ROOM_FAIL = '[Welcome page] Failed to join room',
@@ -13,7 +14,7 @@ export enum ActionType {
     WELCOME_PAGE_CREATE_ROOM_SUCCESS = '[Welcome page] Created room successfully',
     WELCOME_PAGE_CREATE_ROOM_FAIL = '[Welcome page] Failed to create room',
     STORED_ID_NOT_FOUND_IN_STATE = '[Welcome guard] Adding local storage id to the state',
-    ROOM_PAGE_NAVIGATED = '[Room page] Navigated to room page',
+    ROOM_PAGE_NAVIGATED = '[Room page] Navigated to room page', 
     ROOM_PAGE_VOTE_CLICKED = '[Room page] Clicked to vote',
     ROOM_PAGE_VOTE_SUCCESS = '[Room page] Voted successfully',
     ROOM_PAGE_VOTE_FAIL = '[Room page] Failed to vote',
@@ -36,6 +37,9 @@ export enum ActionType {
     SIGNAL_R_VOTING_UNLOCKED = '[Signal R] Signal R voting unlocked event received',
 }
 
+export const appComponentNavigatedAction = createAction(
+    ActionType.APP_COMPONENT_NAVIGATED
+);
 export const welcomePageJoinRoomClickedAction = createAction(
     ActionType.WELCOME_PAGE_JOIN_ROOM_CLICKED,
     props<{ registrationInfo: NewVoter }>()

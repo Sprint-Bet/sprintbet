@@ -3,7 +3,6 @@ import { Action, createReducer, on } from '@ngrx/store';
 import { initialAppState } from './app.state';
 import { roomPageVotersLoadedSuccessAction,
     roomPageVotersLoadedFailAction,
-    roomPageNavigatedAction,
     welcomePageJoinRoomClickedAction,
     welcomePageJoinRoomSuccessAction,
     welcomePageJoinRoomFailAction,
@@ -25,10 +24,14 @@ import { roomPageVotersLoadedSuccessAction,
     welcomePageCreateRoomClickedAction,
     welcomePageCreateRoomSuccessAction,
     welcomePageCreateRoomFailAction,
+    roomPageNavigatedAction,
 } from './app.actions';
 
 const appReducer = createReducer(
     initialAppState,
+    /**
+     * Welcome page
+     */
     on(welcomePageJoinRoomClickedAction,
         (state): AppState => ({ ...state, loading: true })
     ),
@@ -38,10 +41,9 @@ const appReducer = createReducer(
     on(welcomePageJoinRoomFailAction,
         (state, { error }): AppState => ({ ...state, loading: false, error })
     ),
-
-    on(welcomePageCreateRoomClickedAction,
-        (state): AppState => ({ ...state, loading: true })
-    ),
+    // on(welcomePageCreateRoomClickedAction,
+    //     (state): AppState => ({ ...state, loading: true })
+    // ),
     on(welcomePageCreateRoomSuccessAction,
         (state, { createdRoom }): AppState => ({ ...state, loading: false, room: createdRoom, error: null })
     ),
@@ -49,10 +51,16 @@ const appReducer = createReducer(
         (state, { error }): AppState => ({ ...state, loading: false, error })
     ),
 
+    /**
+     * Stored session id
+     */
     on(storedIdNotFoundInStateAction,
         (state, { sessionId }): AppState => ({ ...state, loading: false, sessionId, error: null })
     ),
 
+    /**
+     * Room page
+     */
     on(roomPageNavigatedAction,
         (state): AppState => ({ ...state, loading: true })
     ),

@@ -4,7 +4,8 @@ import { NewVoter } from '@src/app/model/dtos/new-voter';
 import { AppState } from '@src/app/state/app.state';
 import { Store, select } from '@ngrx/store';
 import { welcomePageJoinRoomClickedAction, welcomePageCreateRoomClickedAction } from '@src/app/state/app.actions';
-import { loadingSelector } from '@src/app/state/app.selectors';
+import { loadingSelector, roomSelector } from '@src/app/state/app.selectors';
+import { tap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-welcome-page',
@@ -13,7 +14,7 @@ import { loadingSelector } from '@src/app/state/app.selectors';
 })
 export class WelcomePageComponent implements OnInit {
   name = '';
-  dealerNotSelected = false;
+  dealerSelected = false;
 
   registrationForm = this.formBuilder.group({
     name: ['', Validators.required],
@@ -22,6 +23,11 @@ export class WelcomePageComponent implements OnInit {
   });
 
   loading$ = this.store.pipe(select(loadingSelector));
+  room$ = this.store.pipe(
+    select(roomSelector),
+    filter(room => !!room),
+    tap(room => this.registrationForm.get('group').setValue(room.id)),
+  );
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,25 +38,6 @@ export class WelcomePageComponent implements OnInit {
   }
 
   onSubmit(form: FormGroup) {
-    if (this.dealerNotSelected) {
-      this.registerVoter(form);
-      return;
-    }
-
-    this.store.dispatch(welcomePageCreateRoomClickedAction({ roomName: form['group']}));
-  }
-
-  roleChange(tnsPickerIndex?: number) {
-    if (!!tnsPickerIndex) {
-      this.registrationForm.get('role').setValue(tnsPickerIndex.toString());
-    }
-
-    this.dealerNotSelected =
-      this.registrationForm.get('role').value === '0' ||
-      this.registrationForm.get('role').value === '1';
-  }
-
-  registerVoter(form: FormGroup) {
     const registrationInfo: NewVoter = {
       name: form['name'],
       role: form['role'],
@@ -58,6 +45,19 @@ export class WelcomePageComponent implements OnInit {
     };
 
     this.store.dispatch(welcomePageJoinRoomClickedAction({registrationInfo}));
+  }
+
+  roleChange(tnsPickerIndex?: number) {
+    if (!!tnsPickerIndex) {
+      this.registrationForm.get('role').setValue(tnsPickerIndex.toString());
+    }
+
+    this.dealerSelected = this.registrationForm.get('role').value === '2';
+  }
+
+  createRoom() {
+    const groupName = this.registrationForm.get('group').value;
+    this.store.dispatch(welcomePageCreateRoomClickedAction({ roomName: groupName}));
   }
 
 }

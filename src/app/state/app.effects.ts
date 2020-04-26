@@ -5,7 +5,7 @@ import { Action, Store, select } from '@ngrx/store';
 import { mergeMap, map, catchError, switchMap, withLatestFrom } from 'rxjs/operators';
 import { VoteService } from '../services/vote.service';
 import {
-    roomPageNavigatedAction,
+    appComponentNavigatedAction,
     roomPageVotersLoadedFailAction,
     roomPageVotersLoadedSuccessAction,
     welcomePageJoinRoomClickedAction,
@@ -32,6 +32,7 @@ import {
     welcomePageCreateRoomClickedAction,
     welcomePageCreateRoomSuccessAction,
     welcomePageCreateRoomFailAction,
+    roomPageNavigatedAction,
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -54,12 +55,12 @@ export class AppEffects {
         private store: Store<AppState>,
     ) { }
 
-    registerVoters$: Observable<Action> = createEffect(
+    startSignalR$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
-            ofType(welcomePageJoinRoomClickedAction),
-            mergeMap(action => this.voteService.registerVoter(action.registrationInfo).pipe(
-                map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
-                catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
+            ofType(appComponentNavigatedAction),
+            mergeMap(() => this.voteHubService.startConnection().pipe(
+                map(() => signalRConnectionSuccessAction()),
+                catchError(error => of(signalRConnectionFailAction(error))),
             ))
         )
     );
@@ -70,6 +71,16 @@ export class AppEffects {
             mergeMap(action => this.voteService.createRoom(action.roomName).pipe(
                 map(createdRoom => welcomePageCreateRoomSuccessAction({ createdRoom })),
                 catchError((error: HttpErrorResponse) => of(welcomePageCreateRoomFailAction({ error }))),
+            ))
+        )
+    );
+
+    registerVoters$: Observable<Action> = createEffect(
+        () => this.actions$.pipe(
+            ofType(welcomePageJoinRoomClickedAction),
+            mergeMap(action => this.voteService.registerVoter(action.registrationInfo).pipe(
+                map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
+                catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
             ))
         )
     );
@@ -109,19 +120,9 @@ export class AppEffects {
         )
     );
 
-    startSignalR$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageNavigatedAction),
-            mergeMap(() => this.voteHubService.startConnection().pipe(
-                map(() => signalRConnectionSuccessAction()),
-                catchError(error => of(signalRConnectionFailAction(error))),
-            ))
-        )
-    );
-
     updateVoters$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
-            ofType(signalRConnectionSuccessAction),
+            ofType(roomPageNavigatedAction),
             switchMap(() => this.voteHubService.listenFor<Voter[]>(HubEvents.VotingUpdated)),
             map(updatedVoters => signalRVotingUpdatedAction({ updatedVoters })),
         )
@@ -129,7 +130,7 @@ export class AppEffects {
 
     updateVotingLocked$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
-            ofType(signalRConnectionSuccessAction),
+            ofType(roomPageNavigatedAction),
             switchMap(() => this.voteHubService.listenFor(HubEvents.VotingLocked)),
             map(() => signalRVotingLockedAction()),
         )
@@ -137,7 +138,7 @@ export class AppEffects {
 
     updateVotingUnlocked$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
-            ofType(signalRConnectionSuccessAction),
+            ofType(roomPageNavigatedAction),
             switchMap(() => this.voteHubService.listenFor(HubEvents.VotingUnlocked)),
             map(() => signalRVotingUnlockedAction()),
         )

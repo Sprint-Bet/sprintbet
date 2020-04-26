@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
-import { roomPageNavigatedAction } from '@src/app/state/app.actions';
 import { votersSelector, votingLockedSelector, myInformationSelector, roomSelector } from '@src/app/state/app.selectors';
 import { map, filter } from 'rxjs/operators';
 import { RoleType } from '@src/app/enums/role-type.enum';
@@ -34,8 +33,6 @@ export class RoomsPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.dispatch(roomPageNavigatedAction());
-
     // DONE
     // DONE: Make setup voter endpoint store and then return sessionId (guid)
     // DONE: Add 'room name' field to the form
@@ -59,6 +56,8 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Need to account for other role/room state information etc in the matchStateIdToStoredId method
 
     // TODO
+    // TODO: Get voters by room id
+    // TODO: Get listenFor working for dealer
     // TODO: Bug (null voter id) when part partipant leaves group
     // TODO: Add a roomService to api, check whether a room with that name exists before creating
     // TODO: Add dealer finishing game to the api (starting game comes with the room)
