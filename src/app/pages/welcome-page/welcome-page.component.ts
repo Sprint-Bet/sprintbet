@@ -6,6 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { welcomePageJoinRoomClickedAction, welcomePageCreateRoomClickedAction } from '@src/app/state/app.actions';
 import { loadingSelector, roomSelector } from '@src/app/state/app.selectors';
 import { tap, filter } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-welcome-page',
@@ -34,9 +35,15 @@ export class WelcomePageComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
+    const roomId = this.activatedRoute.snapshot.queryParamMap.get('id');
+    if (!!roomId) {
+      this.registrationForm.get('group').setValue(roomId);
+      this.registrationForm.get('role').setValue('0');
+    }
   }
 
   onSubmit(form: FormGroup) {
