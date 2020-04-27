@@ -32,9 +32,9 @@ export class VoteRepositoryService {
     return this.httpClient.put(url, vote, { observe: 'response' });
   }
 
-  leaveRoom(voterId: string): Observable<HttpResponse<any>> {
+  leaveRoom(voterId: string, connectionId): Observable<HttpResponse<any>> {
     const url = `${this.baseUrl}/vote/voters/${voterId}/leave`;
-    return this.httpClient.delete(url, { observe: 'response' });
+    return this.httpClient.delete(url, { headers: { connectionId }, observe: 'response' });
   }
 
   createRoom(name: string, connectionId): Observable<Room> {
@@ -42,13 +42,18 @@ export class VoteRepositoryService {
     return this.httpClient.post<Room>(url, { name, connectionId });
   }
 
-  lockVoting(): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/rooms/lock`;
-    return this.httpClient.post(url, {}, { observe: 'response' });
+  lockVoting(roomId: string): Observable<HttpResponse<any>> {
+    const url = `${this.baseUrl}/rooms/${roomId}/lock`;
+    return this.httpClient.put(url, {}, { observe: 'response' });
   }
 
-  clearVotes(): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/rooms/clear`;
-    return this.httpClient.post(url, {}, { observe: 'response' });
+  clearVotes(roomId: string): Observable<HttpResponse<any>> {
+    const url = `${this.baseUrl}/rooms/${roomId}/clear`;
+    return this.httpClient.put(url, {}, { observe: 'response' });
+  }
+
+  finishGame(roomId: string): Observable<HttpResponse<any>> {
+    const url = `${this.baseUrl}/rooms/${roomId}/clear`;
+    return this.httpClient.delete(url, { observe: 'response' });
   }
 }

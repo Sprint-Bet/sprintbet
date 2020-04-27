@@ -64,11 +64,12 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Add a roomService to api, check whether a room with that name exists before creating
     // DONE: Add 'room name' (id) capability to the API
     // DONE: Change the room route to include room name (id)
+    // DONE: refactor 'castVote' AND OTHER METHODS to update hub client only for their group
 
     // TODO
-    // TODO: refactor 'castVote' AND OTHER METHODS to update hub client only for their group
     // TODO: Add dealer finishing game to the api (starting game comes with the room)
     // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
+    // TODO: Store vote in the state (and wipe the vote on voting unlocked event)
     // TODO: Add 'wakeup' call to to API
     // TODO: Add 'loadingApi' element that is on form submission && api not woken up
     // TODO: Push angular codebase to heroku, push asp.net codebase to angular

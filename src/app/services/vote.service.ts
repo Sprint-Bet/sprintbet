@@ -68,21 +68,38 @@ export class VoteService {
    * @param sessionId id of the voter to remove from room
    */
   leaveRoom(sessionId: string): Observable<HttpResponse<any>> {
-    return this.voteRepositoryService.leaveRoom(sessionId);
+    const connectionId = this.voteHubService.connection.connectionId;
+    return this.voteRepositoryService.leaveRoom(sessionId, connectionId);
   }
 
   /**
    * Dealer locks voting
    */
   lockVoting(): Observable<HttpResponse<any>> {
-    return this.voteRepositoryService.lockVoting();
+    return this.store.pipe(
+      select(roomSelector),
+      switchMap(room => this.voteRepositoryService.lockVoting(room.id)),
+    );
   }
 
   /**
    * Dealer clears votes
    */
   clearVotes(): Observable<HttpResponse<any>> {
-    return this.voteRepositoryService.clearVotes();
+    return this.store.pipe(
+      select(roomSelector),
+      switchMap(room => this.voteRepositoryService.clearVotes(room.id)),
+    );
+  }
+
+  /**
+   * Finish game and delete room
+   */
+  finishGame(): Observable<HttpResponse<any>> {
+    return this.store.pipe(
+      select(roomSelector),
+      switchMap(room => this.voteRepositoryService.finishGame(room.id)),
+    );
   }
 
 }
