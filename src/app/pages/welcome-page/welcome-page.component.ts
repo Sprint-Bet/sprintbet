@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NewVoter } from '@src/app/model/dtos/new-voter';
 import { AppState } from '@src/app/state/app.state';
 import { Store, select } from '@ngrx/store';
-import { welcomePageJoinRoomClickedAction, welcomePageCreateRoomClickedAction } from '@src/app/state/app.actions';
+import { welcomePageJoinRoomClickedAction, welcomePageCreateRoomClickedAction, welcomeComponentNavigatedAction } from '@src/app/state/app.actions';
 import { loadingSelector, roomSelector } from '@src/app/state/app.selectors';
 import { tap, filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -39,6 +39,8 @@ export class WelcomePageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.store.dispatch(welcomeComponentNavigatedAction());
+
     const roomId = this.activatedRoute.snapshot.queryParamMap.get('id');
     if (!!roomId) {
       this.registrationForm.get('group').setValue(roomId);
@@ -62,6 +64,9 @@ export class WelcomePageComponent implements OnInit {
     }
 
     this.dealerSelected = this.registrationForm.get('role').value === '2';
+    if (this.dealerSelected) {
+      this.registrationForm.get('group').setValue('');
+    }
   }
 
   createRoom() {

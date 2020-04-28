@@ -53,7 +53,7 @@ export class VoteRepositoryService {
   }
 
   finishGame(roomId: string): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/rooms/${roomId}/clear`;
+    const url = `${this.baseUrl}/rooms/${roomId}/finish`;
     return this.httpClient.delete(url, { observe: 'response' });
   }
 }

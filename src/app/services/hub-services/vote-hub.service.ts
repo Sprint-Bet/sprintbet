@@ -35,7 +35,7 @@ export class VoteHubService {
   /**
    * Starts the Signal R Hub connection
    */
-  startConnection(): Observable<any> {
+  startConnection(): Observable<void> {
     this.connection.onreconnecting(_ => console.log('Reconnecting...'));
     this.connection.onreconnected(id => console.log(`Reconnected: ${id}`));
     this.connection.onclose(error => console.log(`Closing: ${error}`));
@@ -48,6 +48,20 @@ export class VoteHubService {
     );
 
     return connectionStarted$;
+  }
+
+  /**
+   * Terminates the signal r connection
+   */
+  disconnect(): Observable<void> {
+    const connectionEnded$ = from(this.connection.stop()).pipe(
+      catchError(error => {
+        console.log(`Connection stop error: ${error}`);
+        return of(error);
+      })
+    );
+
+    return connectionEnded$;
   }
 
   /**
@@ -91,7 +105,7 @@ export class VoteHubService {
    * @param args The arguments to be passed to the hub method
    */
   invoke<T>(methodName: string, args: any): Observable<T> {
-    return from(this.connection.invoke(methodName, args)).pipe(
+    return from(this.connection.invoke<T>(methodName, args)).pipe(
       catchError(error => {
         console.error(error.toString());
         return of(null);

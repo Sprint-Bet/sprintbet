@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap, filter } from 'rxjs/operators';
+import { switchMap, filter, first } from 'rxjs/operators';
 import { Voter } from '../model/dtos/voter';
 import { NewVoter } from '../model/dtos/new-voter';
 import { VoteRepositoryService } from './repository-services/vote-repository.service';
@@ -47,6 +47,7 @@ export class VoteService {
   getVoters(): Observable<Voter[]> {
     return this.store.pipe(
       select(roomSelector),
+      first(),
       switchMap(room => this.voteRepositoryService.getVotersForRoom(room.id)),
     );
   }
@@ -59,6 +60,7 @@ export class VoteService {
     return this.store.pipe(
       select(sessionIdSelector),
       filter(sessionId => !!sessionId),
+      first(),
       switchMap(sessionId => this.voteRepositoryService.castVote(sessionId, vote)),
     );
   }
@@ -78,6 +80,7 @@ export class VoteService {
   lockVoting(): Observable<HttpResponse<any>> {
     return this.store.pipe(
       select(roomSelector),
+      first(),
       switchMap(room => this.voteRepositoryService.lockVoting(room.id)),
     );
   }
@@ -88,6 +91,7 @@ export class VoteService {
   clearVotes(): Observable<HttpResponse<any>> {
     return this.store.pipe(
       select(roomSelector),
+      first(),
       switchMap(room => this.voteRepositoryService.clearVotes(room.id)),
     );
   }
@@ -98,6 +102,7 @@ export class VoteService {
   finishGame(): Observable<HttpResponse<any>> {
     return this.store.pipe(
       select(roomSelector),
+      first(),
       switchMap(room => this.voteRepositoryService.finishGame(room.id)),
     );
   }

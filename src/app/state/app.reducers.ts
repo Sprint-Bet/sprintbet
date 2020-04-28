@@ -25,6 +25,8 @@ import { roomPageVotersLoadedSuccessAction,
     welcomePageCreateRoomSuccessAction,
     welcomePageCreateRoomFailAction,
     roomPageNavigatedAction,
+    roomPageFinishSuccessAction,
+    signalRDisconnectionSuccessAction,
 } from './app.actions';
 
 const appReducer = createReducer(
@@ -81,7 +83,7 @@ const appReducer = createReducer(
     on(roomPageLeaveConfirmedAction,
         (state): AppState => ({ ...state, loading: true })
     ),
-    on(roomPageLeaveSuccessAction,
+    on(signalRDisconnectionSuccessAction,
         (): AppState => (initialAppState)
     ),
     on(roomPageLeaveFailAction,
