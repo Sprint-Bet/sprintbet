@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiUrl: {
     windows: 'https://localhost:44394/api',
-    mac: 'https://localhost:5001/api',
+    mac: 'https://sprintbet.herokuapp.com/api',
   }
 };
 
