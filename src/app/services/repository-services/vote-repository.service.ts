@@ -18,22 +18,22 @@ export class VoteRepositoryService {
   ) { }
 
   registerVoter(newVoter: NewVoter, connectionId: string): Observable<Voter> {
-    const url = `${this.baseUrl}/vote/register`;
+    const url = `${this.baseUrl}/voters/register`;
     return this.httpClient.post<Voter>(url, { ...newVoter, connectionId});
   }
 
   getVotersForRoom(roomId: string): Observable<Voter[]> {
-    const url = `${this.baseUrl}/vote/voters`;
+    const url = `${this.baseUrl}/voters`;
     return this.httpClient.get<Voter[]>(url, { params: { roomId } });
   }
 
   castVote(voterId: string, vote: Vote): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/vote/voters/${voterId}/cast`;
+    const url = `${this.baseUrl}/voters/${voterId}/cast`;
     return this.httpClient.put(url, vote, { observe: 'response' });
   }
 
   leaveRoom(voterId: string, connectionId): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/vote/voters/${voterId}/leave`;
+    const url = `${this.baseUrl}/voters/${voterId}/leave`;
     return this.httpClient.delete(url, { headers: { connectionId }, observe: 'response' });
   }
 
