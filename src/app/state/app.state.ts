@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Voter } from '../model/dtos/voter';
+import { Room } from '../model/dtos/room';
 
 export interface AppState {
     votingLocked: boolean;
@@ -8,6 +9,7 @@ export interface AppState {
     error: HttpErrorResponse;
     myInformation: Voter;
     sessionId: string;
+    room: Room;
 }
 
 export const initialAppState: AppState = {
@@ -17,4 +19,5 @@ export const initialAppState: AppState = {
     error: null,
     myInformation: null,
     sessionId: null,
+    room: null,
 };

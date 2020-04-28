@@ -30,7 +30,7 @@ export const myInformationSelector = createSelector(
     state => state.myInformation
 );
 
-// export const roleSelector = createSelector(
-//     myInformationStateSelector,
-//     myInformation => myInformation.role
-// );
+export const roomSelector = createSelector(
+    appStateSelector,
+    state => state.room
+);

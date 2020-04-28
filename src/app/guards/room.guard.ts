@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, UrlTree, Router } from '@angular/router';
+import { CanActivate, UrlTree, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKey } from '../enums/storage-key.enum';
 import { AppState } from '../state/app.state';
 import { Store, select } from '@ngrx/store';
 import { sessionIdSelector } from '../state/app.selectors';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { storedIdNotFoundInStateAction } from '../state/app.actions';
 
 @Injectable({
@@ -19,11 +19,17 @@ export class RoomGuard implements CanActivate {
     private router: Router,
   ) { }
 
-  canActivate(): Observable<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.store.pipe(
       select(sessionIdSelector),
       map(stateId => this.matchStateIdToStoredId(stateId)),
-      map(hasId => hasId ? true : this.router.createUrlTree(['/'])),
+      map(hasId => hasId ? true : this.router.createUrlTree(['/'], {
+        queryParams: route.queryParams,
+        queryParamsHandling: 'merge'
+      })),
     );
   }
 

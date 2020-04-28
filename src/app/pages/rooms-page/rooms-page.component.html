@@ -1,5 +1,7 @@
 <div>
-  <h1>Room: GROUP_NAME</h1>
+  <h1 *ngIf="(room$ | async) as room">
+    {{ room.name }} ({{ room.id }})
+  </h1>
   <app-dealer-controls
     *ngIf="isDealer$ | async"
     [voters]="voters$ | async"

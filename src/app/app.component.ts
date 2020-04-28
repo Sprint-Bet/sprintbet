@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter, map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { AppState } from './state/app.state';
+import { appComponentNavigatedAction } from './state/app.actions';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +15,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private titleService: Title
+    private titleService: Title,
+    private store: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
@@ -27,6 +31,11 @@ export class AppComponent implements OnInit {
       const title = this.getTitle(this.router.routerState, this.router.routerState.root).join(' | ');
       this.titleService.setTitle(title + ' | Planning Poker');
     });
+
+    /**
+     * Get signal r started
+     */
+    this.store.dispatch(appComponentNavigatedAction());
   }
 
   /**
