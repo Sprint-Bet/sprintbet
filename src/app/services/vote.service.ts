@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap, filter } from 'rxjs/operators';
+import { switchMap, filter, first } from 'rxjs/operators';
 import { Voter } from '../model/dtos/voter';
 import { NewVoter } from '../model/dtos/new-voter';
 import { VoteRepositoryService } from './repository-services/vote-repository.service';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../state/app.state';
-import { sessionIdSelector } from '../state/app.selectors';
+import { sessionIdSelector, roomSelector } from '../state/app.selectors';
 import { Vote } from '../model/dtos/vote';
 import { HttpResponse } from '@angular/common/http';
+import { Room } from '../model/dtos/room';
+import { VoteHubService } from './hub-services/vote-hub.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,24 +20,36 @@ export class VoteService {
   constructor(
     private voteRepositoryService: VoteRepositoryService,
     private store: Store<AppState>,
+    private voteHubService: VoteHubService,
   ) { }
 
   /**
    * Registers a new voter with a post request, returns sessionId token
    * @param newVoter voter info used for setup
    */
-  // registerVoter(newVoter: NewVoter): Observable<string> {
-  //   return this.voteRepositoryService.registerVoter(newVoter);
-  // }
   registerVoter(newVoter: NewVoter): Observable<Voter> {
-    return this.voteRepositoryService.registerVoter(newVoter);
+    const connectionId = this.voteHubService.connection.connectionId;
+    return this.voteRepositoryService.registerVoter(newVoter, connectionId);
   }
 
   /**
-   * Gets all voters from the voter repository
+   * Creates a new room
+   * @param roomName room info used for setup
    */
-  getAllVoters(): Observable<Voter[]> {
-    return this.voteRepositoryService.getAllVoters();
+  createRoom(roomName: string): Observable<Room> {
+    const connectionId = this.voteHubService.connection.connectionId;
+    return this.voteRepositoryService.createRoom(roomName, connectionId);
+  }
+
+  /**
+   * Gets voters from the voter repository for the current room
+   */
+  getVoters(): Observable<Voter[]> {
+    return this.store.pipe(
+      select(roomSelector),
+      first(),
+      switchMap(room => this.voteRepositoryService.getVotersForRoom(room.id)),
+    );
   }
 
   /**
@@ -46,6 +60,7 @@ export class VoteService {
     return this.store.pipe(
       select(sessionIdSelector),
       filter(sessionId => !!sessionId),
+      first(),
       switchMap(sessionId => this.voteRepositoryService.castVote(sessionId, vote)),
     );
   }
@@ -55,21 +70,41 @@ export class VoteService {
    * @param sessionId id of the voter to remove from room
    */
   leaveRoom(sessionId: string): Observable<HttpResponse<any>> {
-    return this.voteRepositoryService.leaveRoom(sessionId);
+    const connectionId = this.voteHubService.connection.connectionId;
+    return this.voteRepositoryService.leaveRoom(sessionId, connectionId);
   }
 
   /**
    * Dealer locks voting
    */
   lockVoting(): Observable<HttpResponse<any>> {
-    return this.voteRepositoryService.lockVoting();
+    return this.store.pipe(
+      select(roomSelector),
+      first(),
+      switchMap(room => this.voteRepositoryService.lockVoting(room.id)),
+    );
   }
 
   /**
    * Dealer clears votes
    */
   clearVotes(): Observable<HttpResponse<any>> {
-    return this.voteRepositoryService.clearVotes();
+    return this.store.pipe(
+      select(roomSelector),
+      first(),
+      switchMap(room => this.voteRepositoryService.clearVotes(room.id)),
+    );
+  }
+
+  /**
+   * Finish game and delete room
+   */
+  finishGame(): Observable<HttpResponse<any>> {
+    return this.store.pipe(
+      select(roomSelector),
+      first(),
+      switchMap(room => this.voteRepositoryService.finishGame(room.id)),
+    );
   }
 
 }
