@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AppState } from '@src/app/state/app.state';
-import { Store } from '@ngrx/store';
+import { Store, Action } from '@ngrx/store';
 import { roomPageLockClickedAction, roomPageClearVotesClickedAction, roomPageFinishClickedAction } from '@src/app/state/app.actions';
 import { Voter } from '@src/app/model/dtos/voter';
 import { RoleType } from '@src/app/enums/role-type.enum';
@@ -31,20 +31,20 @@ export class DealerControlsComponent implements OnInit {
       return;
     }
 
-    if (confirm('Lock and reveal votes?')) {
-      this.store.dispatch(roomPageLockClickedAction());
-    }
+    this.confirmAction('Lock and reveal votes?', roomPageLockClickedAction());
   }
 
   clearVotes() {
-    if (confirm('Reset all votes?')) {
-      this.store.dispatch(roomPageClearVotesClickedAction());
-    }
+    this.confirmAction('Reset all votes?', roomPageClearVotesClickedAction());
   }
 
   finishGame() {
-    if (confirm('End the game?')) {
-      this.store.dispatch(roomPageFinishClickedAction());
+    this.confirmAction('End the game?', roomPageFinishClickedAction());
+  }
+
+  confirmAction(message: string, action: Action) {
+    if (confirm(message)) {
+      this.store.dispatch(action);
     }
   }
 }
