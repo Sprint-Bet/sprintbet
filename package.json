@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "node server.js",
+    "run-local": "ng serve --aot -o --port=8888",
     "android": "tns run android",
     "ios": "tns run ios",
     "mobile": "tns run",

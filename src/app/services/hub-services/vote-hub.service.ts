@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class VoteHubService {
   connection: HubConnection;
-  private baseUrl: string;
+  private baseUrl = environment.apiUrl;
 
   constructor() {
     this.connection = this.setupConnection();
@@ -19,13 +19,8 @@ export class VoteHubService {
    * Create the Signal R Hub connection
    */
   setupConnection(): HubConnection {
-    const isMac = window.navigator.platform.includes('Mac');
-    this.baseUrl = isMac
-      ? environment.apiUrl.mac
-      : environment.apiUrl.windows;
-
     const connection = new HubConnectionBuilder()
-      .withUrl(`${this.baseUrl}/hub/vote`)
+      .withUrl(`${this.baseUrl}/voteHub`)
       .configureLogging(LogLevel.Debug)
       .build();
 
@@ -68,10 +63,11 @@ export class VoteHubService {
    * Runs the provided callback function when the hub event occurs
    * @param hubMethodName hub method name to listen for
    * @param callback handler for when event occurs
+   *
    * @example
    * // Example callback function
    * const updatedVotersCallback = (voters: Voter[]) => {
-   *  voters.forEach(voter => console.log(voter.name));
+   *   voters.forEach(voter => console.log(voter.name));
    * };
    *
    * // Run the callback when the event occurs

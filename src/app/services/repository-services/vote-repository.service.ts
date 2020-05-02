@@ -11,7 +11,7 @@ import { Room } from '@src/app/model/dtos/room';
   providedIn: 'root'
 })
 export class VoteRepositoryService {
-  private baseUrl = environment.apiUrl.mac;
+  private baseUrl = environment.apiUrl;
 
   constructor(
     private httpClient: HttpClient,
