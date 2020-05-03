@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
       map(() => this.router)
     ).subscribe((event) => {
       const title = this.getTitle(this.router.routerState, this.router.routerState.root).join(' | ');
-      this.titleService.setTitle(title + ' | Planning Poker');
+      this.titleService.setTitle(title + ' | Sprint Bet');
     });
 
     /**

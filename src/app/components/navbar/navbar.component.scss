@@ -5,6 +5,7 @@ nav {
     color: white;
     padding: $xsmall;
     display: flex;
+    min-width: $form-width;
 
     h1 {
         margin-right: $xsmall;

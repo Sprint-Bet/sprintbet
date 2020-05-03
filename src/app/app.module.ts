@@ -45,7 +45,7 @@ import { RoomControlsComponent } from '@src/app/components/room-controls/room-co
     // Hopefully this is fixed now...
     // https://github.com/ngrx/platform/issues/1054
     StoreDevtoolsModule.instrument({
-      name: 'Planning poker Devtools',
+      name: 'Sprint Bet Devtools',
       maxAge: 25,
       logOnly: environment.production
     })
