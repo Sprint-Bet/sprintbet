@@ -10,6 +10,7 @@
     "preview": "tns preview",
     "ng": "ng",
     "build": "ng build",
+    "build:prod": "ng build --aot --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

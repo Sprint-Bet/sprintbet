@@ -1,0 +1,12 @@
+{
+    "name": "Sprint Bet",
+    "version": "1.0",
+    "description": "Real-time voting for your sprint planning sessions",
+    "manifest_version": 2,
+    "browser_action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "https://sprintbetapi.herokuapp.com/"
+    ]
+}
