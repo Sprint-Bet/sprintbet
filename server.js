@@ -7,7 +7,7 @@ app.use(express.static(__dirname + '/dist/PlanningPokerAngular'));
 
 // Send all requests to index.html
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname + '/dist/PlanningPokerAngularE/index.html'));
+  res.sendFile(path.join(__dirname + '/dist/PlanningPokerAngular/index.html'));
 });
 
 // default Heroku PORT
