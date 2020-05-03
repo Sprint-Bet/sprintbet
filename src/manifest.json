@@ -8,5 +8,10 @@
     },
     "permissions": [
         "https://sprintbetapi.herokuapp.com/"
-    ]
+    ],
+    "icons": {
+        "48": "assets/icons/sprint-bet-48.png",
+        "96": "assets/icons/sprint-bet-96.png",
+        "192": "assets/icons/sprint-bet-192.png"
+    }
 }

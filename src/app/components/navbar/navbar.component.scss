@@ -4,4 +4,13 @@ nav {
     background-color: black;
     color: white;
     padding: $xsmall;
+    display: flex;
+
+    h1 {
+        margin-right: $xsmall;
+    }
+
+    img {
+        height: 48px;
+    }
 }
