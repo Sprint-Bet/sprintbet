@@ -65,14 +65,20 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Add 'room name' (id) capability to the API
     // DONE: Change the room route to include room name (id)
     // DONE: refactor 'castVote' AND OTHER METHODS to update hub client only for their group
+    // DONE: Add dealer finishing game to the api (starting game comes with the room)
+    // DONE: Push angular codebase to heroku, push asp.net codebase to angular
 
     // TODO
-    // TODO: Add dealer finishing game to the api (starting game comes with the room)
+    // TODO: Remove Group name from form, move create room button to be side by side join room
+    // TODO: Move role selector into room-controls as buttons 'Let me vote!' 'I just want to watch'
+    // TODO: Role change Buttons to make PUT requests to server to update role
+    // TODO: Consider disabling revealing voting by showing number of people left to vote
+    // TODO: Tweak wording to say 'reveal votes', which should allow removing the alerts
+    // TODO: Store vote in the state i.e. wipe the vote on voting unlocked event
+    // TODO: Get refreshing working
     // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
-    // TODO: Store vote in the state (and wipe the vote on voting unlocked event)
     // TODO: Add 'wakeup' call to to API
     // TODO: Add 'loadingApi' element that is on form submission && api not woken up
-    // TODO: Push angular codebase to heroku, push asp.net codebase to angular
 
     // TODO:
     // TODO: Nativescript initial routing - consider shared route (docs.nativescript.org/angular/code-sharing/migrating-a-web-project)
