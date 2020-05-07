@@ -6,6 +6,7 @@ import { NewVoter } from '../../model/dtos/new-voter';
 import { Voter } from '../../model/dtos/voter';
 import { Vote } from '@src/app/model/dtos/vote';
 import { Room } from '@src/app/model/dtos/room';
+import { RoleType } from '@src/app/enums/role-type.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -32,12 +33,17 @@ export class VoteRepositoryService {
     return this.httpClient.put(url, vote, { observe: 'response' });
   }
 
-  leaveRoom(voterId: string, connectionId): Observable<HttpResponse<any>> {
+  leaveRoom(voterId: string, connectionId: string): Observable<HttpResponse<any>> {
     const url = `${this.baseUrl}/voters/${voterId}/leave`;
     return this.httpClient.delete(url, { headers: { connectionId }, observe: 'response' });
   }
 
-  createRoom(name: string, connectionId): Observable<Room> {
+  changeRole(voterId: string, role: RoleType): Observable<HttpResponse<any>> {
+    const url = `${this.baseUrl}/voters/${voterId}/change-role`;
+    return this.httpClient.put(url, { role }, { observe: 'response' });
+  }
+
+  createRoom(name: string, connectionId: string): Observable<Room> {
     const url = `${this.baseUrl}/rooms/create`;
     return this.httpClient.post<Room>(url, { name, connectionId });
   }

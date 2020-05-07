@@ -11,6 +11,7 @@ import { Vote } from '../model/dtos/vote';
 import { HttpResponse } from '@angular/common/http';
 import { Room } from '../model/dtos/room';
 import { VoteHubService } from './hub-services/vote-hub.service';
+import { RoleType } from '../enums/role-type.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +73,15 @@ export class VoteService {
   leaveRoom(sessionId: string): Observable<HttpResponse<any>> {
     const connectionId = this.voteHubService.connection.connectionId;
     return this.voteRepositoryService.leaveRoom(sessionId, connectionId);
+  }
+
+  /**
+   * Change the role of the voter to player (0) or spectator (1)
+   * @param voterId Id of the voter
+   * @param role Role that the voter wishes to change to
+   */
+  changeRole(voterId: string, role: RoleType): Observable<HttpResponse<any>> {
+    return this.voteRepositoryService.changeRole(voterId, role);
   }
 
   /**

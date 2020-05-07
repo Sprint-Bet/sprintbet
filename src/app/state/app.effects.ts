@@ -40,6 +40,9 @@ import {
     signalRDisconnectionFailAction,
     signalRDisconnectionStartAction,
     signalRInformVotersGameFinishedFail,
+    roomPageChangeRoleClickedAction,
+    roomPageChangeRoleSuccessAction,
+    roomPageChangeRoleFailAction
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -190,6 +193,19 @@ export class AppEffects {
         )
     );
 
+    changeRole$: Observable<Action> = createEffect(
+      () => this.actions$.pipe(
+          ofType(roomPageChangeRoleClickedAction),
+          mergeMap(action => this.voteService.changeRole(action.voterId, action.role).pipe(
+            map(() => roomPageChangeRoleSuccessAction()),
+            catchError(error => of(roomPageChangeRoleFailAction(error))),
+          ))
+      )
+    );
+
+    /**
+     * Signal R related actions
+     */
     wipeIdFromLocalStorage$: Observable<void> = createEffect(
         () => this.actions$.pipe(
             ofType(signalRDisconnectionSuccessAction),

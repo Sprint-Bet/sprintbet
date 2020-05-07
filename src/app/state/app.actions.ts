@@ -4,6 +4,7 @@ import { Voter } from '../model/dtos/voter';
 import { NewVoter } from '../model/dtos/new-voter';
 import { Vote } from '../model/dtos/vote';
 import { Room } from '../model/dtos/room';
+import { RoleType } from '../enums/role-type.enum';
 
 export enum ActionType {
     NAVIGATION_TO_APP_COMPONENT = '[Navigation] Started the app',
@@ -34,6 +35,9 @@ export enum ActionType {
     ROOM_PAGE_FINISH_CLICKED = '[Room page] Clicked to finish game',
     ROOM_PAGE_FINISH_SUCCESS = '[Room page] Finished game successfully',
     ROOM_PAGE_FINISH_FAIL = '[Room page] Failed to finish game',
+    ROOM_PAGE_CHANGE_ROLE_CLICKED = '[Room page] Change role',
+    ROOM_PAGE_CHANGE_ROLE_SUCCESS = '[Room page] Changed role successfully',
+    ROOM_PAGE_CHANGE_ROLE_FAIL = '[Room page] Failed to change role',
     SIGNAL_R_CONNECTION_SUCCESS = '[Signal R] Signal R connected successfully',
     SIGNAL_R_CONNECTION_FAIL = '[Signal R] Signal R failed to connect',
     SIGNAL_R_DISCONNECTION_START = '[Signal R] Signal R start disconnecting',
@@ -151,6 +155,18 @@ export const roomPageFinishSuccessAction = createAction(
 export const roomPageFinishFailAction = createAction(
     ActionType.ROOM_PAGE_FINISH_FAIL,
     props<{ error: HttpErrorResponse }>()
+);
+
+export const roomPageChangeRoleClickedAction = createAction(
+  ActionType.ROOM_PAGE_CHANGE_ROLE_CLICKED,
+  props<{ voterId: string, role: RoleType }>()
+);
+export const roomPageChangeRoleSuccessAction = createAction(
+  ActionType.ROOM_PAGE_CHANGE_ROLE_SUCCESS,
+);
+export const roomPageChangeRoleFailAction = createAction(
+  ActionType.ROOM_PAGE_CHANGE_ROLE_FAIL,
+  props<{ error: HttpErrorResponse }>()
 );
 
 
