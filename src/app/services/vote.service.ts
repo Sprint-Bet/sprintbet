@@ -80,7 +80,7 @@ export class VoteService {
    * @param voterId Id of the voter
    * @param role Role that the voter wishes to change to
    */
-  changeRole(voterId: string, role: RoleType): Observable<HttpResponse<any>> {
+  changeRole(voterId: string, role: RoleType): Observable<Voter> {
     return this.voteRepositoryService.changeRole(voterId, role);
   }
 

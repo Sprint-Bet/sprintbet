@@ -38,9 +38,9 @@ export class VoteRepositoryService {
     return this.httpClient.delete(url, { headers: { connectionId }, observe: 'response' });
   }
 
-  changeRole(voterId: string, role: RoleType): Observable<HttpResponse<any>> {
+  changeRole(voterId: string, role: RoleType): Observable<Voter> {
     const url = `${this.baseUrl}/voters/${voterId}/change-role`;
-    return this.httpClient.put(url, { role }, { observe: 'response' });
+    return this.httpClient.put<Voter>(url, { role });
   }
 
   createRoom(name: string, connectionId: string): Observable<Room> {

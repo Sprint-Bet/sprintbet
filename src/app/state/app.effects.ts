@@ -197,7 +197,7 @@ export class AppEffects {
       () => this.actions$.pipe(
           ofType(roomPageChangeRoleClickedAction),
           mergeMap(action => this.voteService.changeRole(action.voterId, action.role).pipe(
-            map(() => roomPageChangeRoleSuccessAction()),
+            map(myInformation => roomPageChangeRoleSuccessAction({ myInformation })),
             catchError(error => of(roomPageChangeRoleFailAction(error))),
           ))
       )

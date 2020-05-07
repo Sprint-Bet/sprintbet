@@ -27,6 +27,9 @@ import { roomPageVotersLoadedSuccessAction,
     roomPageNavigatedAction,
     roomPageFinishSuccessAction,
     signalRDisconnectionSuccessAction,
+    roomPageChangeRoleClickedAction,
+    roomPageChangeRoleSuccessAction,
+    roomPageChangeRoleFailAction,
 } from './app.actions';
 
 const appReducer = createReducer(
@@ -107,7 +110,19 @@ const appReducer = createReducer(
     on(roomPageSetMyInformationAction,
         (state, { myInformation }): AppState => ({ ...state, myInformation })
     ),
+    on(roomPageChangeRoleClickedAction,
+      (state): AppState => ({ ...state, loading: true })
+    ),
+    on(roomPageChangeRoleSuccessAction,
+      (state, { myInformation }): AppState => ({ ...state, myInformation, loading: false, error: null })
+    ),
+    on(roomPageChangeRoleFailAction,
+      (state, { error }): AppState => ({ ...state, loading: false, error })
+    ),
 
+    /**
+     * Signal r related
+     */
     on(signalRVotingUpdatedAction,
         (state, { updatedVoters }): AppState => ({ ...state, voters: updatedVoters })
     ),

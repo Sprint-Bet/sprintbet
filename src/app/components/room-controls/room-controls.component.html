@@ -1,5 +1,6 @@
 <div class="mb-3">
-    <button *ngIf="isPlayer" class="btn btn-primary" (click)="updateRole()">I only want to watch</button>
-    <button *ngIf="!isPlayer" class="btn btn-primary ml-2" (click)="updateRole()">I want to vote!</button>
+    <button class="btn btn-primary" (click)="updateRole()">
+      {{ isPlayer ? 'I only want to watch' : 'I want to vote!' }}
+    </button>
     <button class="btn btn-primary ml-2" (click)="leaveRoom()">Leave room</button>
 </div>
