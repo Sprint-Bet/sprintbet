@@ -48,9 +48,9 @@ const appReducer = createReducer(
     on(welcomePageJoinRoomFailAction,
         (state, { error }): AppState => ({ ...state, loading: false, error })
     ),
-    // on(welcomePageCreateRoomClickedAction,
-    //     (state): AppState => ({ ...state, loading: true })
-    // ),
+    on(welcomePageCreateRoomClickedAction,
+        (state, { registrationInfo }): AppState => ({ ...state, registrationInfo, loading: true })
+    ),
     on(welcomePageCreateRoomSuccessAction,
         (state, { createdRoom }): AppState => ({ ...state, loading: false, room: createdRoom, error: null })
     ),

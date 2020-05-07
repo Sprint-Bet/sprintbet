@@ -74,7 +74,7 @@ export const welcomePageJoinRoomFailAction = createAction(
 );
 export const welcomePageCreateRoomClickedAction = createAction(
     ActionType.WELCOME_PAGE_CREATE_ROOM_CLICKED,
-    props<{ roomName: string }>()
+    props<{ registrationInfo: NewVoter }>()
 );
 export const welcomePageCreateRoomSuccessAction = createAction(
     ActionType.WELCOME_PAGE_CREATE_ROOM_SUCCESS,

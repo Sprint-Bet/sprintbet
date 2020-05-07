@@ -34,3 +34,8 @@ export const roomSelector = createSelector(
     appStateSelector,
     state => state.room
 );
+
+export const registrationInfoSelector = createSelector(
+  appStateSelector,
+  state => state.registrationInfo
+);

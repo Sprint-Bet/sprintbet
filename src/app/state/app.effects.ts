@@ -52,7 +52,7 @@ import { HubEvents } from '../services/hub-services/hubEvents.enum';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKey } from '@src/app/enums/storage-key.enum';
 import { AppState } from './app.state';
-import { sessionIdSelector, roomSelector } from './app.selectors';
+import { sessionIdSelector, roomSelector, registrationInfoSelector } from './app.selectors';
 import { HubMethods } from '../services/hub-services/hubMethods.enum';
 
 @Injectable()
@@ -89,11 +89,23 @@ export class AppEffects {
     createRoom$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageCreateRoomClickedAction),
-            mergeMap(action => this.voteService.createRoom(action.roomName).pipe(
+            mergeMap(() => this.voteService.createRoom().pipe(
                 map(createdRoom => welcomePageCreateRoomSuccessAction({ createdRoom })),
                 catchError((error: HttpErrorResponse) => of(welcomePageCreateRoomFailAction({ error }))),
             ))
         )
+    );
+
+    registerDealer$: Observable<Action> = createEffect(
+      () => this.actions$.pipe(
+          ofType(welcomePageCreateRoomSuccessAction),
+          withLatestFrom(this.store.pipe(select(registrationInfoSelector))),
+          map(([action, registrationInfo]) => ({ ...registrationInfo, group: action.createdRoom.id })),
+          mergeMap(registrationInfo => this.voteService.registerVoter(registrationInfo).pipe(
+            map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
+            catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
+        ))
+      )
     );
 
     registerVoter$: Observable<Action> = createEffect(

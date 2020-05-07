@@ -35,11 +35,10 @@ export class VoteService {
 
   /**
    * Creates a new room
-   * @param roomName room info used for setup
    */
-  createRoom(roomName: string): Observable<Room> {
+  createRoom(): Observable<Room> {
     const connectionId = this.voteHubService.connection.connectionId;
-    return this.voteRepositoryService.createRoom(roomName, connectionId);
+    return this.voteRepositoryService.createRoom(connectionId);
   }
 
   /**

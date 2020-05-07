@@ -4,9 +4,9 @@ import { NewVoter } from '@src/app/model/dtos/new-voter';
 import { AppState } from '@src/app/state/app.state';
 import { Store, select } from '@ngrx/store';
 import { welcomePageJoinRoomClickedAction, welcomePageCreateRoomClickedAction, welcomeComponentNavigatedAction } from '@src/app/state/app.actions';
-import { loadingSelector, roomSelector } from '@src/app/state/app.selectors';
-import { tap, filter } from 'rxjs/operators';
+import { loadingSelector } from '@src/app/state/app.selectors';
 import { ActivatedRoute } from '@angular/router';
+import { RoleType } from '@src/app/enums/role-type.enum';
 
 @Component({
   selector: 'app-welcome-page',
@@ -14,23 +14,26 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./welcome-page.component.scss']
 })
 export class WelcomePageComponent implements OnInit {
-  name = '';
-  dealerSelected = false;
+  private _isDealer = true;
+
+  get isDealer(): boolean {
+    return this._isDealer;
+  }
+
+  set isDealer(isDealer: boolean) {
+    this._isDealer = isDealer;
+
+    const group = this.registrationForm.get('group');
+    this.isDealer ? group.clearValidators() : group.setValidators(Validators.required);
+    group.updateValueAndValidity({ onlySelf: true });
+  }
 
   registrationForm = this.formBuilder.group({
     name: ['', Validators.required],
-    role: ['', Validators.required],
-    group: ['', Validators.required],
+    group: [''],
   });
 
   loading$ = this.store.pipe(select(loadingSelector));
-  room$ = this.store.pipe(
-    select(roomSelector),
-    filter(room => !!room),
-    tap(room => {
-      this.registrationForm.get('group').setValue(room.id);
-    }),
-  );
 
   constructor(
     private formBuilder: FormBuilder,
@@ -44,34 +47,32 @@ export class WelcomePageComponent implements OnInit {
     const roomId = this.activatedRoute.snapshot.queryParamMap.get('id');
     if (!!roomId) {
       this.registrationForm.get('group').setValue(roomId);
-      this.registrationForm.get('role').setValue('0');
-    }
-  }
-
-  onSubmit(form: FormGroup) {
-    const registrationInfo: NewVoter = {
-      name: form['name'],
-      role: form['role'],
-      group: form['group'],
-    };
-
-    this.store.dispatch(welcomePageJoinRoomClickedAction({registrationInfo}));
-  }
-
-  roleChange(tnsPickerIndex?: number) {
-    if (!!tnsPickerIndex) {
-      this.registrationForm.get('role').setValue(tnsPickerIndex.toString());
-    }
-
-    this.dealerSelected = this.registrationForm.get('role').value === '2';
-    if (this.dealerSelected) {
-      this.registrationForm.get('group').setValue('');
+      this.isDealer = false;
     }
   }
 
   createRoom() {
-    const groupName = this.registrationForm.get('group').value;
-    this.store.dispatch(welcomePageCreateRoomClickedAction({ roomName: groupName}));
+    this.isDealer = true;
+    const registrationInfo = this.getRegistrationInfo(this.registrationForm);
+    this.store.dispatch(welcomePageCreateRoomClickedAction({ registrationInfo }));
+  }
+
+  onSubmit(form: FormGroup) {
+    if (this.isDealer) {
+      this.isDealer = false;
+      return;
+    }
+
+    const registrationInfo = this.getRegistrationInfo(form);
+    this.store.dispatch(welcomePageJoinRoomClickedAction({ registrationInfo }));
+  }
+
+  getRegistrationInfo(form: FormGroup): NewVoter {
+    return {
+      role: this.isDealer ? RoleType.DEALER : RoleType.PARTICIPANT,
+      name: form.get('name').value,
+      group: form.get('group').value,
+    };
   }
 
 }
