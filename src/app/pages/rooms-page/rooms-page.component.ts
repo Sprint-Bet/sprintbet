@@ -68,10 +68,11 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Add dealer finishing game to the api (starting game comes with the room)
     // DONE: Push angular codebase to heroku, push asp.net codebase to angular
     // DONE: Role change Buttons to make PUT requests to server to update role
+    // DONE: Move role selector into room-controls as buttons 'I want to vote!' 'I only want to watch'
+    // DONE: Remove Group name from form, move create room button to be side by side join room
 
     // TODO
-    // TODO: Remove Group name from form, move create room button to be side by side join room
-    // TODO: Move role selector into room-controls as buttons 'I want to vote!' 'I only want to watch'
+    // TODO: Add vote functionality to dealer
     // TODO: Consider disabling revealing voting by showing number of people left to vote
     // TODO: Tweak wording to say 'reveal votes', which should allow removing the alerts
     // TODO: Store vote in the state i.e. wipe the vote on voting unlocked event
