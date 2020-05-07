@@ -70,6 +70,7 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Role change Buttons to make PUT requests to server to update role
     // DONE: Move role selector into room-controls as buttons 'I want to vote!' 'I only want to watch'
     // DONE: Remove Group name from form, move create room button to be side by side join room
+    // DONE: Rename api to voter controller (and voter/voting hub?)
 
     // TODO
     // TODO: Add vote functionality to dealer
@@ -84,7 +85,6 @@ export class RoomsPageComponent implements OnInit {
 
     // TODO:
     // TODO: Nativescript initial routing - consider shared route (docs.nativescript.org/angular/code-sharing/migrating-a-web-project)
-    // TODO: Rename api to voter controller (and voter/voting hub?)
     // TODO: Use Interface pattern for services (and rename IHub?)
   }
 
