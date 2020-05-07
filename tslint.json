@@ -94,7 +94,8 @@
         "prefix-mapped-to": "src/",
         "base-url": "./"
       }
-    ]
+    ],
+    "variable-name": false
   },
   "rulesDirectory": [
     "codelyzer"
