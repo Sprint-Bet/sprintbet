@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AppState } from '@src/app/state/app.state';
 import { Store, Action } from '@ngrx/store';
-import { roomPageLockClickedAction, roomPageClearVotesClickedAction, roomPageFinishClickedAction } from '@src/app/state/app.actions';
+import { roomPageLockClickedAction, roomPageClearVotesClickedAction, roomPageFinishClickedAction, roomPageChangeRoleClickedAction } from '@src/app/state/app.actions';
 import { Voter } from '@src/app/model/dtos/voter';
 import { RoleType } from '@src/app/enums/role-type.enum';
 
@@ -11,6 +11,19 @@ import { RoleType } from '@src/app/enums/role-type.enum';
   styleUrls: ['./dealer-controls.component.scss']
 })
 export class DealerControlsComponent implements OnInit {
+  private _myInformation: Voter;
+  isPlayer = false;
+
+  @Input()
+  set myInformation(myInformation: Voter) {
+    this._myInformation = myInformation;
+    this.isPlayer = +myInformation.role === +RoleType.PARTICIPANT;
+  }
+
+  get myInformation(): Voter {
+    return this._myInformation;
+  }
+
   @Input() voters: Voter[];
   @Input() votingLocked: boolean;
 
@@ -19,6 +32,12 @@ export class DealerControlsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  updateRole() {
+    this.isPlayer
+      ? this.store.dispatch(roomPageChangeRoleClickedAction({ voterId: this.myInformation.id, role: RoleType.SPECTATOR }))
+      : this.store.dispatch(roomPageChangeRoleClickedAction({ voterId: this.myInformation.id, role: RoleType.PARTICIPANT }));
   }
 
   lockVoting() {

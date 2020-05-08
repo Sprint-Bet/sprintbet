@@ -21,7 +21,7 @@ export class RoomsPageComponent implements OnInit {
   );
 
   isDealer$ = this.myInformation$.pipe(
-    map(myInformation => +myInformation.role === +RoleType.DEALER),
+    map(myInformation => myInformation.room.dealerId === myInformation.id),
   );
 
   isParticipant$ = this.myInformation$.pipe(
