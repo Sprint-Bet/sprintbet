@@ -1,17 +1,21 @@
 @import "variables";
 
 nav {
-    background-color: black;
-    color: white;
-    padding: $xsmall;
+  background-color: black;
+  color: white;
+  padding: $xxsmall $small;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: $form-width;
+
+  h1 {
     display: flex;
-    min-width: $form-width;
+    margin-right: $xsmall;
+  }
 
-    h1 {
-        margin-right: $xsmall;
-    }
-
-    img {
-        height: 48px;
-    }
+  img {
+    margin-left: $xsmall;
+    height: $xlarge;
+  }
 }

@@ -1,9 +1,7 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { AppState } from './app.state';
-import { Voter } from '../model/dtos/voter';
 
 export const appStateSelector = createFeatureSelector<AppState>('appState');
-// export const myInformationStateSelector = createFeatureSelector<AppState, Voter>('myInformation');
 
 export const votersSelector = createSelector(
     appStateSelector,
@@ -38,4 +36,14 @@ export const roomSelector = createSelector(
 export const registrationInfoSelector = createSelector(
   appStateSelector,
   state => state.registrationInfo
+);
+
+export const signalRConnectedSelector = createSelector(
+  appStateSelector,
+  state => state.signalRConnected
+);
+
+export const errorSelector = createSelector(
+  appStateSelector,
+  state => state.error
 );

@@ -71,7 +71,7 @@ export class AppEffects {
             ofType(welcomeComponentNavigatedAction),
             mergeMap(() => this.voteHubService.startConnection().pipe(
                 map(() => signalRConnectionSuccessAction()),
-                catchError(error => of(signalRConnectionFailAction(error))),
+                catchError(error => of(signalRConnectionFailAction({ error }))),
             ))
         )
     );
@@ -81,7 +81,7 @@ export class AppEffects {
             ofType(signalRDisconnectionStartAction, roomPageLeaveSuccessAction),
             mergeMap(() => this.voteHubService.disconnect().pipe(
                 map(() => signalRDisconnectionSuccessAction()),
-                catchError(error => of(signalRDisconnectionFailAction(error))),
+                catchError(error => of(signalRDisconnectionFailAction({ error }))),
             ))
         )
     );
@@ -190,7 +190,7 @@ export class AppEffects {
             ofType(roomPageVoteClickedAction),
             mergeMap(action => this.voteService.castVote(action.vote).pipe(
                 map(() => roomPageVoteSuccessAction()),
-                catchError(error => of(roomPageVoteFailAction(error))),
+                catchError(error => of(roomPageVoteFailAction({ error }))),
             ))
         )
     );
@@ -200,7 +200,7 @@ export class AppEffects {
             ofType(roomPageLeaveConfirmedAction),
             mergeMap(action => this.voteService.leaveRoom(action.sessionId).pipe(
                 map(() => roomPageLeaveSuccessAction()),
-                catchError(error => of(roomPageLeaveFailAction(error))),
+                catchError(error => of(roomPageLeaveFailAction({ error }))),
             )),
         )
     );
@@ -210,7 +210,7 @@ export class AppEffects {
           ofType(roomPageChangeRoleClickedAction),
           mergeMap(action => this.voteService.changeRole(action.voterId, action.role).pipe(
             map(myInformation => roomPageChangeRoleSuccessAction({ myInformation })),
-            catchError(error => of(roomPageChangeRoleFailAction(error))),
+            catchError(error => of(roomPageChangeRoleFailAction({ error }))),
           ))
       )
     );
@@ -242,7 +242,7 @@ export class AppEffects {
             ofType(roomPageLockClickedAction),
             mergeMap(() => this.voteService.lockVoting().pipe(
                 map(() => roomPageLockSuccessAction()),
-                catchError(error => of(roomPageLockFailAction(error))),
+                catchError(error => of(roomPageLockFailAction({ error }))),
             ))
         )
     );
@@ -252,7 +252,7 @@ export class AppEffects {
             ofType(roomPageClearVotesClickedAction),
             mergeMap(() => this.voteService.clearVotes().pipe(
                 map(() => roomPageClearVotesSuccessAction()),
-                catchError(error => of(roomPageClearVotesFailAction(error))),
+                catchError(error => of(roomPageClearVotesFailAction({ error }))),
             ))
         )
     );
@@ -262,7 +262,7 @@ export class AppEffects {
             ofType(roomPageFinishClickedAction),
             mergeMap(() => this.voteService.finishGame().pipe(
                 map(() => roomPageFinishSuccessAction()),
-                catchError(error => of(roomPageFinishFailAction(error))),
+                catchError(error => of(roomPageFinishFailAction({ error }))),
             ))
         )
     );
@@ -273,7 +273,7 @@ export class AppEffects {
             switchMap(() => this.store.pipe(select(roomSelector), first())),
             mergeMap(room => this.voteHubService.invoke<void>(HubMethods.FinishGame, room.id).pipe(
                 map(() => signalRDisconnectionStartAction()),
-                catchError(error => of(signalRInformVotersGameFinishedFail(error))),
+                catchError(error => of(signalRInformVotersGameFinishedFail({ error }))),
             )),
         )
     );

@@ -49,6 +49,9 @@ export enum ActionType {
     SIGNAL_R_INFORM_VOTERS_GAME_FINISHED_FAIL = '[Signal R] Signal R failed to inform voters that game finished',
 }
 
+/**
+ * Navigation actions
+ */
 export const appComponentNavigatedAction = createAction(
     ActionType.NAVIGATION_TO_APP_COMPONENT
 );
@@ -59,7 +62,9 @@ export const roomPageNavigatedAction = createAction(
     ActionType.NAVIGATION_TO_ROOM_PAGE
 );
 
-
+/**
+ * Welcome page actions
+ */
 export const welcomePageJoinRoomClickedAction = createAction(
     ActionType.WELCOME_PAGE_JOIN_ROOM_CLICKED,
     props<{ registrationInfo: NewVoter }>()
@@ -85,13 +90,17 @@ export const welcomePageCreateRoomFailAction = createAction(
     props<{ error: HttpErrorResponse }>()
 );
 
-
+/**
+ * Stored Session id actions
+ */
 export const storedIdNotFoundInStateAction = createAction(
     ActionType.STORED_ID_NOT_FOUND_IN_STATE,
     props<{ sessionId: string }>()
 );
 
-
+/**
+ * Room page actions
+ */
 export const roomPageVoteClickedAction = createAction(
     ActionType.ROOM_PAGE_VOTE_CLICKED,
     props<{ vote: Vote }>()
@@ -156,7 +165,6 @@ export const roomPageFinishFailAction = createAction(
     ActionType.ROOM_PAGE_FINISH_FAIL,
     props<{ error: HttpErrorResponse }>()
 );
-
 export const roomPageChangeRoleClickedAction = createAction(
   ActionType.ROOM_PAGE_CHANGE_ROLE_CLICKED,
   props<{ voterId: string, role: RoleType }>()
@@ -170,13 +178,15 @@ export const roomPageChangeRoleFailAction = createAction(
   props<{ error: HttpErrorResponse }>()
 );
 
-
+/**
+ * Signal r actions
+ */
 export const signalRConnectionSuccessAction = createAction(
     ActionType.SIGNAL_R_CONNECTION_SUCCESS
 );
 export const signalRConnectionFailAction = createAction(
     ActionType.SIGNAL_R_CONNECTION_FAIL,
-    props<{ error: HttpErrorResponse }>()
+    props<{ error: any }>()
 );
 export const signalRDisconnectionStartAction = createAction(
     ActionType.SIGNAL_R_DISCONNECTION_START

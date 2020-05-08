@@ -1,4 +1,9 @@
 <nav>
-    <h1>Sprint Bet</h1>
-    <img src="assets/icons/sprint-bet-48.png" alt="Sprint bet icon">
+    <h1>Sprint Bet<img src="assets/icons/sprint-bet-48.png" alt="Sprint bet icon"></h1>
+
+    <h1 *ngIf="(signalRConnected$ | async)">✓</h1>
+    <h1 *ngIf="!(signalRConnected$ | async) && (error$ | async)">!</h1>
+    <div *ngIf="(signalRConnected$ | async) === null" class="spinner-border ml-2" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
 </nav>

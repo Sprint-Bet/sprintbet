@@ -35,14 +35,7 @@ export class VoteHubService {
     this.connection.onreconnected(id => console.log(`Reconnected: ${id}`));
     this.connection.onclose(error => console.log(`Closing: ${error}`));
 
-    const connectionStarted$ = from(this.connection.start()).pipe(
-      catchError(error => {
-        console.log(`Connection error: ${error}`);
-        return of(error);
-      })
-    );
-
-    return connectionStarted$;
+    return from(this.connection.start());
   }
 
   /**
