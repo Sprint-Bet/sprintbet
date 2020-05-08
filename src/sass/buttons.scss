@@ -23,4 +23,5 @@
   background-color: tint($primary, $tint-modifier);
   border-color: tint($primary, $tint-modifier);
   pointer-events: none;
+  opacity: 1;
 }

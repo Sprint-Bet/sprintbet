@@ -3,7 +3,7 @@
 
 .cards-container {
   width: 242px;
-  border: solid $voted-color $card-border-voted;
+  border: solid $primary $card-border-voted;
   border-radius: 0.25rem;
 
   &.locked {
@@ -34,13 +34,13 @@
   }
 
   &:hover:not(:disabled) {
-    background-color: tint($voted-color, $tint-modifier);
+    background-color: tint($primary, $tint-modifier);
   }
 
   &:active,
   &.selected {
-    border: solid $voted-color $card-border-voted;
-    background-color: tint($voted-color, $tint-modifier);
+    border: solid $primary $card-border-voted;
+    background-color: tint($primary, $tint-modifier);
     outline: none !important;
   }
 
