@@ -13,7 +13,6 @@ import { roomPageNavigatedAction } from '@src/app/state/app.actions';
 })
 export class RoomsPageComponent implements OnInit {
   votingLocked$ = this.store.pipe(select(votingLockedSelector));
-  voters$ = this.store.pipe(select(votersSelector));
   room$ = this.store.pipe(select(roomSelector));
 
   myInformation$ = this.store.pipe(
@@ -27,6 +26,19 @@ export class RoomsPageComponent implements OnInit {
 
   isParticipant$ = this.myInformation$.pipe(
     map(myInformation => +myInformation.role === +RoleType.PARTICIPANT),
+  );
+
+  allVoters$ = this.store.pipe(
+    select(votersSelector),
+    filter(allVoters => !!allVoters),
+  );
+
+  participants$ = this.allVoters$.pipe(
+    map(voters => voters.filter(v => +v.role === +RoleType.PARTICIPANT)),
+  );
+
+  voted$ = this.participants$.pipe(
+    map(participants => participants.filter(participant => participant.point)),
   );
 
   constructor(

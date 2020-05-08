@@ -2,9 +2,14 @@
   <h1 *ngIf="(room$ | async) as room">
     Room id: {{ room.id }}
   </h1>
+  <p>
+    <span>Members: {{ (allVoters$ | async)?.length }}</span>
+    <span>, </span>
+    <span>Voted: {{ (voted$ | async)?.length }}/{{ (participants$ | async)?.length }}</span>
+  </p>
   <app-dealer-controls
     *ngIf="isDealer$ | async"
-    [voters]="voters$ | async"
+    [voters]="allVoters$ | async"
     [votingLocked]="votingLocked$ | async">
   </app-dealer-controls>
   <app-room-controls
@@ -16,7 +21,7 @@
   </app-voting-cards>
   <app-voters
     [votingLocked]="votingLocked$ | async"
-    [voters]="voters$ | async"
+    [voters]="allVoters$ | async"
     [myInformation]="myInformation$ | async">
   </app-voters>
 </div>

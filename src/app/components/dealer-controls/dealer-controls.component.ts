@@ -23,7 +23,7 @@ export class DealerControlsComponent implements OnInit {
 
   lockVoting() {
     const haventAllVoted = this.voters
-      .filter(v => +v.role === +RoleType.PARTICIPANT)
+      .filter(voter => +voter.role === +RoleType.PARTICIPANT)
       .some(voter => !voter.point);
 
     if (haventAllVoted) {
