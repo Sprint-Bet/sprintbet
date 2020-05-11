@@ -23,6 +23,11 @@ export class VoteRepositoryService {
     return this.httpClient.post<Voter>(url, { ...newVoter, connectionId});
   }
 
+  getVoterById(voterId: string): Observable<Voter> {
+    const url = `${this.baseUrl}/voters/${voterId}`;
+    return this.httpClient.get<Voter>(url);
+  }
+
   getVotersForRoom(roomId: string): Observable<Voter[]> {
     const url = `${this.baseUrl}/voters`;
     return this.httpClient.get<Voter[]>(url, { params: { roomId } });
