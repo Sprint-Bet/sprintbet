@@ -83,10 +83,10 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Move role selector into room-controls as buttons 'I want to vote!' 'I only want to watch'
     // DONE: Remove Group name from form, move create room button to be side by side join room
     // DONE: Rename api to voter controller (and voter/voting hub?)
+    // DONE: Add vote functionality to dealer
+    // DONE: Consider disabling revealing voting by showing number of people left to vote
 
     // TODO
-    // TODO: Add vote functionality to dealer
-    // TODO: Consider disabling revealing voting by showing number of people left to vote
     // TODO: Tweak wording to say 'reveal votes', which should allow removing the alerts
     // TODO: Store vote in the state i.e. wipe the vote on voting unlocked event
     // TODO: Get refreshing working
