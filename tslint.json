@@ -98,7 +98,8 @@
         "base-url": "./"
       }
     ],
-    "variable-name": false
+    "variable-name": false,
+    "no-unused-expression": [true, "allow-fast-null-checks"]
   },
   "rulesDirectory": [
     "codelyzer"

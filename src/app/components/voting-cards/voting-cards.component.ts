@@ -3,6 +3,7 @@ import { Vote } from '@src/app/model/dtos/vote';
 import { Store } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
 import { roomPageVoteClickedAction } from '@src/app/state/app.actions';
+import { Voter } from '@src/app/model/dtos/voter';
 
 @Component({
   selector: 'app-voting-cards',
@@ -13,11 +14,14 @@ export class VotingCardsComponent implements OnInit {
   private _locked: boolean;
 
   @Input()
+  set myInformation(myInfo: Voter) {
+    this.selectedValue = myInfo.point;
+  }
+
+  @Input()
   set locked(locked: boolean) {
     const unlocking = this._locked && !locked;
-    if (unlocking) {
-      this.selectedValue = '';
-    }
+    unlocking && (this.selectedValue = '');
 
     this._locked = locked;
   }
@@ -38,8 +42,8 @@ export class VotingCardsComponent implements OnInit {
   }
 
   clicked(value: string) {
-    this.selectedValue = value;
-    const vote = { point: value } as Vote;
+    this.selectedValue = value === this.selectedValue ? '' : value;
+    const vote = { point: this.selectedValue } as Vote;
     this.store.dispatch(roomPageVoteClickedAction({ vote }));
   }
 
