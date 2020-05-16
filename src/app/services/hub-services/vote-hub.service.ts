@@ -33,7 +33,7 @@ export class VoteHubService {
   startConnection(): Observable<void> {
     this.connection.onreconnecting(_ => console.log('Reconnecting...'));
     this.connection.onreconnected(id => console.log(`Reconnected: ${id}`));
-    this.connection.onclose(error => console.log(`Closing: ${error}`));
+    this.connection.onclose(error => !!error && console.log(`Closing: ${error}`));
 
     return from(this.connection.start());
   }

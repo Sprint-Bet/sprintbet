@@ -24,7 +24,7 @@ const routes: Routes = [
     path: 'rooms',
     component: RoomsPageComponent,
     data: {
-      title: 'Room'
+      title: 'Rooms'
     },
     canActivate: [RoomGuard]
   },

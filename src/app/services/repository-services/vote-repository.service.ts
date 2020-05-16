@@ -23,11 +23,6 @@ export class VoteRepositoryService {
     return this.httpClient.post<Voter>(url, { ...newVoter, connectionId});
   }
 
-  getVoterById(voterId: string): Observable<Voter> {
-    const url = `${this.baseUrl}/voters/${voterId}`;
-    return this.httpClient.get<Voter>(url);
-  }
-
   getVotersForRoom(roomId: string): Observable<Voter[]> {
     const url = `${this.baseUrl}/voters`;
     return this.httpClient.get<Voter[]>(url, { params: { roomId } });
@@ -67,4 +62,18 @@ export class VoteRepositoryService {
     const url = `${this.baseUrl}/rooms/${roomId}/finish`;
     return this.httpClient.delete(url, { observe: 'response' });
   }
+
+  reconnectVoter(voterId: string, connectionId: string): Observable<Voter> {
+    const url = `${this.baseUrl}/voters/${voterId}/reconnect`;
+    return this.httpClient.get<Voter>(url, { headers: { connectionId } });
+  }
+
+  /**
+   * Incase you try to leave room but the connection is bad
+   * @param voterId voter to remove from room
+   */
+  // deleteVoterById(voterId: string): Observable<HttpResponse<any>> {
+  //   const url = `${this.baseUrl}/voters/${voterId}/delete`;
+  //   return this.httpClient.delete<Voter>(url, { observe: 'response' });
+  // }
 }

@@ -31,11 +31,6 @@ export class AppComponent implements OnInit {
       const title = this.getTitle(this.router.routerState, this.router.routerState.root).join(' | ');
       this.titleService.setTitle(title + ' | Sprint Bet');
     });
-
-    /**
-     * Get signal r started
-     */
-    this.store.dispatch(appComponentNavigatedAction());
   }
 
   /**

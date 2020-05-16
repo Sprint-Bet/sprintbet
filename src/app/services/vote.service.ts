@@ -116,4 +116,13 @@ export class VoteService {
     );
   }
 
+  /**
+   * Reconnect voter from the stored session id
+   * @param voterId voter to reconnect
+   */
+  reconnectVoter(voterId: string): Observable<Voter> {
+    const connectionId = this.voteHubService.connection.connectionId;
+    return this.voteRepositoryService.reconnectVoter(voterId, connectionId);
+  }
+
 }

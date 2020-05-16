@@ -26,7 +26,7 @@ export class WelcomeGuard implements CanActivate {
     return this.store.pipe(
       select(sessionIdSelector),
       map(stateId => !!stateId || this.localStorageService.getItem(StorageKey.SESSION_ID)),
-      map(hasId => !hasId ? true : this.router.createUrlTree(['rooms'], { queryParams: { name: 'GROUP_NAME' } })),
+      map(hasId => !hasId ? true : this.router.createUrlTree(['rooms'])),
     );
   }
 

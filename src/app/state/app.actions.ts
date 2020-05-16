@@ -10,13 +10,13 @@ export enum ActionType {
     NAVIGATION_TO_APP_COMPONENT = '[Navigation] Started the app',
     NAVIGATION_TO_WELCOME_PAGE = '[Navigation] Welcome page loaded',
     NAVIGATION_TO_ROOM_PAGE = '[Navigation] Room page loaded',
+    NAVIGATION_TO_ROOM_GUARD = '[Navigation] Room guard reached',
     WELCOME_PAGE_JOIN_ROOM_CLICKED = '[Welcome page] Clicked to join room',
     WELCOME_PAGE_JOIN_ROOM_SUCCESS = '[Welcome page] Joined room successfully',
     WELCOME_PAGE_JOIN_ROOM_FAIL = '[Welcome page] Failed to join room',
     WELCOME_PAGE_CREATE_ROOM_CLICKED = '[Welcome page] Create room clicked',
     WELCOME_PAGE_CREATE_ROOM_SUCCESS = '[Welcome page] Created room successfully',
     WELCOME_PAGE_CREATE_ROOM_FAIL = '[Welcome page] Failed to create room',
-    STORED_ID_NOT_FOUND_IN_STATE = '[Welcome guard] Adding local storage id to the state',
     ROOM_PAGE_VOTE_CLICKED = '[Room page] Clicked to vote',
     ROOM_PAGE_VOTE_SUCCESS = '[Room page] Voted successfully',
     ROOM_PAGE_VOTE_FAIL = '[Room page] Failed to vote',
@@ -38,6 +38,7 @@ export enum ActionType {
     ROOM_PAGE_CHANGE_ROLE_CLICKED = '[Room page] Change role',
     ROOM_PAGE_CHANGE_ROLE_SUCCESS = '[Room page] Changed role successfully',
     ROOM_PAGE_CHANGE_ROLE_FAIL = '[Room page] Failed to change role',
+    SIGNAL_R_CONNECTION_START = '[Signal R] Signal R connection started',
     SIGNAL_R_CONNECTION_SUCCESS = '[Signal R] Signal R connected successfully',
     SIGNAL_R_CONNECTION_FAIL = '[Signal R] Signal R failed to connect',
     SIGNAL_R_DISCONNECTION_START = '[Signal R] Signal R start disconnecting',
@@ -47,6 +48,10 @@ export enum ActionType {
     SIGNAL_R_VOTING_LOCKED = '[Signal R] Signal R voting locked event received',
     SIGNAL_R_VOTING_UNLOCKED = '[Signal R] Signal R voting unlocked event received',
     SIGNAL_R_INFORM_VOTERS_GAME_FINISHED_FAIL = '[Signal R] Signal R failed to inform voters that game finished',
+    GUARD_GET_VOTER_REQUEST = '[Room guard] Room guard requested a voter',
+    GUARD_GET_VOTER_SUCCESS = '[Room guard] Room guard successfully requested a voter',
+    GUARD_GET_VOTER_FAIL = '[Room guard] Room guard failed to request a voter',
+    GUARD_ID_NOT_FOUND_IN_STATE = '[Room guard] Adding local storage id to the state',
 }
 
 /**
@@ -60,6 +65,9 @@ export const welcomeComponentNavigatedAction = createAction(
 );
 export const roomPageNavigatedAction = createAction(
     ActionType.NAVIGATION_TO_ROOM_PAGE
+);
+export const roomGuardNavigatedAction = createAction(
+  ActionType.NAVIGATION_TO_ROOM_GUARD
 );
 
 /**
@@ -94,7 +102,7 @@ export const welcomePageCreateRoomFailAction = createAction(
  * Stored Session id actions
  */
 export const storedIdNotFoundInStateAction = createAction(
-    ActionType.STORED_ID_NOT_FOUND_IN_STATE,
+    ActionType.GUARD_ID_NOT_FOUND_IN_STATE,
     props<{ sessionId: string }>()
 );
 
@@ -181,6 +189,9 @@ export const roomPageChangeRoleFailAction = createAction(
 /**
  * Signal r actions
  */
+export const signalRConnectionStartAction = createAction(
+  ActionType.SIGNAL_R_CONNECTION_START
+);
 export const signalRConnectionSuccessAction = createAction(
     ActionType.SIGNAL_R_CONNECTION_SUCCESS
 );
@@ -211,4 +222,20 @@ export const signalRVotingUnlockedAction = createAction(
 export const signalRInformVotersGameFinishedFail = createAction(
     ActionType.SIGNAL_R_INFORM_VOTERS_GAME_FINISHED_FAIL,
     props<{ error: any }>()
+);
+
+/**
+ * Guard actions
+ */
+export const roomGuardReconnectVoterRequestAction = createAction(
+  ActionType.GUARD_GET_VOTER_REQUEST,
+  props<{ voterId: string }>()
+);
+export const roomGuardReconnectVoterSuccessAction = createAction(
+  ActionType.GUARD_GET_VOTER_SUCCESS,
+  props<{ voter: Voter }>()
+);
+export const roomGuardReconnectVoterFailAction = createAction(
+  ActionType.GUARD_GET_VOTER_FAIL,
+  props<{ error: HttpErrorResponse }>()
 );

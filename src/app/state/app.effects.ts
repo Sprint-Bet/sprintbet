@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Observable, of } from 'rxjs';
+import { Observable, of, iif } from 'rxjs';
 import { Action, Store, select } from '@ngrx/store';
 import { mergeMap, map, catchError, switchMap, withLatestFrom, first } from 'rxjs/operators';
 import { VoteService } from '../services/vote.service';
@@ -42,7 +42,12 @@ import {
     signalRInformVotersGameFinishedFail,
     roomPageChangeRoleClickedAction,
     roomPageChangeRoleSuccessAction,
-    roomPageChangeRoleFailAction
+    roomPageChangeRoleFailAction,
+    roomGuardReconnectVoterRequestAction,
+    roomGuardReconnectVoterSuccessAction,
+    roomGuardReconnectVoterFailAction,
+    signalRConnectionStartAction,
+    roomGuardNavigatedAction
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -52,8 +57,9 @@ import { HubEvents } from '../services/hub-services/hubEvents.enum';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKey } from '@src/app/enums/storage-key.enum';
 import { AppState } from './app.state';
-import { sessionIdSelector, roomSelector, registrationInfoSelector } from './app.selectors';
+import { sessionIdSelector, roomSelector, registrationInfoSelector, signalRConnectedSelector } from './app.selectors';
 import { HubMethods } from '../services/hub-services/hubMethods.enum';
+import { VoteRepositoryService } from '../services/repository-services/vote-repository.service';
 
 @Injectable()
 export class AppEffects {
@@ -61,31 +67,15 @@ export class AppEffects {
         private actions$: Actions,
         private voteService: VoteService,
         private voteHubService: VoteHubService,
+        private voteRepositoryService: VoteRepositoryService,
         private router: Router,
         private localStorageService: LocalStorageService,
         private store: Store<AppState>,
     ) { }
 
-    startSignalR$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(welcomeComponentNavigatedAction),
-            mergeMap(() => this.voteHubService.startConnection().pipe(
-                map(() => signalRConnectionSuccessAction()),
-                catchError(error => of(signalRConnectionFailAction({ error }))),
-            ))
-        )
-    );
-
-    disconnectSignalR$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(signalRDisconnectionStartAction, roomPageLeaveSuccessAction),
-            mergeMap(() => this.voteHubService.disconnect().pipe(
-                map(() => signalRDisconnectionSuccessAction()),
-                catchError(error => of(signalRDisconnectionFailAction({ error }))),
-            ))
-        )
-    );
-
+    /**
+     * Welcome page effects
+     */
     createRoom$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageCreateRoomClickedAction),
@@ -118,6 +108,9 @@ export class AppEffects {
         )
     );
 
+    /**
+     * Stored session effects
+     */
     saveIdToLocalStorage$: Observable<void> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageJoinRoomSuccessAction),
@@ -134,6 +127,9 @@ export class AppEffects {
         { dispatch: false }
     );
 
+    /**
+     * Room page effects
+     */
     getVoters$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(roomPageNavigatedAction),
@@ -216,8 +212,40 @@ export class AppEffects {
     );
 
     /**
-     * Signal R related actions
+     * Signal R related effects
      */
+    startSignalR$: Observable<Action> = createEffect(
+      () => this.actions$.pipe(
+          ofType(signalRConnectionStartAction),
+          mergeMap(() => this.voteHubService.startConnection().pipe(
+              map(() => signalRConnectionSuccessAction()),
+              catchError(error => of(signalRConnectionFailAction({ error }))),
+          ))
+      )
+    );
+
+    disconnectSignalR$: Observable<Action> = createEffect(
+        () => this.actions$.pipe(
+            ofType(signalRDisconnectionStartAction, roomPageLeaveSuccessAction),
+            mergeMap(() => this.voteHubService.disconnect().pipe(
+                map(() => signalRDisconnectionSuccessAction()),
+                catchError(error => of(signalRDisconnectionFailAction({ error }))),
+            ))
+        )
+    );
+
+    requestSignalRConnect$: Observable<Action> = createEffect(
+      () => this.actions$.pipe(
+          ofType(welcomeComponentNavigatedAction, roomGuardNavigatedAction),
+          switchMap(() => this.store.pipe(select(signalRConnectedSelector), first())),
+          switchMap(alreadyConnected => iif(
+            () => alreadyConnected,
+            of(signalRConnectionSuccessAction()),
+            of(signalRConnectionStartAction())
+          )),
+      )
+    );
+
     wipeIdFromLocalStorage$: Observable<void> = createEffect(
         () => this.actions$.pipe(
             ofType(signalRDisconnectionSuccessAction),
@@ -235,7 +263,7 @@ export class AppEffects {
     );
 
     /**
-     * Dealer actions
+     * Dealer effects
      */
     lockVoting$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
@@ -277,4 +305,18 @@ export class AppEffects {
             )),
         )
     );
+
+    /**
+     * Room guard effects
+     */
+    getVoter$: Observable<Action> = createEffect(
+      () => this.actions$.pipe(
+          ofType(roomGuardReconnectVoterRequestAction),
+          mergeMap(action => this.voteService.reconnectVoter(action.voterId).pipe(
+              map(voter => roomGuardReconnectVoterSuccessAction({ voter })),
+              catchError(error => of(roomGuardReconnectVoterFailAction({ error }))),
+          )),
+      )
+    );
+
 }

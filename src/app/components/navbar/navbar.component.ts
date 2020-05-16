@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
 import { signalRConnectedSelector, errorSelector } from '@src/app/state/app.selectors';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',

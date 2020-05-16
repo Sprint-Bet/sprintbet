@@ -33,6 +33,9 @@ import {
   roomPageChangeRoleFailAction,
   signalRConnectionSuccessAction,
   signalRConnectionFailAction,
+  roomGuardReconnectVoterSuccessAction,
+  roomGuardReconnectVoterFailAction,
+  roomGuardReconnectVoterRequestAction,
 } from './app.actions';
 
 const appReducer = createReducer(
@@ -66,7 +69,7 @@ const appReducer = createReducer(
   ),
 
   /**
-   * Stored session id
+   * Stored session actions
    */
   on(storedIdNotFoundInStateAction,
     (state, { sessionId }): AppState => ({ ...state, loading: false, sessionId, error: null })
@@ -144,6 +147,25 @@ const appReducer = createReducer(
   ),
   on(signalRVotingUnlockedAction,
     (state): AppState => ({ ...state, votingLocked: false })
+  ),
+
+  /**
+   * Guard actions
+   */
+  on(roomGuardReconnectVoterRequestAction,
+    (state): AppState => ({ ...state, loading: true })
+  ),
+  on(roomGuardReconnectVoterSuccessAction,
+    (state, { voter }): AppState => ({
+      ...state,
+      loading: false,
+      myInformation: voter,
+      error: null,
+      room: voter.room
+    })
+  ),
+  on(roomGuardReconnectVoterFailAction,
+    (state, { error }): AppState => ({ ...state, loading: false, error })
   ),
 );
 

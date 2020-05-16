@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Voter } from '../model/dtos/voter';
 import { Room } from '../model/dtos/room';
 import { NewVoter } from '../model/dtos/new-voter';
@@ -24,5 +23,5 @@ export const initialAppState: AppState = {
   myInformation: null,
   sessionId: null,
   room: null,
-  signalRConnected: null
+  signalRConnected: false
 };

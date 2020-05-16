@@ -10,11 +10,25 @@ import { roomPageVoteClickedAction } from '@src/app/state/app.actions';
   styleUrls: ['./voting-cards.component.scss']
 })
 export class VotingCardsComponent implements OnInit {
-  @Input() locked: boolean;
+  private _locked: boolean;
+
+  @Input()
+  set locked(locked: boolean) {
+    const unlocking = this._locked && !locked;
+    if (unlocking) {
+      this.selectedValue = '';
+    }
+
+    this._locked = locked;
+  }
+
+  get locked(): boolean {
+    return this._locked;
+  }
 
   tshirtSizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '?'];
   fibonacci = ['1', '2', '3', '5', '8', '13', '20', '?'];
-  selectedValue: string;
+  selectedValue = '';
 
   constructor(
     private store: Store<AppState>

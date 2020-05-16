@@ -1,70 +1,94 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, UrlTree, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { CanActivate, UrlTree, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, iif, combineLatest, of } from 'rxjs';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKey } from '../enums/storage-key.enum';
 import { AppState } from '../state/app.state';
 import { Store, select } from '@ngrx/store';
-import { sessionIdSelector, myInformationSelector } from '../state/app.selectors';
-import { map, tap, mergeMap, switchMap, first, filter, mapTo } from 'rxjs/operators';
-import { storedIdNotFoundInStateAction } from '../state/app.actions';
+import { sessionIdSelector, myInformationSelector, signalRConnectedSelector } from '../state/app.selectors';
+import { map, switchMap, first, filter, mapTo, tap } from 'rxjs/operators';
+import { storedIdNotFoundInStateAction, roomGuardReconnectVoterRequestAction, roomGuardNavigatedAction } from '../state/app.actions';
+import { Voter } from '../model/dtos/voter';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomGuard implements CanActivate {
+  private signalRConnected$ = this.store.pipe(
+    select(signalRConnectedSelector),
+    filter(connected => !!connected),
+    first(),
+  );
+
+  private sessionId$ = this.store.pipe(
+    select(sessionIdSelector),
+  );
+
+  private validInfo$ = this.store.pipe(
+    select(myInformationSelector),
+    filter(myInfo => !!myInfo),
+    first(),
+  );
+
+  private hasId$ = this.sessionId$.pipe(
+    map(sessionId => this.matchStateIdToStoredId(sessionId)),
+  );
+
   constructor(
     private localStorageService: LocalStorageService,
     private store: Store<AppState>,
     private router: Router,
   ) { }
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | boolean | UrlTree {
 
-    const welcomeUrlTree$ = of(
-      this.router.createUrlTree(['/'], {
-        queryParams: route.queryParams,
-        queryParamsHandling: 'merge'
-      })
-    );
+    // Kick off signal r setup if arriving directly from a refresh
+    this.store.dispatch(roomGuardNavigatedAction());
 
-    const sessionId$ = this.store.pipe(
-      select(sessionIdSelector),
-      first(),
-    );
-
-    const validInfo$ = this.store.pipe(
-      select(myInformationSelector),
-      filter(myInfo => !!myInfo),
-      first(),
-    );
-
-    const hasId$ = sessionId$.pipe(
-      map(stateId => this.matchStateIdToStoredId(stateId)),
-    );
-
-    combineLatest(hasId$, sessionId$).subscribe(([hasId, sessionId]) => {
-      if (hasId) {
-          this.store.dispatch(getVoterGuardRequestAction({ sessionId }));
+    // If session ID is immediately available in store (also not from refresh), allow safe passage
+    this.sessionId$.pipe(
+      first()
+    ).subscribe(sessionId => {
+      if (!!sessionId) {
+        return true;
       }
     });
 
-    return hasId$.pipe(
+    // Prepare rejection url
+    const welcomeUrlTree = this.router.createUrlTree(['/'], {
+      queryParams: route.queryParams,
+      queryParamsHandling: 'merge'
+    });
+
+    // If a session ID is found in local storage, request voter and set as mine
+    combineLatest(
+      this.hasId$,
+      this.sessionId$.pipe(filter(sessionId => !!sessionId), first()),
+      this.signalRConnected$,
+    ).pipe(first()).subscribe(([hasId, sessionId, _]) => {
+      if (hasId && !!sessionId) {
+        this.store.dispatch(roomGuardReconnectVoterRequestAction({ voterId: sessionId }));
+      }
+    });
+
+    // Wait to confirm either no id found or a valid voter to be set
+    return this.hasId$.pipe(
         switchMap(hasId => iif(
             () => hasId,
-            validInfo$.pipe(mapTo(true)),
-            welcomeUrlTree$
+            this.validInfo$.pipe(mapTo(true)),
+            of(welcomeUrlTree)
         ))
     );
   }
 
-  matchStateIdToStoredId(stateId: string) {
+  /**
+   * Make sure local storage and state are aligned
+   * @param sessionId session id from the ngrx store
+   */
+  private matchStateIdToStoredId(sessionId: string) {
     const storedId = this.localStorageService.getItem(StorageKey.SESSION_ID);
-    if (!stateId && !!storedId) {
-      this.store.dispatch(storedIdNotFoundInStateAction({ sessionId: storedId}));
+    if (!sessionId && !!storedId) {
+      this.store.dispatch(storedIdNotFoundInStateAction({ sessionId: storedId }));
     }
 
     return !!storedId;

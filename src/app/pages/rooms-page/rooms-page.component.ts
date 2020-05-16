@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
 import { votersSelector, votingLockedSelector, myInformationSelector, roomSelector } from '@src/app/state/app.selectors';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, first } from 'rxjs/operators';
 import { RoleType } from '@src/app/enums/role-type.enum';
-import { roomPageNavigatedAction } from '@src/app/state/app.actions';
+import { roomPageNavigatedAction, roomGuardNavigatedAction } from '@src/app/state/app.actions';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-rooms-page',
@@ -41,11 +42,32 @@ export class RoomsPageComponent implements OnInit {
     map(participants => participants.filter(participant => participant.point)),
   );
 
+  private hasRoomIdQuery$ = this.activatedRoute.queryParamMap.pipe(
+    first(),
+    map(params => params.has('id'))
+  );
+
   constructor(
     private store: Store<AppState>,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
+    this.hasRoomIdQuery$.subscribe(hasRoomIdQuery => {
+      if (hasRoomIdQuery) {
+        return;
+      }
+
+      this.myInformation$.pipe(first()).subscribe(myInfo => {
+        this.router.navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParams: { id: myInfo.room.id },
+          queryParamsHandling: 'merge'
+        });
+      });
+    });
+
     this.store.dispatch(roomPageNavigatedAction());
 
     // DONE
@@ -85,11 +107,14 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Rename api to voter controller (and voter/voting hub?)
     // DONE: Add vote functionality to dealer
     // DONE: Consider disabling revealing voting by showing number of people left to vote
+    // DONE: Get refreshing working
+    // DONE: Consider a reconnectVoter() that uses connection ID to re-add them to group (see registerVoter)
+    // DONE: Wipe the vote on voting unlocked event
 
     // TODO
-    // TODO: Tweak wording to say 'reveal votes', which should allow removing the alerts
-    // TODO: Store vote in the state i.e. wipe the vote on voting unlocked event
-    // TODO: Get refreshing working
+    // TODO: Consider refactoring room guard to work all within the initial subscribe, or similar?
+    // TODO: Not sure why signal r fails to connect when room guard prevents passage to room on a refresh
+    // TODO: Have 'welcome', 'create' and 'join' as child routes of home page component, which has a back <a> button
     // TODO: Fix Welcome page redirect query params
     // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
     // TODO: Add 'wakeup' call to to API
