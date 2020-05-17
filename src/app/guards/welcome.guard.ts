@@ -19,14 +19,25 @@ export class WelcomeGuard implements CanActivate {
   ) { }
 
   canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
+    route: ActivatedRouteSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+
+    const hasRoomIdQuery = route.queryParamMap.has('id');
+
+    const joinRoomUrlTree = this.router.createUrlTree(['/', 'join'], {
+      queryParams: route.queryParams,
+      queryParamsHandling: 'merge'
+    });
 
     return this.store.pipe(
       select(sessionIdSelector),
       map(stateId => !!stateId || this.localStorageService.getItem(StorageKey.SESSION_ID)),
-      map(hasId => !hasId ? true : this.router.createUrlTree(['rooms'])),
+      map(hasId => hasId
+        ? this.router.createUrlTree(['rooms'])
+        : hasRoomIdQuery
+          ? joinRoomUrlTree
+          : true
+      ),
     );
   }
 

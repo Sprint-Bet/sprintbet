@@ -6,9 +6,8 @@ import { StorageKey } from '../enums/storage-key.enum';
 import { AppState } from '../state/app.state';
 import { Store, select } from '@ngrx/store';
 import { sessionIdSelector, myInformationSelector, signalRConnectedSelector } from '../state/app.selectors';
-import { map, switchMap, first, filter, mapTo, tap } from 'rxjs/operators';
+import { map, switchMap, first, filter, mapTo } from 'rxjs/operators';
 import { storedIdNotFoundInStateAction, roomGuardReconnectVoterRequestAction, roomGuardNavigatedAction } from '../state/app.actions';
-import { Voter } from '../model/dtos/voter';
 
 @Injectable({
   providedIn: 'root'

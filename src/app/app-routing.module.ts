@@ -4,9 +4,9 @@ import { WelcomePageComponent } from '@src/app/pages/welcome-page/welcome-page.c
 import { PageNotFoundComponent } from '@src/app/components/page-not-found/page-not-found.component';
 import { RoomsPageComponent } from './pages/rooms-page/rooms-page.component';
 import { RoomGuard } from './guards/room.guard';
-import { WelcomeGuard } from './guards/welcome.guard';
 import { WelcomePageCreateComponent } from './pages/welcome-page-create/welcome-page-create.component';
 import { WelcomePageJoinComponent } from './pages/welcome-page-join/welcome-page-join.component';
+import { WelcomeGuard } from './guards/welcome.guard';
 
 const routes: Routes = [
   {
@@ -19,7 +19,8 @@ const routes: Routes = [
     component: WelcomePageComponent,
     data: {
       title: 'Welcome'
-    }
+    },
+    canActivate: [ WelcomeGuard ]
   },
   {
     path: 'create',
