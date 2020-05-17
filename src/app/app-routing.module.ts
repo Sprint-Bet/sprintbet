@@ -23,17 +23,17 @@ const routes: Routes = [
     canActivate: [ WelcomeGuard ]
   },
   {
-    path: 'create',
+    path: 'new',
     component: WelcomePageCreateComponent,
     data: {
-      title: 'Create'
+      title: 'New game'
     }
   },
   {
     path: 'join',
     component: WelcomePageJoinComponent,
     data: {
-      title: 'Join'
+      title: 'Join a game'
     }
   },
   {
