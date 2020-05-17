@@ -32,9 +32,6 @@ export class WelcomePageJoinComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(welcomeComponentNavigatedAction());
 
-    /**
-     * ADD THIS TO THE WELCOME GUARD
-     */
     const roomId = this.activatedRoute.snapshot.queryParamMap.get('id');
     if (!!roomId) {
       this.registrationForm.get('group').setValue(roomId);
