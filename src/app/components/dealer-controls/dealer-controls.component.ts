@@ -41,16 +41,16 @@ export class DealerControlsComponent implements OnInit {
   }
 
   lockVoting() {
-    const haventAllVoted = this.voters
-      .filter(voter => +voter.role === +RoleType.PARTICIPANT)
-      .some(voter => !voter.point);
+    const participants = this.voters.filter(voter => +voter.role === +RoleType.PARTICIPANT);
+    const participantsCount = participants.length;
+    const votersWithVoteCast = participants.filter(voter => !!voter.point).length;
 
-    if (haventAllVoted) {
-      alert('Not all participants have casted a vote!');
-      return;
+    let revealText = 'Lock and reveal votes';
+    if (participantsCount !== votersWithVoteCast) {
+      revealText = `${votersWithVoteCast} out of ${participantsCount} participants have voted. ${revealText} anyway`;
     }
 
-    this.confirmAction('Lock and reveal votes?', roomPageLockClickedAction());
+    this.confirmAction(`${revealText}?`, roomPageLockClickedAction());
   }
 
   clearVotes() {
