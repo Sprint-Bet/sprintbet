@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NewVoter } from '@src/app/model/dtos/new-voter';
 import { AppState } from '@src/app/state/app.state';
 import { Store, select } from '@ngrx/store';
-import { welcomePageJoinRoomClickedAction, welcomePageCreateRoomClickedAction, welcomeComponentNavigatedAction } from '@src/app/state/app.actions';
+import { welcomePageCreateRoomClickedAction, welcomeComponentNavigatedAction } from '@src/app/state/app.actions';
 import { loadingSelector } from '@src/app/state/app.selectors';
 import { ActivatedRoute } from '@angular/router';
 import { RoleType } from '@src/app/enums/role-type.enum';
