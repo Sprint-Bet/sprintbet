@@ -1,28 +1,10 @@
-<h1>Welcome!</h1>
-<form [formGroup]="registrationForm" (ngSubmit)="onSubmit(registrationForm)">
-    <div class="form-group">
-      <label for="nameInput">Name</label>
-      <input formControlName="name" type="text" class="form-control" id="nameInput" placeholder="Enter your name">
-    </div>
+<h1>{{ title }}!</h1>
+<p>A real-time voting app for spring planning</p>
 
-    <div *ngIf="!isDealer" class="form-group">
-      <label for="groupInput">Group id</label>
-      <input formControlName="group" type="text" class="form-control" id="groupInput" placeholder="Enter the group id">
-    </div>
+<a [routerLink]="['/', 'create']" class="btn btn-primary">
+  Create a new game
+</a>
 
-    <div class="form-group d-flex mt-4">
-      <button class="btn btn-primary" type="button" (click)="createRoom()"
-        [disabled]="registrationForm.get('name').invalid || (loading$ | async)">
-        Create a new game
-      </button>
-
-      <button class="btn btn-primary ml-2" type="submit"
-        [disabled]="(!isDealer && registrationForm.invalid) || (loading$ | async)">
-        Join a game
-      </button>
-
-      <div *ngIf="(loading$ | async)" class="spinner-border ml-2" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
-</form>
+<a [routerLink]="['/', 'join']" class="btn btn-primary ml-2">
+  Join a game
+</a>

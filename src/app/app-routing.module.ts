@@ -5,6 +5,8 @@ import { PageNotFoundComponent } from '@src/app/components/page-not-found/page-n
 import { RoomsPageComponent } from './pages/rooms-page/rooms-page.component';
 import { RoomGuard } from './guards/room.guard';
 import { WelcomeGuard } from './guards/welcome.guard';
+import { WelcomePageCreateComponent } from './pages/welcome-page-create/welcome-page-create.component';
+import { WelcomePageJoinComponent } from './pages/welcome-page-join/welcome-page-join.component';
 
 const routes: Routes = [
   {
@@ -17,8 +19,21 @@ const routes: Routes = [
     component: WelcomePageComponent,
     data: {
       title: 'Welcome'
-    },
-    canActivate: [WelcomeGuard]
+    }
+  },
+  {
+    path: 'create',
+    component: WelcomePageCreateComponent,
+    data: {
+      title: 'Create'
+    }
+  },
+  {
+    path: 'join',
+    component: WelcomePageJoinComponent,
+    data: {
+      title: 'Join'
+    }
   },
   {
     path: 'rooms',
@@ -38,7 +53,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

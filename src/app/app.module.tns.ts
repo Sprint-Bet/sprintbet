@@ -15,6 +15,8 @@ import { RoomControlsComponent } from '@src/app/components/room-controls/room-co
 
 import { NativeScriptFormsModule } from 'nativescript-angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { WelcomePageCreateComponent } from '@src/app/pages/welcome-page-create/welcome-page-create.component';
+import { WelcomePageJoinComponent } from '@src/app/pages/welcome-page-join/welcome-page-join.component';
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
 // import { NativeScriptFormsModule } from 'nativescript-angular/forms';
@@ -34,6 +36,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     VotersComponent,
     DealerControlsComponent,
     RoomControlsComponent,
+    WelcomePageCreateComponent,
+    WelcomePageJoinComponent,
   ],
   imports: [
     NativeScriptModule,

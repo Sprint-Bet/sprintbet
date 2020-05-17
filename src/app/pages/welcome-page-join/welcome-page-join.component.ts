@@ -9,11 +9,11 @@ import { ActivatedRoute } from '@angular/router';
 import { RoleType } from '@src/app/enums/role-type.enum';
 
 @Component({
-  selector: 'app-welcome-page',
-  templateUrl: './welcome-page.component.html',
-  styleUrls: ['./welcome-page.component.scss']
+  selector: 'app-welcome-page-join',
+  templateUrl: './welcome-page-join.component.html',
+  styleUrls: ['./welcome-page-join.component.scss']
 })
-export class WelcomePageComponent implements OnInit {
+export class WelcomePageJoinComponent implements OnInit {
   title = this.activatedRoute.snapshot.data.title;
 
   private _isDealer = true;

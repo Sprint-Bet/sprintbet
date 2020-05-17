@@ -20,6 +20,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '@src/environments/environment';
 import { DealerControlsComponent } from '@src/app/components/dealer-controls/dealer-controls.component';
 import { RoomControlsComponent } from '@src/app/components/room-controls/room-controls.component';
+import { WelcomePageCreateComponent } from '@src/app/pages/welcome-page-create/welcome-page-create.component';
+import { WelcomePageJoinComponent } from '@src/app/pages/welcome-page-join/welcome-page-join.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { RoomControlsComponent } from '@src/app/components/room-controls/room-co
     VotersComponent,
     DealerControlsComponent,
     RoomControlsComponent,
+    WelcomePageCreateComponent,
+    WelcomePageJoinComponent,
   ],
   imports: [
     ReactiveFormsModule,
