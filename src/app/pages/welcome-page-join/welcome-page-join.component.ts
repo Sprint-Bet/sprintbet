@@ -23,6 +23,8 @@ export class WelcomePageJoinComponent implements OnInit {
 
   loading$ = this.store.pipe(select(loadingSelector));
 
+  hasGroupIdQuery = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
@@ -35,6 +37,7 @@ export class WelcomePageJoinComponent implements OnInit {
     const roomId = this.activatedRoute.snapshot.queryParamMap.get('id');
     if (!!roomId) {
       this.registrationForm.get('group').setValue(roomId);
+      this.hasGroupIdQuery = true;
     }
   }
 

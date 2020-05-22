@@ -4,7 +4,7 @@
       <label for="nameInput">Name</label>
       <input formControlName="name" type="text" class="form-control" id="nameInput" placeholder="Enter your name">
     </div>
-    <div class="form-group">
+    <div class="form-group" [ngClass]="{'auto-filled': hasGroupIdQuery}">
       <label for="groupInput">Group id</label>
       <input formControlName="group" type="text" class="form-control" id="groupInput" placeholder="Enter the group id">
     </div>
