@@ -1,17 +1,20 @@
 {
-    "name": "Sprint Bet",
-    "version": "1.0",
-    "description": "Real-time voting for your sprint planning sessions",
-    "manifest_version": 2,
-    "browser_action": {
-        "default_popup": "index.html"
-    },
-    "permissions": [
-        "https://sprintbetapi.herokuapp.com/"
-    ],
-    "icons": {
-        "48": "assets/icons/sprint-bet-48.png",
-        "96": "assets/icons/sprint-bet-96.png",
-        "192": "assets/icons/sprint-bet-192.png"
-    }
+  "manifest_version": 2,
+  "name": "Sprint Bet",
+  "version": "1.1.0",
+  "description": "A real time voting for your sprint planning sessions",
+  "icons": {
+    "16": "assets/icons/sprint-bet-16.png",
+    "48": "assets/icons/sprint-bet-48.png",
+    "96": "assets/icons/sprint-bet-96.png",
+    "128": "assets/icons/sprint-bet-128.png",
+    "192": "assets/icons/sprint-bet-192.png"
+  },
+  "short_name": "Sprint Bet",
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+  "permissions": [
+    "https://sprintbetapi.herokuapp.com/"
+  ]
 }
