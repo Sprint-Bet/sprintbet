@@ -18,6 +18,9 @@ export class WelcomePageCreateComponent implements OnInit {
 
   registrationForm = this.formBuilder.group({
     name: ['', Validators.required],
+    itemsType: ['fibonacci', Validators.required],
+    role: RoleType.DEALER,
+    group: '',
   });
 
   loading$ = this.store.pipe(select(loadingSelector));
@@ -33,16 +36,8 @@ export class WelcomePageCreateComponent implements OnInit {
   }
 
   onSubmit(form: FormGroup) {
-    const registrationInfo = this.getRegistrationInfo(form);
+    const registrationInfo = form.value as NewVoter;
     this.store.dispatch(welcomePageCreateRoomClickedAction({ registrationInfo }));
-  }
-
-  getRegistrationInfo(form: FormGroup): NewVoter {
-    return {
-      ...form.value,
-      group: '',
-      role: RoleType.DEALER,
-    };
   }
 
 }

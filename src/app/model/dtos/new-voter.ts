@@ -4,4 +4,5 @@ export interface NewVoter {
     name: string;
     role: RoleType;
     group: string;
+    itemsType?: string;
 }
