@@ -21,7 +21,7 @@ export class VoteHubService {
   setupConnection(): HubConnection {
     const connection = new HubConnectionBuilder()
       .withUrl(`${this.baseUrl}/voteHub`)
-      .configureLogging(LogLevel.Debug)
+      .configureLogging(LogLevel.Warning)
       .build();
 
     return connection;
