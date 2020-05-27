@@ -2,6 +2,7 @@
 @import "mixins";
 
 .cards-container {
+  font-size: $base;
   width: 242px;
   border: solid $primary $card-border-voted;
   border-radius: 0.25rem;
@@ -27,7 +28,6 @@
   margin-right: $card-margin / 2;
   border: solid black 1px;
   border-radius: 0.25rem;
-  font-size: $medium;
 
   &:last-child {
     margin-right: $card-margin;

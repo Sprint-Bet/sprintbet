@@ -2,10 +2,10 @@
   <h1 *ngIf="(room$ | async) as room">
     Room id: {{ room.id }}
   </h1>
-  <p>
-    <span class="mr-3"><strong>Members:</strong> {{ (allVoters$ | async)?.length }}</span>
-    <span class="mr-3"><strong>Participants:</strong> {{ (participants$ | async)?.length }}</span>
-    <span><strong>Voted:</strong> {{ (voted$ | async)?.length }}</span>
+  <p class="d-flex">
+    <span class="mr-3"><strong>Members</strong>&nbsp;{{ (allVoters$ | async)?.length }}</span>
+    <span class="mr-3"><strong>Participants</strong>&nbsp;{{ (participants$ | async)?.length }}</span>
+    <span ><strong>Voted</strong>&nbsp;{{ (voted$ | async)?.length }}</span>
   </p>
   <app-dealer-controls
     *ngIf="isDealer$ | async"
