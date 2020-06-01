@@ -59,7 +59,6 @@ import { StorageKey } from '@src/app/enums/storage-key.enum';
 import { AppState } from './app.state';
 import { sessionIdSelector, roomSelector, registrationInfoSelector, signalRConnectedSelector } from './app.selectors';
 import { HubMethods } from '../services/hub-services/hubMethods.enum';
-import { VoteRepositoryService } from '../services/repository-services/vote-repository.service';
 
 @Injectable()
 export class AppEffects {
@@ -67,7 +66,6 @@ export class AppEffects {
         private actions$: Actions,
         private voteService: VoteService,
         private voteHubService: VoteHubService,
-        private voteRepositoryService: VoteRepositoryService,
         private router: Router,
         private localStorageService: LocalStorageService,
         private store: Store<AppState>,
@@ -79,7 +77,7 @@ export class AppEffects {
     createRoom$: Observable<Action> = createEffect(
         () => this.actions$.pipe(
             ofType(welcomePageCreateRoomClickedAction),
-            mergeMap(() => this.voteService.createRoom().pipe(
+            mergeMap(action => this.voteService.createRoom(action.registrationInfo.itemsType).pipe(
                 map(createdRoom => welcomePageCreateRoomSuccessAction({ createdRoom })),
                 catchError((error: HttpErrorResponse) => of(welcomePageCreateRoomFailAction({ error }))),
             ))

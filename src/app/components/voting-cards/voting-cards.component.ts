@@ -16,6 +16,7 @@ export class VotingCardsComponent implements OnInit {
   @Input()
   set myInformation(myInfo: Voter) {
     this.selectedValue = myInfo.point;
+    this.items = myInfo.room.items;
   }
 
   @Input()
@@ -30,8 +31,7 @@ export class VotingCardsComponent implements OnInit {
     return this._locked;
   }
 
-  tshirtSizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '?'];
-  fibonacci = ['1', '2', '3', '5', '8', '13', '20', '?'];
+  items = [];
   selectedValue = '';
 
   constructor(

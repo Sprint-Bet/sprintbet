@@ -35,10 +35,11 @@ export class VoteService {
 
   /**
    * Creates a new room
+   * @param itemsType Determines which voting items to create the room with
    */
-  createRoom(): Observable<Room> {
+  createRoom(itemsType: string = 'fibonacci'): Observable<Room> {
     const connectionId = this.voteHubService.connection.connectionId;
-    return this.voteRepositoryService.createRoom(connectionId);
+    return this.voteRepositoryService.createRoom(itemsType, connectionId);
   }
 
   /**

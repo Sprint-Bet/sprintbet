@@ -1,5 +1,5 @@
 <div class="mb-3 cards-container" [ngClass]="{locked: locked}">
-  <button *ngFor="let value of fibonacci" class="card" (click)="clicked(value)"
+  <button *ngFor="let value of items" class="card" (click)="clicked(value)"
     [ngClass]="{selected: selectedValue === value}" [disabled]="locked">
     {{value}}
   </button>

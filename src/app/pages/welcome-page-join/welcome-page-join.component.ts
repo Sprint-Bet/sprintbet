@@ -19,6 +19,7 @@ export class WelcomePageJoinComponent implements OnInit {
   registrationForm = this.formBuilder.group({
     name: ['', Validators.required],
     group: ['', Validators.required],
+    role: RoleType.PARTICIPANT
   });
 
   loading$ = this.store.pipe(select(loadingSelector));
@@ -42,15 +43,8 @@ export class WelcomePageJoinComponent implements OnInit {
   }
 
   onSubmit(form: FormGroup) {
-    const registrationInfo = this.getRegistrationInfo(form);
+    const registrationInfo = form.value as NewVoter;
     this.store.dispatch(welcomePageJoinRoomClickedAction({ registrationInfo }));
-  }
-
-  getRegistrationInfo(form: FormGroup): NewVoter {
-    return {
-      ...form.value,
-      role: RoleType.PARTICIPANT,
-    };
   }
 
 }
