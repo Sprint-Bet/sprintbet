@@ -17,6 +17,7 @@ import { NativeScriptFormsModule } from 'nativescript-angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { WelcomePageCreateComponent } from '@src/app/pages/welcome-page-create/welcome-page-create.component';
 import { WelcomePageJoinComponent } from '@src/app/pages/welcome-page-join/welcome-page-join.component';
+import { ErrorReconnectingComponent } from '@src/app/pages/error-reconnecting/error-reconnecting.component';
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
 // import { NativeScriptFormsModule } from 'nativescript-angular/forms';
@@ -38,6 +39,7 @@ import { WelcomePageJoinComponent } from '@src/app/pages/welcome-page-join/welco
     RoomControlsComponent,
     WelcomePageCreateComponent,
     WelcomePageJoinComponent,
+    ErrorReconnectingComponent,
   ],
   imports: [
     NativeScriptModule,
