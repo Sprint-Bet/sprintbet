@@ -5,49 +5,49 @@ import { Action, Store, select } from '@ngrx/store';
 import { mergeMap, map, catchError, switchMap, withLatestFrom, first } from 'rxjs/operators';
 import { VoteService } from '../services/vote.service';
 import {
-    welcomeComponentNavigatedAction,
-    roomPageVotersLoadedFailAction,
-    roomPageVotersLoadedSuccessAction,
-    welcomePageJoinRoomClickedAction,
-    welcomePageJoinRoomSuccessAction,
-    welcomePageJoinRoomFailAction,
-    signalRConnectionSuccessAction,
-    signalRConnectionFailAction,
-    signalRVotingUpdatedAction,
-    roomPageVoteClickedAction,
-    roomPageVoteFailAction,
-    roomPageVoteSuccessAction,
-    roomPageLeaveConfirmedAction,
-    roomPageLeaveSuccessAction,
-    roomPageLeaveFailAction,
-    signalRVotingLockedAction,
-    roomPageLockClickedAction,
-    roomPageLockSuccessAction,
-    roomPageLockFailAction,
-    roomPageClearVotesClickedAction,
-    roomPageClearVotesSuccessAction,
-    roomPageClearVotesFailAction,
-    signalRVotingUnlockedAction,
-    roomPageSetMyInformationAction,
-    welcomePageCreateRoomClickedAction,
-    welcomePageCreateRoomSuccessAction,
-    welcomePageCreateRoomFailAction,
-    roomPageNavigatedAction,
-    roomPageFinishClickedAction,
-    roomPageFinishSuccessAction,
-    roomPageFinishFailAction,
-    signalRDisconnectionSuccessAction,
-    signalRDisconnectionFailAction,
-    signalRDisconnectionStartAction,
-    signalRInformVotersGameFinishedFail,
-    roomPageChangeRoleClickedAction,
-    roomPageChangeRoleSuccessAction,
-    roomPageChangeRoleFailAction,
-    roomGuardReconnectVoterRequestAction,
-    roomGuardReconnectVoterSuccessAction,
-    roomGuardReconnectVoterFailAction,
-    signalRConnectionStartAction,
-    roomGuardNavigatedAction
+  welcomeComponentNavigatedAction,
+  roomPageVotersLoadedFailAction,
+  roomPageVotersLoadedSuccessAction,
+  welcomePageJoinRoomClickedAction,
+  welcomePageJoinRoomSuccessAction,
+  welcomePageJoinRoomFailAction,
+  signalRConnectionSuccessAction,
+  signalRConnectionFailAction,
+  signalRVotingUpdatedAction,
+  roomPageVoteClickedAction,
+  roomPageVoteFailAction,
+  roomPageVoteSuccessAction,
+  roomPageLeaveConfirmedAction,
+  roomPageLeaveSuccessAction,
+  roomPageLeaveFailAction,
+  signalRVotingLockedAction,
+  roomPageLockClickedAction,
+  roomPageLockSuccessAction,
+  roomPageLockFailAction,
+  roomPageClearVotesClickedAction,
+  roomPageClearVotesSuccessAction,
+  roomPageClearVotesFailAction,
+  signalRVotingUnlockedAction,
+  roomPageSetMyInformationAction,
+  welcomePageCreateRoomClickedAction,
+  welcomePageCreateRoomSuccessAction,
+  welcomePageCreateRoomFailAction,
+  roomPageNavigatedAction,
+  roomPageFinishClickedAction,
+  roomPageFinishSuccessAction,
+  roomPageFinishFailAction,
+  signalRDisconnectionSuccessAction,
+  signalRDisconnectionFailAction,
+  signalRDisconnectionStartAction,
+  signalRInformVotersGameFinishedFail,
+  roomPageChangeRoleClickedAction,
+  roomPageChangeRoleSuccessAction,
+  roomPageChangeRoleFailAction,
+  roomGuardReconnectVoterRequestAction,
+  roomGuardReconnectVoterSuccessAction,
+  roomGuardReconnectVoterFailAction,
+  signalRConnectionStartAction,
+  roomGuardNavigatedAction
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -62,259 +62,268 @@ import { HubMethods } from '../services/hub-services/hubMethods.enum';
 
 @Injectable()
 export class AppEffects {
-    constructor(
-        private actions$: Actions,
-        private voteService: VoteService,
-        private voteHubService: VoteHubService,
-        private router: Router,
-        private localStorageService: LocalStorageService,
-        private store: Store<AppState>,
-    ) { }
+  constructor(
+    private actions$: Actions,
+    private voteService: VoteService,
+    private voteHubService: VoteHubService,
+    private router: Router,
+    private localStorageService: LocalStorageService,
+    private store: Store<AppState>,
+  ) { }
 
-    /**
-     * Welcome page effects
-     */
-    createRoom$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(welcomePageCreateRoomClickedAction),
-            mergeMap(action => this.voteService.createRoom(action.registrationInfo.itemsType).pipe(
-                map(createdRoom => welcomePageCreateRoomSuccessAction({ createdRoom })),
-                catchError((error: HttpErrorResponse) => of(welcomePageCreateRoomFailAction({ error }))),
-            ))
-        )
-    );
+  /**
+   * Welcome page effects
+   */
+  createRoom$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(welcomePageCreateRoomClickedAction),
+      mergeMap(action => this.voteService.createRoom(action.registrationInfo.itemsType).pipe(
+        map(createdRoom => welcomePageCreateRoomSuccessAction({ createdRoom })),
+        catchError((error: HttpErrorResponse) => of(welcomePageCreateRoomFailAction({ error }))),
+      ))
+    )
+  );
 
-    registerDealer$: Observable<Action> = createEffect(
-      () => this.actions$.pipe(
-          ofType(welcomePageCreateRoomSuccessAction),
-          withLatestFrom(this.store.pipe(select(registrationInfoSelector))),
-          map(([action, registrationInfo]) => ({ ...registrationInfo, group: action.createdRoom.id })),
-          mergeMap(registrationInfo => this.voteService.registerVoter(registrationInfo).pipe(
-            map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
-            catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
-        ))
-      )
-    );
+  registerDealer$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(welcomePageCreateRoomSuccessAction),
+      withLatestFrom(this.store.pipe(select(registrationInfoSelector))),
+      map(([action, registrationInfo]) => ({ ...registrationInfo, group: action.createdRoom.id })),
+      mergeMap(registrationInfo => this.voteService.registerVoter(registrationInfo).pipe(
+        map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
+        catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
+      ))
+    )
+  );
 
-    registerVoter$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(welcomePageJoinRoomClickedAction),
-            mergeMap(action => this.voteService.registerVoter(action.registrationInfo).pipe(
-                map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
-                catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
-            ))
-        )
-    );
+  registerVoter$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(welcomePageJoinRoomClickedAction),
+      mergeMap(action => this.voteService.registerVoter(action.registrationInfo).pipe(
+        map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
+        catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
+      ))
+    )
+  );
 
-    /**
-     * Stored session effects
-     */
-    saveIdToLocalStorage$: Observable<void> = createEffect(
-        () => this.actions$.pipe(
-            ofType(welcomePageJoinRoomSuccessAction),
-            map(action => this.localStorageService.setItem(StorageKey.SESSION_ID, action.createdVoter.id)),
-        ),
-        { dispatch: false }
-    );
+  /**
+   * Stored session effects
+   */
+  saveIdToLocalStorage$: Observable<void> = createEffect(
+    () => this.actions$.pipe(
+      ofType(welcomePageJoinRoomSuccessAction),
+      map(action => this.localStorageService.setItem(StorageKey.SESSION_ID, action.createdVoter.id)),
+    ),
+    { dispatch: false }
+  );
 
-    routeToRoomPage$: Observable<boolean> = createEffect(
-        () => this.actions$.pipe(
-            ofType(welcomePageJoinRoomSuccessAction),
-            switchMap(action => this.router.navigate(['rooms'], { queryParams: { id: action.createdVoter.room.id } })),
-        ),
-        { dispatch: false }
-    );
+  routeToRoomPage$: Observable<boolean> = createEffect(
+    () => this.actions$.pipe(
+      ofType(welcomePageJoinRoomSuccessAction),
+      switchMap(action => this.router.navigate(['rooms'], { queryParams: { id: action.createdVoter.room.id } })),
+    ),
+    { dispatch: false }
+  );
 
-    /**
-     * Room page effects
-     */
-    getVoters$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageNavigatedAction),
-            mergeMap(_ => this.voteService.getVoters().pipe(
-                map(initialVoters => roomPageVotersLoadedSuccessAction({ voters: initialVoters })),
-                catchError((error: HttpErrorResponse) => of(roomPageVotersLoadedFailAction({ error }))),
-            ))
-        )
-    );
+  /**
+   * Room page effects
+   */
+  getVoters$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageNavigatedAction),
+      mergeMap(_ => this.voteService.getVoters().pipe(
+        map(initialVoters => roomPageVotersLoadedSuccessAction({ voters: initialVoters })),
+        catchError((error: HttpErrorResponse) => of(roomPageVotersLoadedFailAction({ error }))),
+      ))
+    )
+  );
 
-    getMyInformation$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageVotersLoadedSuccessAction),
-            withLatestFrom(this.store.pipe(select(sessionIdSelector))),
-            map(([action, sessionId]) => action.voters.find(voter => voter.id === sessionId)),
-            map(myInformation => roomPageSetMyInformationAction({ myInformation }))
-        )
-    );
+  getMyInformation$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageVotersLoadedSuccessAction),
+      withLatestFrom(this.store.pipe(select(sessionIdSelector))),
+      map(([action, sessionId]) => action.voters.find(voter => voter.id === sessionId)),
+      map(myInformation => roomPageSetMyInformationAction({ myInformation }))
+    )
+  );
 
-    listenForVoterUpdates$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageVotersLoadedSuccessAction),
-            switchMap(() => this.voteHubService.listenFor<Voter[]>(HubEvents.VotingUpdated)),
-            map(updatedVoters => signalRVotingUpdatedAction({ updatedVoters })),
-        )
-    );
+  listenForVoterUpdates$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageVotersLoadedSuccessAction),
+      switchMap(() => this.voteHubService.listenFor<Voter[]>(HubEvents.VotingUpdated)),
+      map(updatedVoters => signalRVotingUpdatedAction({ updatedVoters })),
+    )
+  );
 
-    listenForVotingLocked$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageVotersLoadedSuccessAction),
-            switchMap(() => this.voteHubService.listenFor(HubEvents.VotingLocked)),
-            map(() => signalRVotingLockedAction()),
-        )
-    );
+  listenForVotingLocked$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageVotersLoadedSuccessAction),
+      switchMap(() => this.voteHubService.listenFor(HubEvents.VotingLocked)),
+      map(() => signalRVotingLockedAction()),
+    )
+  );
 
-    listenForVotingUnlocked$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageVotersLoadedSuccessAction),
-            switchMap(() => this.voteHubService.listenFor(HubEvents.VotingUnlocked)),
-            map(() => signalRVotingUnlockedAction()),
-        )
-    );
+  listenForVotingUnlocked$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageVotersLoadedSuccessAction),
+      switchMap(() => this.voteHubService.listenFor(HubEvents.VotingUnlocked)),
+      map(() => signalRVotingUnlockedAction()),
+    )
+  );
 
-    listenForGameFinished$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageVotersLoadedSuccessAction),
-            switchMap(() => this.voteHubService.listenFor(HubEvents.GameFinished)),
-            map(() => signalRDisconnectionStartAction()),
-        )
-    );
+  listenForGameFinished$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageVotersLoadedSuccessAction),
+      switchMap(() => this.voteHubService.listenFor(HubEvents.GameFinished)),
+      map(() => signalRDisconnectionStartAction()),
+    )
+  );
 
-    castVote$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageVoteClickedAction),
-            mergeMap(action => this.voteService.castVote(action.vote).pipe(
-                map(() => roomPageVoteSuccessAction()),
-                catchError(error => of(roomPageVoteFailAction({ error }))),
-            ))
-        )
-    );
+  castVote$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageVoteClickedAction),
+      mergeMap(action => this.voteService.castVote(action.vote).pipe(
+        map(() => roomPageVoteSuccessAction()),
+        catchError(error => of(roomPageVoteFailAction({ error }))),
+      ))
+    )
+  );
 
-    leaveRoom$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageLeaveConfirmedAction),
-            mergeMap(action => this.voteService.leaveRoom(action.sessionId).pipe(
-                map(() => roomPageLeaveSuccessAction()),
-                catchError(error => of(roomPageLeaveFailAction({ error }))),
-            )),
-        )
-    );
+  leaveRoom$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageLeaveConfirmedAction),
+      mergeMap(action => this.voteService.leaveRoom(action.sessionId).pipe(
+        map(() => roomPageLeaveSuccessAction()),
+        catchError(error => of(roomPageLeaveFailAction({ error }))),
+      )),
+    )
+  );
 
-    changeRole$: Observable<Action> = createEffect(
-      () => this.actions$.pipe(
-          ofType(roomPageChangeRoleClickedAction),
-          mergeMap(action => this.voteService.changeRole(action.voterId, action.role).pipe(
-            map(myInformation => roomPageChangeRoleSuccessAction({ myInformation })),
-            catchError(error => of(roomPageChangeRoleFailAction({ error }))),
-          ))
-      )
-    );
+  changeRole$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageChangeRoleClickedAction),
+      mergeMap(action => this.voteService.changeRole(action.voterId, action.role).pipe(
+        map(myInformation => roomPageChangeRoleSuccessAction({ myInformation })),
+        catchError(error => of(roomPageChangeRoleFailAction({ error }))),
+      ))
+    )
+  );
 
-    /**
-     * Signal R related effects
-     */
-    startSignalR$: Observable<Action> = createEffect(
-      () => this.actions$.pipe(
-          ofType(signalRConnectionStartAction),
-          mergeMap(() => this.voteHubService.startConnection().pipe(
-              map(() => signalRConnectionSuccessAction()),
-              catchError(error => of(signalRConnectionFailAction({ error }))),
-          ))
-      )
-    );
+  /**
+   * Signal R related effects
+   */
+  startSignalR$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(signalRConnectionStartAction),
+      mergeMap(() => this.voteHubService.startConnection().pipe(
+        map(() => signalRConnectionSuccessAction()),
+        catchError(error => of(signalRConnectionFailAction({ error }))),
+      ))
+    )
+  );
 
-    disconnectSignalR$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(signalRDisconnectionStartAction, roomPageLeaveSuccessAction),
-            mergeMap(() => this.voteHubService.disconnect().pipe(
-                map(() => signalRDisconnectionSuccessAction()),
-                catchError(error => of(signalRDisconnectionFailAction({ error }))),
-            ))
-        )
-    );
+  disconnectSignalR$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(signalRDisconnectionStartAction, roomPageLeaveSuccessAction),
+      mergeMap(() => this.voteHubService.disconnect().pipe(
+        map(() => signalRDisconnectionSuccessAction()),
+        catchError(error => of(signalRDisconnectionFailAction({ error }))),
+      ))
+    )
+  );
 
-    requestSignalRConnect$: Observable<Action> = createEffect(
-      () => this.actions$.pipe(
-          ofType(welcomeComponentNavigatedAction, roomGuardNavigatedAction),
-          switchMap(() => this.store.pipe(select(signalRConnectedSelector), first())),
-          switchMap(alreadyConnected => iif(
-            () => alreadyConnected,
-            of(signalRConnectionSuccessAction()),
-            of(signalRConnectionStartAction())
-          )),
-      )
-    );
+  requestSignalRConnect$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(welcomeComponentNavigatedAction, roomGuardNavigatedAction),
+      switchMap(() => this.store.pipe(select(signalRConnectedSelector), first())),
+      switchMap(alreadyConnected => iif(
+        () => alreadyConnected,
+        of(signalRConnectionSuccessAction()),
+        of(signalRConnectionStartAction())
+      )),
+    )
+  );
 
-    wipeIdFromLocalStorage$: Observable<void> = createEffect(
-        () => this.actions$.pipe(
-            ofType(signalRDisconnectionSuccessAction),
-            map(_ => this.localStorageService.deleteItem(StorageKey.SESSION_ID)),
-        ),
-        { dispatch: false }
-    );
+  wipeIdFromLocalStorage$: Observable<void> = createEffect(
+    () => this.actions$.pipe(
+      ofType(signalRDisconnectionSuccessAction),
+      map(_ => this.localStorageService.deleteItem(StorageKey.SESSION_ID)),
+    ),
+    { dispatch: false }
+  );
 
-    routeToWelcomePage$: Observable<boolean> = createEffect(
-        () => this.actions$.pipe(
-            ofType(signalRDisconnectionSuccessAction),
-            switchMap(() => this.router.navigate(['/'])),
-        ),
-        { dispatch: false }
-    );
+  routeToWelcomePage$: Observable<boolean> = createEffect(
+    () => this.actions$.pipe(
+      ofType(signalRDisconnectionSuccessAction),
+      switchMap(() => this.router.navigate(['/'])),
+    ),
+    { dispatch: false }
+  );
 
-    /**
-     * Dealer effects
-     */
-    lockVoting$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageLockClickedAction),
-            mergeMap(() => this.voteService.lockVoting().pipe(
-                map(() => roomPageLockSuccessAction()),
-                catchError(error => of(roomPageLockFailAction({ error }))),
-            ))
-        )
-    );
+  /**
+   * Dealer effects
+   */
+  lockVoting$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageLockClickedAction),
+      mergeMap(() => this.voteService.lockVoting().pipe(
+        map(() => roomPageLockSuccessAction()),
+        catchError(error => of(roomPageLockFailAction({ error }))),
+      ))
+    )
+  );
 
-    clearVotes$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageClearVotesClickedAction),
-            mergeMap(() => this.voteService.clearVotes().pipe(
-                map(() => roomPageClearVotesSuccessAction()),
-                catchError(error => of(roomPageClearVotesFailAction({ error }))),
-            ))
-        )
-    );
+  clearVotes$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageClearVotesClickedAction),
+      mergeMap(() => this.voteService.clearVotes().pipe(
+        map(() => roomPageClearVotesSuccessAction()),
+        catchError(error => of(roomPageClearVotesFailAction({ error }))),
+      ))
+    )
+  );
 
-    finishGame$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageFinishClickedAction),
-            mergeMap(() => this.voteService.finishGame().pipe(
-                map(() => roomPageFinishSuccessAction()),
-                catchError(error => of(roomPageFinishFailAction({ error }))),
-            ))
-        )
-    );
+  finishGame$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageFinishClickedAction),
+      mergeMap(() => this.voteService.finishGame().pipe(
+        map(() => roomPageFinishSuccessAction()),
+        catchError(error => of(roomPageFinishFailAction({ error }))),
+      ))
+    )
+  );
 
-    informVotersGameFinished$: Observable<Action> = createEffect(
-        () => this.actions$.pipe(
-            ofType(roomPageFinishSuccessAction),
-            switchMap(() => this.store.pipe(select(roomSelector), first())),
-            mergeMap(room => this.voteHubService.invoke<void>(HubMethods.FinishGame, room.id).pipe(
-                map(() => signalRDisconnectionStartAction()),
-                catchError(error => of(signalRInformVotersGameFinishedFail({ error }))),
-            )),
-        )
-    );
+  informVotersGameFinished$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageFinishSuccessAction),
+      switchMap(() => this.store.pipe(select(roomSelector), first())),
+      mergeMap(room => this.voteHubService.invoke<void>(HubMethods.FinishGame, room.id).pipe(
+        map(() => signalRDisconnectionStartAction()),
+        catchError(error => of(signalRInformVotersGameFinishedFail({ error }))),
+      )),
+    )
+  );
 
-    /**
-     * Room guard effects
-     */
-    getVoter$: Observable<Action> = createEffect(
-      () => this.actions$.pipe(
-          ofType(roomGuardReconnectVoterRequestAction),
-          mergeMap(action => this.voteService.reconnectVoter(action.voterId).pipe(
-              map(voter => roomGuardReconnectVoterSuccessAction({ voter })),
-              catchError(error => of(roomGuardReconnectVoterFailAction({ error }))),
-          )),
-      )
-    );
+  /**
+   * Room guard effects
+   */
+  getVoter$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomGuardReconnectVoterRequestAction),
+      mergeMap(action => this.voteService.reconnectVoter(action.voterId).pipe(
+        map(voter => roomGuardReconnectVoterSuccessAction({ voter })),
+        catchError(error => of(roomGuardReconnectVoterFailAction({ error }))),
+      )),
+    )
+  );
+
+  routeToErrorConnectingPage$: Observable<boolean> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomGuardReconnectVoterFailAction),
+      map(action => action.error.status === 404),
+      switchMap(is404 => is404 ? this.router.navigate(['/', 'error-reconnecting']) : of(true)),
+    ),
+    { dispatch: false }
+  );
 
 }
