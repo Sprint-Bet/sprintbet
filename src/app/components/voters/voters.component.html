@@ -1,14 +1,45 @@
 <div class="voters-container">
-    <ng-container *ngIf="voters">
-        <div *ngFor="let voter of voters" class="mr-2 mb-2 voter">
-            <span class="mr-2 name">{{voter.name}}</span>
-            <span class="mr-2" *ngIf="voter.id === myInformation?.id">(me)</span>
-            <div *ngIf="voter.role.toString() === '0'" 
-                class="d-flex flex-row align-items-center justify-content-center card point-card locked"
-                [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && voter.point}">
-                <span *ngIf="!votingLocked && voter.point">✓</span>
-                <span *ngIf="votingLocked">{{voter.point}}</span>
-            </div>
+  <ng-container *ngIf="voters">
+    <div *ngIf="participants.length > 0" class="mb-2">
+      <button class="btn btn-primary mb-2" type="button" (click)="showParticipants = !showParticipants">
+        <span *ngIf="showParticipants">&#x25B2;</span>
+        <span *ngIf="!showParticipants">&#x25BC;</span>
+        Participants ({{ participants.length }})
+      </button>
+
+      <div *ngIf="showParticipants" class="card pt-2 px-2">
+        <div *ngFor="let participant of participants" class="mr-2 mb-2 voter">
+          <span class="mr-2 name">{{participant.name}}</span>
+          <span class="mr-2" *ngIf="participant.id === myInformation?.id">(me)</span>
+          <div *ngIf="participant.role.toString() === '0'"
+            class="d-flex flex-row align-items-center justify-content-center card point-card locked"
+            [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && participant.point}">
+            <span *ngIf="!votingLocked && participant.point">✓</span>
+            <span *ngIf="votingLocked">{{participant.point}}</span>
+          </div>
         </div>
-    </ng-container>
+      </div>
+    </div>
+
+    <div *ngIf="spectators.length > 0" class="mb-2">
+      <button class="btn btn-primary mb-2" type="button" (click)="showSpectators = !showSpectators">
+        <span *ngIf="showSpectators">&#x25B2;</span>
+        <span *ngIf="!showSpectators">&#x25BC;</span>
+        Spectators ({{ spectators.length }})
+      </button>
+
+      <div *ngIf="showSpectators" class="card pt-2 px-2">
+        <div *ngFor="let spectator of spectators" class="mr-2 mb-2 voter">
+          <span class="mr-2 name">{{spectator.name}}</span>
+          <span class="mr-2" *ngIf="spectator.id === myInformation?.id">(me)</span>
+          <div *ngIf="spectator.role.toString() === '0'"
+            class="d-flex flex-row align-items-center justify-content-center card point-card locked"
+            [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && spectator.point}">
+            <span *ngIf="!votingLocked && spectator.point">✓</span>
+            <span *ngIf="votingLocked">{{spectator.point}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>
