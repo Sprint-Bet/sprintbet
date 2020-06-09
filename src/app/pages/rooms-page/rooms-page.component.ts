@@ -4,7 +4,7 @@ import { AppState } from '@src/app/state/app.state';
 import { votersSelector, votingLockedSelector, myInformationSelector, roomSelector } from '@src/app/state/app.selectors';
 import { map, filter, first } from 'rxjs/operators';
 import { RoleType } from '@src/app/enums/role-type.enum';
-import { roomPageNavigatedAction, roomGuardNavigatedAction } from '@src/app/state/app.actions';
+import { roomPageNavigatedAction } from '@src/app/state/app.actions';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -110,19 +110,21 @@ export class RoomsPageComponent implements OnInit {
     // DONE: Get refreshing working
     // DONE: Consider a reconnectVoter() that uses connection ID to re-add them to group (see registerVoter)
     // DONE: Wipe the vote on voting unlocked event
+    // DONE: (in a way?) Add 'wakeup' call to to API
+    // DONE: Fix Welcome page redirect query params
+    // DONE: Have 'welcome', 'create' and 'join' as child routes of home page component, which has a back <a> butto
+    // DONE: Use Interface pattern for services (and rename IHub?)n
 
     // TODO
+    // TODO: TEST: Add 'loadingApi' element that is on form submission && api not woken up
+
     // TODO: Consider refactoring room guard to work all within the initial subscribe, or similar?
     // TODO: Not sure why signal r fails to connect when room guard prevents passage to room on a refresh
-    // TODO: Have 'welcome', 'create' and 'join' as child routes of home page component, which has a back <a> button
-    // TODO: Fix Welcome page redirect query params
     // TODO: In room/welcome guard check (with api?) sessionId token is valid (i.e. the sessionId you have is for the right room)
-    // TODO: Add 'wakeup' call to to API
-    // TODO: Add 'loadingApi' element that is on form submission && api not woken up
+    // TODO: deleteVoterById Incase you try to leave room but the connection is bad
 
     // TODO:
     // TODO: Nativescript initial routing - consider shared route (docs.nativescript.org/angular/code-sharing/migrating-a-web-project)
-    // TODO: Use Interface pattern for services (and rename IHub?)
   }
 
 }
