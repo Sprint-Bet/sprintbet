@@ -57,7 +57,7 @@ export class VoteService {
    * Casts a vote using the current session ID from the state
    * @param vote Vote from the vote card clicked
    */
-  castVote(vote: Vote): Observable<HttpResponse<any>> {
+  castVote(vote: Vote): Observable<string> {
     return this.store.pipe(
       select(sessionIdSelector),
       filter(sessionId => !!sessionId),
@@ -80,14 +80,14 @@ export class VoteService {
    * @param voterId Id of the voter
    * @param role Role that the voter wishes to change to
    */
-  changeRole(voterId: string, role: RoleType): Observable<Voter> {
+  changeRole(voterId: string, role: RoleType): Observable<string> {
     return this.voteRepositoryService.changeRole(voterId, role);
   }
 
   /**
    * Dealer locks voting
    */
-  lockVoting(): Observable<HttpResponse<any>> {
+  lockVoting(): Observable<boolean> {
     return this.store.pipe(
       select(roomSelector),
       first(),
@@ -98,7 +98,7 @@ export class VoteService {
   /**
    * Dealer clears votes
    */
-  clearVotes(): Observable<HttpResponse<any>> {
+  clearVotes(): Observable<boolean> {
     return this.store.pipe(
       select(roomSelector),
       first(),

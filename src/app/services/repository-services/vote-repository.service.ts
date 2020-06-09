@@ -19,7 +19,7 @@ export class VoteRepositoryService {
   ) { }
 
   registerVoter(newVoter: NewVoter, connectionId: string): Observable<Voter> {
-    const url = `${this.baseUrl}/voters/register`;
+    const url = `${this.baseUrl}/voters`;
     return this.httpClient.post<Voter>(url, { ...newVoter, connectionId});
   }
 
@@ -28,38 +28,38 @@ export class VoteRepositoryService {
     return this.httpClient.get<Voter[]>(url, { params: { roomId } });
   }
 
-  castVote(voterId: string, vote: Vote): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/voters/${voterId}/cast`;
-    return this.httpClient.put(url, vote, { observe: 'response' });
+  castVote(voterId: string, vote: Vote): Observable<string> {
+    const url = `${this.baseUrl}/voters/${voterId}/point`;
+    return this.httpClient.put<string>(url, vote);
   }
 
   leaveRoom(voterId: string, connectionId: string): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/voters/${voterId}/leave`;
+    const url = `${this.baseUrl}/voters/${voterId}`;
     return this.httpClient.delete(url, { headers: { connectionId }, observe: 'response' });
   }
 
-  changeRole(voterId: string, role: RoleType): Observable<Voter> {
-    const url = `${this.baseUrl}/voters/${voterId}/change-role`;
-    return this.httpClient.put<Voter>(url, { role });
+  changeRole(voterId: string, role: RoleType): Observable<string> {
+    const url = `${this.baseUrl}/voters/${voterId}/role`;
+    return this.httpClient.put<string>(url, { role });
   }
 
   createRoom(itemsType: string, connectionId: string): Observable<Room> {
-    const url = `${this.baseUrl}/rooms/create`;
+    const url = `${this.baseUrl}/rooms`;
     return this.httpClient.post<Room>(url, { itemsType }, { headers: { connectionId } });
   }
 
-  lockVoting(roomId: string): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/rooms/${roomId}/lock`;
-    return this.httpClient.put(url, {}, { observe: 'response' });
+  lockVoting(roomId: string): Observable<boolean> {
+    const url = `${this.baseUrl}/rooms/${roomId}/locked`;
+    return this.httpClient.put<boolean>(url, { lock: true });
   }
 
-  clearVotes(roomId: string): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/rooms/${roomId}/clear`;
-    return this.httpClient.put(url, {}, { observe: 'response' });
+  clearVotes(roomId: string): Observable<boolean> {
+    const url = `${this.baseUrl}/rooms/${roomId}/locked`;
+    return this.httpClient.put<boolean>(url, { lock: false });
   }
 
   finishGame(roomId: string): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/rooms/${roomId}/finish`;
+    const url = `${this.baseUrl}/rooms/${roomId}`;
     return this.httpClient.delete(url, { observe: 'response' });
   }
 
@@ -67,13 +67,4 @@ export class VoteRepositoryService {
     const url = `${this.baseUrl}/voters/${voterId}/reconnect`;
     return this.httpClient.get<Voter>(url, { headers: { connectionId } });
   }
-
-  /**
-   * Incase you try to leave room but the connection is bad
-   * @param voterId voter to remove from room
-   */
-  // deleteVoterById(voterId: string): Observable<HttpResponse<any>> {
-  //   const url = `${this.baseUrl}/voters/${voterId}/delete`;
-  //   return this.httpClient.delete<Voter>(url, { observe: 'response' });
-  // }
 }

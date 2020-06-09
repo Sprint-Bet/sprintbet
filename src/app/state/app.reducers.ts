@@ -15,7 +15,6 @@ import {
   roomPageClearVotesFailAction,
   roomPageClearVotesClickedAction,
   roomPageLeaveConfirmedAction,
-  roomPageLeaveSuccessAction,
   roomPageLeaveFailAction,
   storedIdNotFoundInStateAction,
   signalRVotingUpdatedAction,
@@ -26,7 +25,6 @@ import {
   welcomePageCreateRoomSuccessAction,
   welcomePageCreateRoomFailAction,
   roomPageNavigatedAction,
-  roomPageFinishSuccessAction,
   signalRDisconnectionSuccessAction,
   roomPageChangeRoleClickedAction,
   roomPageChangeRoleSuccessAction,
@@ -37,6 +35,7 @@ import {
   roomGuardReconnectVoterFailAction,
   roomGuardReconnectVoterRequestAction,
 } from './app.actions';
+import { RoleType } from '../enums/role-type.enum';
 
 const appReducer = createReducer(
   initialAppState,
@@ -121,7 +120,14 @@ const appReducer = createReducer(
     (state): AppState => ({ ...state, loading: true })
   ),
   on(roomPageChangeRoleSuccessAction,
-    (state, { myInformation }): AppState => ({ ...state, myInformation, loading: false, error: null })
+    (state, { updatedRole }): AppState => ({
+      ...state,
+      myInformation: {
+        ...state.myInformation,
+        role: updatedRole as RoleType
+      },
+      loading: false, error: null
+    })
   ),
   on(roomPageChangeRoleFailAction,
     (state, { error }): AppState => ({ ...state, loading: false, error })
