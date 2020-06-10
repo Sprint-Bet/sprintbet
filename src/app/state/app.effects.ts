@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Observable, of, iif } from 'rxjs';
 import { Action, Store, select } from '@ngrx/store';
-import { mergeMap, map, catchError, switchMap, withLatestFrom, first } from 'rxjs/operators';
+import { mergeMap, map, catchError, switchMap, withLatestFrom, first, tap } from 'rxjs/operators';
 import { VoteService } from '../services/vote.service';
 import {
   welcomeComponentNavigatedAction,
@@ -320,8 +320,7 @@ export class AppEffects {
   routeToErrorConnectingPage$: Observable<boolean> = createEffect(
     () => this.actions$.pipe(
       ofType(roomGuardReconnectVoterFailAction),
-      map(action => action.error.status === 404),
-      switchMap(is404 => is404 ? this.router.navigate(['/', 'error-reconnecting']) : of(true)),
+      switchMap(() => this.router.navigate(['/', 'error-reconnecting'])),
     ),
     { dispatch: false }
   );
