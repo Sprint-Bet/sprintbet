@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AppState } from '@src/app/state/app.state';
-import { Store } from '@ngrx/store';
-import { roomPageLeaveConfirmedAction, roomPageChangeRoleClickedAction } from '@src/app/state/app.actions';
+import { Store, Action } from '@ngrx/store';
+import { roomPageLeaveConfirmedAction, roomPageChangeRoleClickedAction, roomPageFinishClickedAction } from '@src/app/state/app.actions';
 import { Voter } from '@src/app/model/dtos/voter';
 import { RoleType } from '@src/app/enums/role-type.enum';
 
@@ -11,18 +11,19 @@ import { RoleType } from '@src/app/enums/role-type.enum';
   styleUrls: ['./room-controls.component.scss']
 })
 export class RoomControlsComponent implements OnInit {
-  private _myInformation: Voter;
-  isPlayer = true;
+  @Input() isDealer: boolean;
 
   @Input()
   set myInformation(myInformation: Voter) {
     this._myInformation = myInformation;
     this.isPlayer = +myInformation.role === +RoleType.PARTICIPANT;
   }
-
   get myInformation(): Voter {
     return this._myInformation;
   }
+
+  private _myInformation: Voter;
+  isPlayer = true;
 
   constructor(
     private store: Store<AppState>
@@ -31,15 +32,27 @@ export class RoomControlsComponent implements OnInit {
   ngOnInit() {
   }
 
-  leaveRoom() {
-    if (confirm('Leave room?')) {
-      this.store.dispatch(roomPageLeaveConfirmedAction({ sessionId: this.myInformation.id }));
-    }
+  quitRoom() {
+    this.isDealer
+      ? this.confirmAction('End the game?', roomPageFinishClickedAction())
+      : this.confirmAction('Leave room?', roomPageLeaveConfirmedAction({ sessionId: this.myInformation.id }));
   }
 
   updateRole() {
     this.isPlayer
       ? this.store.dispatch(roomPageChangeRoleClickedAction({ voterId: this.myInformation.id, role: RoleType.SPECTATOR }))
       : this.store.dispatch(roomPageChangeRoleClickedAction({ voterId: this.myInformation.id, role: RoleType.PARTICIPANT }));
+  }
+
+  /**
+   * Utility method to confirm before carrying out an action
+   * This method would ideally be shared!
+   * @param message Message to display in alert confirm box
+   * @param action NGRX store action to dispatch on confirmation
+   */
+  confirmAction(message: string, action: Action) {
+    if (confirm(message)) {
+      this.store.dispatch(action);
+    }
   }
 }

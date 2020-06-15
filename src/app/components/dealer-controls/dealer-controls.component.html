@@ -1,20 +1,6 @@
-<div class="mb-3 dealer-controls-container">
-    <button class="btn btn-primary mb-2"
-      (click)="updateRole()">
-      {{ isPlayer ? 'Just watch' : 'Let me vote!' }}
-    </button>
-    <button class="btn btn-primary mb-2 ml-2"
-        (click)="lockVoting()"
-        [disabled]="votingLocked">
-        Lock &amp; reveal
-    </button>
-    <button class="btn btn-primary"
-        (click)="clearVotes()"
-        [disabled]="!votingLocked">
-        Clear votes
-    </button>
-    <button class="btn btn-primary ml-2"
-        (click)="finishGame()">
-        Close room
-    </button>
+<div class="dealer-controls-container">
+  <button class="btn btn-primary mb-3" (click)="updateLockStatus()">
+    <span *ngIf="!votingLocked">Lock &amp; reveal votes</span>
+    <span *ngIf="votingLocked">Unlock &amp; clear votes</span>
+  </button>
 </div>

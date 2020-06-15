@@ -11,8 +11,6 @@ import { Voter } from '@src/app/model/dtos/voter';
   styleUrls: ['./voting-cards.component.scss']
 })
 export class VotingCardsComponent implements OnInit {
-  private _locked: boolean;
-
   @Input()
   set myInformation(myInfo: Voter) {
     this.selectedValue = myInfo.point;
@@ -26,11 +24,11 @@ export class VotingCardsComponent implements OnInit {
 
     this._locked = locked;
   }
-
   get locked(): boolean {
     return this._locked;
   }
 
+  private _locked: boolean;
   items = [];
   selectedValue = '';
 

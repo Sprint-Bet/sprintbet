@@ -5,16 +5,15 @@
   <p class="d-flex">
     <span class="mr-3"><strong>Members</strong>&nbsp;{{ (allVoters$ | async)?.length }}</span>
     <span class="mr-3"><strong>Participants</strong>&nbsp;{{ (participants$ | async)?.length }}</span>
-    <span ><strong>Voted</strong>&nbsp;{{ (voted$ | async)?.length }}</span>
+    <span><strong>Voted</strong>&nbsp;{{ (voted$ | async)?.length }}</span>
   </p>
-  <app-dealer-controls
-    *ngIf="isDealer$ | async"
+  <app-dealer-controls *ngIf="isDealer$ | async"
     [voters]="allVoters$ | async"
     [votingLocked]="votingLocked$ | async"
     [myInformation]="myInformation$ | async">
   </app-dealer-controls>
   <app-room-controls
-    *ngIf="!(isDealer$ | async)"
+    [isDealer]="isDealer$ | async"
     [myInformation]="myInformation$ | async">
   </app-room-controls>
   <app-voting-cards *ngIf="isParticipant$ | async"
