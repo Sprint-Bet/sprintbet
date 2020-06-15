@@ -1,6 +1,6 @@
 export interface Room {
     id: string;
     dealerId: string;
-    votingLocked: boolean;
+    locked: boolean;
     items?: string[];
 }
