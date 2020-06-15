@@ -179,7 +179,7 @@ export const roomPageChangeRoleClickedAction = createAction(
 );
 export const roomPageChangeRoleSuccessAction = createAction(
   ActionType.ROOM_PAGE_CHANGE_ROLE_SUCCESS,
-  props<{ myInformation: Voter }>()
+  props<{ updatedRole: string }>()
 );
 export const roomPageChangeRoleFailAction = createAction(
   ActionType.ROOM_PAGE_CHANGE_ROLE_FAIL,
