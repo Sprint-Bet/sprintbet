@@ -15,7 +15,7 @@ export interface AppState {
 }
 
 export const initialAppState: AppState = {
-  votingLocked: false,
+  votingLocked: null,
   voters: null,
   loading: false,
   error: null,

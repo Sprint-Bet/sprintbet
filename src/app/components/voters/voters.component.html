@@ -9,13 +9,15 @@
 
       <div *ngIf="showParticipants" class="card pt-2 px-2">
         <div *ngFor="let participant of participants" class="mr-2 mb-2 voter">
-          <span class="mr-2 name">{{participant.name}}</span>
-          <span class="mr-2" *ngIf="participant.id === myInformation?.id">(me)</span>
+          <span class="mr-2 name" [ngClass]="{'me': participant.id === myInformation?.id}">
+            {{ participant.name | slice: 0:15 }}
+            <span *ngIf="participant.name.length > 15">...</span>
+          </span>
           <div *ngIf="participant.role.toString() === '0'"
             class="d-flex flex-row align-items-center justify-content-center card point-card locked"
             [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && participant.point}">
             <span *ngIf="!votingLocked && participant.point">✓</span>
-            <span *ngIf="votingLocked">{{participant.point}}</span>
+            <span *ngIf="votingLocked">{{ participant.point }}</span>
           </div>
         </div>
       </div>
@@ -30,13 +32,15 @@
 
       <div *ngIf="showSpectators" class="card pt-2 px-2">
         <div *ngFor="let spectator of spectators" class="mr-2 mb-2 voter">
-          <span class="mr-2 name">{{spectator.name}}</span>
-          <span class="mr-2" *ngIf="spectator.id === myInformation?.id">(me)</span>
+          <span class="mr-2 name" [ngClass]="{'me': spectator.id === myInformation?.id}">
+            {{ spectator.name | slice: 0:15 }}
+            <span *ngIf="spectator.name.length > 15">...</span>
+          </span>
           <div *ngIf="spectator.role.toString() === '0'"
             class="d-flex flex-row align-items-center justify-content-center card point-card locked"
             [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && spectator.point}">
             <span *ngIf="!votingLocked && spectator.point">✓</span>
-            <span *ngIf="votingLocked">{{spectator.point}}</span>
+            <span *ngIf="votingLocked">{{ spectator.point }}</span>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 @import "variables";
 
 .voters-container {
-  font-size: $medium;
+  font-size: $base;
   width: $voter-container-width;
 }
 
@@ -9,6 +9,14 @@
   display: inline-flex;
   min-width: ($voter-container-width / 2) - $xsmall;
   max-width: $voter-container-width;
+
+  .name {
+    align-self: center;
+
+    &.me {
+      font-weight: bold;
+    }
+  }
 }
 
 .point-card {

@@ -51,7 +51,8 @@ const appReducer = createReducer(
       loading: false,
       myInformation: createdVoter,
       error: null,
-      room: createdVoter.room
+      room: createdVoter.room,
+      votingLocked: createdVoter.room.locked
     })
   ),
   on(welcomePageJoinRoomFailAction,
@@ -114,7 +115,7 @@ const appReducer = createReducer(
     (state, { error }): AppState => ({ ...state, loading: false, error })
   ),
   on(roomPageSetMyInformationAction,
-    (state, { myInformation }): AppState => ({ ...state, myInformation })
+    (state, { myInformation }): AppState => ({ ...state, myInformation, votingLocked: myInformation.room.locked })
   ),
   on(roomPageChangeRoleClickedAction,
     (state): AppState => ({ ...state, loading: true })
@@ -167,7 +168,8 @@ const appReducer = createReducer(
       loading: false,
       myInformation: voter,
       error: null,
-      room: voter.room
+      room: voter.room,
+      votingLocked: voter.room.locked
     })
   ),
   on(roomGuardReconnectVoterFailAction,
