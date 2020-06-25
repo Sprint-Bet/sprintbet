@@ -1,3 +1,7 @@
+<div *ngIf="((participants | votesAreMatching) && votingLocked) as showFireworks" class="fireworks-container">
+  <div [ngClass]="{'fireworks': showFireworks}"></div>
+</div>
+
 <div class="voters-container">
   <ng-container *ngIf="voters">
     <div *ngIf="participants.length > 0" class="mb-2">
