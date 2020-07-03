@@ -11,7 +11,7 @@ export class VotesAreMatching implements PipeTransform {
       return false;
     }
 
-    return participants.every(participant => participant.point === participants[0].point);
+    return participants.every((participant, _, array) => participant.point === array[0].point);
   }
 
 }
