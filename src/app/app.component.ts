@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter, map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { AppState } from './state/app.state';
-import { appComponentNavigatedAction } from './state/app.actions';
+import { errorSelector } from './state/app.selectors';
+import { Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +14,7 @@ import { appComponentNavigatedAction } from './state/app.actions';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  error$: Observable<HttpErrorResponse> = this.store.pipe(select(errorSelector));
 
   constructor(
     private router: Router,
