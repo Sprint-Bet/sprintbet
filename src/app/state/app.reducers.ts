@@ -141,7 +141,7 @@ const appReducer = createReducer(
     (state): AppState => ({ ...state, signalRConnected: true, error: null })
   ),
   on(signalRConnectionFailAction,
-    (state, { error }): AppState => ({ ...state, signalRConnected: false, error: { ...error, message: 'Signal R connection error' } })
+    (state, { error }): AppState => ({ ...state, signalRConnected: false, error: { ...error, message: 'Could not connect to API' } })
   ),
   on(signalRDisconnectionSuccessAction,
     (): AppState => (initialAppState)

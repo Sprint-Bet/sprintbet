@@ -13,15 +13,15 @@ export class AlertComponent implements OnInit {
 
   @Input()
   set error(error: HttpErrorResponse) {
+    this._error = error;
     if (!error) {
       return;
     }
 
-    this._error = error;
-    this.errorMessage = (error.error && error.error.errors[0].errorMessage)
+    const sprintBetError = error.error && error.error.errors && error.error.errors[0].errorMessage;
+    this.errorMessage = sprintBetError
       || this._error.message
       || 'No details available for this error';
-
   }
 
   get error(): HttpErrorResponse {
