@@ -9,6 +9,8 @@ import { RoleType } from '../enums/role-type.enum';
 export enum ActionType {
     NAVIGATION_TO_APP_COMPONENT = '[Navigation] Started the app',
     NAVIGATION_TO_WELCOME_PAGE = '[Navigation] Welcome page loaded',
+    NAVIGATION_TO_WELCOME_PAGE_JOIN = '[Navigation] Welcome page join loaded',
+    NAVIGATION_TO_WELCOME_PAGE_CREATE = '[Navigation] Welcome page create loaded',
     NAVIGATION_TO_ROOM_PAGE = '[Navigation] Room page loaded',
     NAVIGATION_TO_ROOM_GUARD = '[Navigation] Room guard reached',
     WELCOME_PAGE_JOIN_ROOM_CLICKED = '[Welcome page] Clicked to join room',
@@ -52,6 +54,7 @@ export enum ActionType {
     GUARD_GET_VOTER_SUCCESS = '[Room guard] Room guard successfully requested a voter',
     GUARD_GET_VOTER_FAIL = '[Room guard] Room guard failed to request a voter',
     GUARD_ID_NOT_FOUND_IN_STATE = '[Room guard] Adding local storage id to the state',
+    ERROR_HANDLING_DISMISS_CLICKED = '[Error handling] Dismiss alert popover clicked'
 }
 
 /**
@@ -62,6 +65,12 @@ export const appComponentNavigatedAction = createAction(
 );
 export const welcomeComponentNavigatedAction = createAction(
     ActionType.NAVIGATION_TO_WELCOME_PAGE
+);
+export const welcomeComponentCreateNavigatedAction = createAction(
+  ActionType.NAVIGATION_TO_WELCOME_PAGE_CREATE
+);
+export const welcomeComponentJoinNavigatedAction = createAction(
+  ActionType.NAVIGATION_TO_WELCOME_PAGE_JOIN
 );
 export const roomPageNavigatedAction = createAction(
     ActionType.NAVIGATION_TO_ROOM_PAGE
@@ -238,4 +247,11 @@ export const roomGuardReconnectVoterSuccessAction = createAction(
 export const roomGuardReconnectVoterFailAction = createAction(
   ActionType.GUARD_GET_VOTER_FAIL,
   props<{ error: HttpErrorResponse }>()
+);
+
+/**
+ * Error Handling
+ */
+export const errorHandlingDismissAlertClickedAction = createAction(
+  ActionType.ERROR_HANDLING_DISMISS_CLICKED,
 );

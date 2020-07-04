@@ -40,7 +40,6 @@ export class RoomGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | boolean | UrlTree {
-
     // Kick off signal r setup if arriving directly from a refresh
     this.store.dispatch(roomGuardNavigatedAction());
 

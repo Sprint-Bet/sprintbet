@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AppState } from '@src/app/state/app.state';
+import { Store } from '@ngrx/store';
+import { errorHandlingDismissAlertClickedAction } from '@src/app/state/app.actions';
 
 @Component({
   selector: 'app-alert',
@@ -20,6 +23,7 @@ export class AlertComponent implements OnInit {
 
     const sprintBetError = error.error && error.error.errors && error.error.errors[0].errorMessage;
     this.errorMessage = sprintBetError
+      || this._error.error
       || this._error.message
       || 'No details available for this error';
   }
@@ -28,9 +32,15 @@ export class AlertComponent implements OnInit {
     return this._error;
   }
 
-  constructor() { }
+  constructor(
+    private store: Store<AppState>
+  ) { }
 
   ngOnInit() {
+  }
+
+  dismissAlert() {
+    this.store.dispatch(errorHandlingDismissAlertClickedAction());
   }
 
 }

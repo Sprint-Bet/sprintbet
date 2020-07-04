@@ -34,6 +34,7 @@ import {
   roomGuardReconnectVoterSuccessAction,
   roomGuardReconnectVoterFailAction,
   roomGuardReconnectVoterRequestAction,
+  errorHandlingDismissAlertClickedAction,
 } from './app.actions';
 import { RoleType } from '../enums/role-type.enum';
 
@@ -138,13 +139,13 @@ const appReducer = createReducer(
    * Signal r related
    */
   on(signalRConnectionSuccessAction,
-    (state): AppState => ({ ...state, signalRConnected: true, error: null })
+    (state): AppState => ({ ...state, signalRConnected: true })
   ),
   on(signalRConnectionFailAction,
     (state, { error }): AppState => ({ ...state, signalRConnected: false, error: { ...error, message: 'Could not connect to API' } })
   ),
   on(signalRDisconnectionSuccessAction,
-    (): AppState => (initialAppState)
+    (state): AppState => ({ ...initialAppState, error: state.error })
   ),
   on(signalRVotingUpdatedAction,
     (state, { updatedVoters }): AppState => ({ ...state, voters: updatedVoters })
@@ -174,6 +175,13 @@ const appReducer = createReducer(
   ),
   on(roomGuardReconnectVoterFailAction,
     (state, { error }): AppState => ({ ...state, loading: false, error })
+  ),
+
+  /**
+   * Error handling
+   */
+  on(errorHandlingDismissAlertClickedAction,
+    (state): AppState => ({ ...state, error: null })
   ),
 );
 

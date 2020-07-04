@@ -47,7 +47,9 @@ import {
   roomGuardReconnectVoterSuccessAction,
   roomGuardReconnectVoterFailAction,
   signalRConnectionStartAction,
-  roomGuardNavigatedAction
+  roomGuardNavigatedAction,
+  welcomeComponentCreateNavigatedAction,
+  welcomeComponentJoinNavigatedAction
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -234,10 +236,14 @@ export class AppEffects {
 
   requestSignalRConnect$: Observable<Action> = createEffect(
     () => this.actions$.pipe(
-      ofType(welcomeComponentNavigatedAction, roomGuardNavigatedAction),
+      ofType(
+        welcomeComponentNavigatedAction,
+        welcomeComponentCreateNavigatedAction,
+        welcomeComponentJoinNavigatedAction,
+        roomGuardNavigatedAction),
       switchMap(() => this.store.pipe(select(signalRConnectedSelector), first())),
       switchMap(alreadyConnected => iif(
-        () => alreadyConnected,
+        () => !!alreadyConnected,
         of(signalRConnectionSuccessAction()),
         of(signalRConnectionStartAction())
       )),
@@ -317,12 +323,19 @@ export class AppEffects {
     )
   );
 
-  routeToErrorConnectingPage$: Observable<boolean> = createEffect(
+  // catchReconnectVoterFailure$: Observable<Action> = createEffect(
+  //   () => this.actions$.pipe(
+  //     ofType(roomGuardReconnectVoterFailAction),
+  //     map(() => signalRDisconnectionStartAction()),
+  //   )
+  // );
+
+  routeToWelcomePageWithError$: Observable<Action> = createEffect(
     () => this.actions$.pipe(
       ofType(roomGuardReconnectVoterFailAction),
-      switchMap(() => this.router.navigate(['/', 'error-reconnecting'])),
-    ),
-    { dispatch: false }
+      switchMap(() => this.router.navigate(['/'], { queryParams: { error: true } })),
+      map(() => signalRDisconnectionStartAction()),
+    )
   );
 
 }
