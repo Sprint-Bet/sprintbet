@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Observable, of, iif } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Action, Store, select } from '@ngrx/store';
-import { mergeMap, map, catchError, switchMap, withLatestFrom, first, tap } from 'rxjs/operators';
+import { mergeMap, map, catchError, switchMap, withLatestFrom, first, filter } from 'rxjs/operators';
 import { VoteService } from '../services/vote.service';
 import {
   welcomeComponentNavigatedAction,
@@ -61,6 +61,7 @@ import { StorageKey } from '@src/app/enums/storage-key.enum';
 import { AppState } from './app.state';
 import { sessionIdSelector, roomSelector, registrationInfoSelector, signalRConnectedSelector } from './app.selectors';
 import { HubMethods } from '../services/hub-services/hubMethods.enum';
+import { HubConnectionState } from '@microsoft/signalr';
 
 @Injectable()
 export class AppEffects {
@@ -236,17 +237,12 @@ export class AppEffects {
 
   requestSignalRConnect$: Observable<Action> = createEffect(
     () => this.actions$.pipe(
-      ofType(
-        welcomeComponentNavigatedAction,
+      ofType(welcomeComponentNavigatedAction,
         welcomeComponentCreateNavigatedAction,
         welcomeComponentJoinNavigatedAction,
         roomGuardNavigatedAction),
-      switchMap(() => this.store.pipe(select(signalRConnectedSelector), first())),
-      switchMap(alreadyConnected => iif(
-        () => !!alreadyConnected,
-        of(signalRConnectionSuccessAction()),
-        of(signalRConnectionStartAction())
-      )),
+      filter(() => this.voteHubService.connection.state === HubConnectionState.Disconnected),
+      switchMap(() => of(signalRConnectionStartAction())),
     )
   );
 

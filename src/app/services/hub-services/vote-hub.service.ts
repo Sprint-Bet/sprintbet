@@ -58,12 +58,10 @@ export class VoteHubService {
    * @param callback handler for when event occurs
    *
    * @example
-   * // Example callback function
    * const updatedVotersCallback = (voters: Voter[]) => {
    *   voters.forEach(voter => console.log(voter.name));
    * };
    *
-   * // Run the callback when the event occurs
    * this.voteHub.handleEvent<Voter[]>(HubEvents.VotingUpdated, updatedVotersCallback);
    */
   handleEvent<T>(hubMethodName: string, callback: (T) => void) {
