@@ -319,13 +319,6 @@ export class AppEffects {
     )
   );
 
-  // catchReconnectVoterFailure$: Observable<Action> = createEffect(
-  //   () => this.actions$.pipe(
-  //     ofType(roomGuardReconnectVoterFailAction),
-  //     map(() => signalRDisconnectionStartAction()),
-  //   )
-  // );
-
   routeToWelcomePageWithError$: Observable<Action> = createEffect(
     () => this.actions$.pipe(
       ofType(roomGuardReconnectVoterFailAction),
