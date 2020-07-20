@@ -1,0 +1,9 @@
+@import "variables";
+
+.dealer-icon {
+    height: 16px;
+    position: absolute;
+    left: -($xsmall / 2);
+    top: -$small;
+    transform: rotate(-20deg);
+}

@@ -23,7 +23,8 @@ import { RoomControlsComponent } from '@src/app/components/room-controls/room-co
 import { WelcomePageCreateComponent } from '@src/app/pages/welcome-page-create/welcome-page-create.component';
 import { WelcomePageJoinComponent } from '@src/app/pages/welcome-page-join/welcome-page-join.component';
 import { ErrorReconnectingComponent } from '@src/app/pages/error-reconnecting/error-reconnecting.component';
-import { VotesAreMatching } from './pipes/votes-are-matching.pipe';
+import { VotesAreMatching } from '@src/app/pipes/votes-are-matching.pipe';
+import { DealerIconComponent } from '@src/app/components/dealer-icon/dealer-icon.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { VotesAreMatching } from './pipes/votes-are-matching.pipe';
     WelcomePageJoinComponent,
     ErrorReconnectingComponent,
     VotesAreMatching,
+    DealerIconComponent,
   ],
   imports: [
     ReactiveFormsModule,

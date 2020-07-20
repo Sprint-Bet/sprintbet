@@ -1,5 +1,12 @@
 @import "variables";
+@import "mixins";
 
 .dealer-controls-container {
   width: $form-width;
+  background-color: tint($primary, $tint-modifier);
+  border-radius: 0.25rem;
+}
+
+.admin-icon {
+  position: relative;
 }

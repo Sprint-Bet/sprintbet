@@ -1,7 +1,8 @@
-<div class="dealer-controls-container">
+<div class="dealer-controls-container admin-icon mb-3 p-2">
+  <app-dealer-icon></app-dealer-icon>
   <button class="btn btn-primary mb-3" (click)="updateLockStatus()">
     <span *ngIf="!votingLocked">Lock &amp; reveal votes</span>
     <span *ngIf="votingLocked">Unlock &amp; clear votes</span>
   </button>
-  <button class="btn btn-primary mb-3" (click)="copyUrlToClipboard()">Copy to clipboard</button>
+  <button class="btn btn-primary" (click)="copyUrlToClipboard()">Copy to clipboard</button>
 </div>
