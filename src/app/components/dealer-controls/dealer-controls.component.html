@@ -3,4 +3,5 @@
     <span *ngIf="!votingLocked">Lock &amp; reveal votes</span>
     <span *ngIf="votingLocked">Unlock &amp; clear votes</span>
   </button>
+  <button class="btn btn-primary mb-3" (click)="copyUrlToClipboard()">Copy to clipboard</button>
 </div>

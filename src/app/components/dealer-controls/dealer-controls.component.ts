@@ -56,4 +56,9 @@ export class DealerControlsComponent implements OnInit {
       this.store.dispatch(action);
     }
   }
+
+  public copyUrlToClipboard(): void {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Copied url to clipboard!");
+  }
 }
