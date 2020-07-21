@@ -1,8 +1,15 @@
 <div class="dealer-controls-container admin-icon mb-3 p-2">
   <app-dealer-icon></app-dealer-icon>
-  <button class="btn btn-primary mb-3" (click)="updateLockStatus()">
-    <span *ngIf="!votingLocked">Lock &amp; reveal votes</span>
-    <span *ngIf="votingLocked">Unlock &amp; clear votes</span>
+  <button title="Lock and reveal votes" class="btn btn-primary dealer icon-button mr-2" (click)="updateLockStatus()">
+    <img *ngIf="!votingLocked" src="/assets/img/icons-lock-26.png"/>
+    <img *ngIf="votingLocked" src="/assets/img/icons-unlock-26.png"/>
   </button>
-  <button class="btn btn-primary" (click)="copyUrlToClipboard()">Copy to clipboard</button>
+  <button title="Copy room link" class="btn btn-primary dealer icon-button mr-2" (click)="copyUrlToClipboard()">
+    <img src="/assets/img/icons-copy-26.png"/>
+  </button>
+  <select name="itemsType" class="form-control" id="itemsTypeSelect">
+    <option [value]="null" selected disabled>Voting items</option>
+    <option value="fibonacci">Fibonacci</option>
+    <option value="tshirt">T-shirt sizing</option>
+  </select>
 </div>

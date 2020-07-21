@@ -59,6 +59,6 @@ export class DealerControlsComponent implements OnInit {
 
   public copyUrlToClipboard(): void {
     navigator.clipboard.writeText(window.location.href);
-    alert("Copied url to clipboard!");
+    alert("Copied room link to clipboard!");
   }
 }

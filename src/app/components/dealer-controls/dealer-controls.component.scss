@@ -5,8 +5,15 @@
   width: $form-width;
   background-color: tint($primary, $tint-modifier);
   border-radius: 0.25rem;
+  display: inline-flex;
 }
 
 .admin-icon {
   position: relative;
+}
+
+select {
+  font-weight: bold;
+  align-self: center;
+  width: $dealer-select-width;
 }
