@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   // apiUrl: 'https://localhost:5001'
+  // apiUrl: 'https://localhost:44394'
   apiUrl: 'https://sprintbetapi.herokuapp.com'
 };
 
