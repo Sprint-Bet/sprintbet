@@ -1,5 +1,4 @@
 export enum RoleType {
     PARTICIPANT = '0',
-    SPECTATOR = '1',
-    DEALER = '2',
+    SPECTATOR = '1'
 }
