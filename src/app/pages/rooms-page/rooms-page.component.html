@@ -1,7 +1,12 @@
 <div>
-  <h1 *ngIf="(room$ | async) as room">
-    Room id: {{ room.id }}
-  </h1>
+  <div class="d-inline-flex align-items-center"> 
+    <h2 *ngIf="(room$ | async) as room" class="mr-2 my-2">
+      Room {{ room.id }}
+    </h2>
+    <button title="Copy room link" class="btn btn-primary dealer icon-button px-1 header-button" (click)="copyUrlToClipboard()">
+      <img src="/assets/img/icons-copy-26.png"/>
+    </button>
+  </div>
   <p class="d-flex">
     <span class="mr-3"><strong>Members</strong>&nbsp;{{ (allVoters$ | async)?.length }}</span>
     <span class="mr-3"><strong>Participants</strong>&nbsp;{{ (participants$ | async)?.length }}</span>

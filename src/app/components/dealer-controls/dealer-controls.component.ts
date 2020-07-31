@@ -51,14 +51,9 @@ export class DealerControlsComponent implements OnInit {
     this.confirmAction('Reset all votes?', roomPageClearVotesClickedAction());
   }
 
-  confirmAction(message: string, action: Action) {
+  private confirmAction(message: string, action: Action) {
     if (confirm(message)) {
       this.store.dispatch(action);
     }
-  }
-
-  public copyUrlToClipboard(): void {
-    navigator.clipboard.writeText(window.location.href);
-    alert("Copied room link to clipboard!");
   }
 }
