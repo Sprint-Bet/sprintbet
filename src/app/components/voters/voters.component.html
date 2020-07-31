@@ -6,51 +6,41 @@
 <div class="voters-container">
   <ng-container *ngIf="voters">
     <div *ngIf="participants.length > 0" class="mb-2">
-      <button class="btn btn-primary mb-2" type="button" (click)="showParticipants = !showParticipants">
-        <span *ngIf="showParticipants">&#x25B2;</span>
-        <span *ngIf="!showParticipants">&#x25BC;</span>
-        Participants ({{ participants.length }})
-      </button>
-
-      <div *ngIf="showParticipants" class="card pt-2 px-2">
-        <div *ngFor="let participant of participants" class="mr-2 mb-2 voter">
-          <span class="mr-2 name" [ngClass]="{'me': participant.id === myInformation?.id}"
-            [title]="participant.name">
-            {{ participant.name | slice: 0:15 }}
-            <span *ngIf="participant.name.length > 15">...</span>
-          </span>
-          <div *ngIf="participant.role.toString() === '0'"
-            class="d-flex flex-row align-items-center justify-content-center card point-card locked"
-            [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && participant.point}">
-            <span *ngIf="!votingLocked && participant.point">✓</span>
-            <span *ngIf="votingLocked">{{ participant.point }}</span>
-          </div>
-        </div>
-      </div>
+      <ng-container [ngTemplateOutlet]="votersTemplate"
+        [ngTemplateOutletContext]="{members: participants, membersType: 'Participants'}">
+      </ng-container>
     </div>
-
     <div *ngIf="spectators.length > 0" class="mb-2">
-      <button class="btn btn-primary mb-2" type="button" (click)="showSpectators = !showSpectators">
-        <span *ngIf="showSpectators">&#x25B2;</span>
-        <span *ngIf="!showSpectators">&#x25BC;</span>
-        Spectators ({{ spectators.length }})
-      </button>
-
-      <div *ngIf="showSpectators" class="card pt-2 px-2">
-        <div *ngFor="let spectator of spectators" class="mr-2 mb-2 voter">
-          <span class="mr-2 name" [ngClass]="{'me': spectator.id === myInformation?.id}"
-            [title]="spectator.name">
-            {{ spectator.name | slice: 0:15 }}
-            <span *ngIf="spectator.name.length > 15">...</span>
-          </span>
-          <div *ngIf="spectator.role.toString() === '0'"
-            class="d-flex flex-row align-items-center justify-content-center card point-card locked"
-            [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && spectator.point}">
-            <span *ngIf="!votingLocked && spectator.point">✓</span>
-            <span *ngIf="votingLocked">{{ spectator.point }}</span>
-          </div>
-        </div>
-      </div>
+      <ng-container [ngTemplateOutlet]="votersTemplate"
+        [ngTemplateOutletContext]="{members: spectators, membersType: 'Spectators'}">
+      </ng-container>
     </div>
   </ng-container>
 </div>
+
+<ng-template #votersTemplate let-members="members" let-membersType="membersType">
+  <button class="btn btn-primary mb-2" type="button"
+    (click)="showMembers[membersType] = !showMembers[membersType]">
+    <span *ngIf="showMembers[membersType]">&#x25B2;</span>
+    <span *ngIf="!showMembers[membersType]">&#x25BC;</span>
+    {{ membersType }} ({{ members.length }})
+  </button>
+
+  <div *ngIf="showMembers[membersType]" class="card pt-2 px-2">
+    <div *ngFor="let member of members" class="mr-2 mb-2 voter">
+      
+      <span [ngClass]="{'me': member.id === myInformation?.id, 'admin-icon': member.id === room?.dealerId }"
+        class="mr-2 name" [title]="member.name">
+        <app-dealer-icon *ngIf="member.id === room?.dealerId"></app-dealer-icon>
+        {{ member.name | slice: 0:15 }}
+        <span *ngIf="member.name.length > 15">...</span>
+      </span>
+      <div *ngIf="member.role.toString() === '0'"
+        class="d-flex flex-row align-items-center justify-content-center card point-card locked"
+        [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && member.point}">
+        <span *ngIf="!votingLocked && member.point">✓</span>
+        <span *ngIf="votingLocked">{{ member.point }}</span>
+      </div>
+    </div>
+  </div>
+</ng-template>

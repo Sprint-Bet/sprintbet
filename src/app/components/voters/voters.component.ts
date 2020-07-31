@@ -1,6 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Voter } from '@src/app/model/dtos/voter';
 import { RoleType } from '@src/app/enums/role-type.enum';
+import { Room } from '@src/app/model/dtos/room';
+
+interface MemberTypes {
+  'Participants': boolean,
+  'Spectators': boolean
+} 
 
 @Component({
   selector: 'app-voters',
@@ -11,6 +17,7 @@ export class VotersComponent implements OnInit {
   @Input() votingLocked: boolean;
   @Input() myInformation: Voter;
   @Input() voters: Voter[];
+  @Input() room: Room;
 
   get spectators(): Voter[] {
     return this.voters.filter(voter => +voter.role === +RoleType.SPECTATOR);
@@ -20,8 +27,10 @@ export class VotersComponent implements OnInit {
     return this.voters.filter(voter => +voter.role === +RoleType.PARTICIPANT);
   }
 
-  showSpectators = false;
-  showParticipants = true;
+  showMembers: MemberTypes = {
+    Participants: true,
+    Spectators: false,
+  };
 
   constructor() { }
 
