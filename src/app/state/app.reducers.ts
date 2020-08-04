@@ -159,7 +159,14 @@ const appReducer = createReducer(
     (): AppState => (initialAppState)
   ),
   on(signalRVotingUpdatedAction,
-    (state, { updatedVoters }): AppState => ({ ...state, voters: updatedVoters })
+    (state, { updatedVoters }): AppState => ({
+      ...state,
+      voters: updatedVoters,
+      myInformation: {
+        ...state.myInformation,
+        room: updatedVoters[0].room
+      }
+    })
   ),
   on(signalRVotingLockedAction,
     (state): AppState => ({ ...state, votingLocked: true })
