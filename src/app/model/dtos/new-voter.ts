@@ -1,9 +1,9 @@
 import { RoleType } from '../../enums/role-type.enum';
-import { ItemType } from '@src/app/enums/item-type.enum';
+import { ItemsType } from '@src/app/enums/items-type.enum';
 
 export interface NewVoter {
     name: string;
     role: RoleType;
     group: string;
-    itemsType?: ItemType;
+    itemsType?: ItemsType;
 }

@@ -4,9 +4,10 @@
     [title]="votingLocked ? 'Unlock and reset votes' : 'Lock and reveal votes'">
     <img src="/assets/img/icons-lock-26.png" [src]="votingLocked ? '/assets/img/icons-unlock-26.png' : '/assets/img/icons-lock-26.png'" />
   </button>
-  <select name="itemsType" class="form-control" id="itemsTypeSelect">
+  <select name="itemsType" class="form-control" id="itemsTypeSelect" (change)="itemsChanged($event)">
     <option [value]="null" selected disabled>Change voting items</option>
-    <option value="fibonacci">Fibonacci</option>
-    <option value="tshirt">T-shirt sizing</option>
+    <option value="0">Fibonacci</option>
+    <option value="1">Spike timebox</option>
+    <option value="2">T-shirt sizing</option>
   </select>
 </div>

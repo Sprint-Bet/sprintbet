@@ -7,7 +7,7 @@ import { welcomePageCreateRoomClickedAction, welcomeComponentNavigatedAction } f
 import { loadingSelector } from '@src/app/state/app.selectors';
 import { ActivatedRoute } from '@angular/router';
 import { RoleType } from '@src/app/enums/role-type.enum';
-import { ItemType } from '@src/app/enums/item-type.enum';
+import { ItemsType } from '@src/app/enums/items-type.enum';
 
 @Component({
   selector: 'app-welcome-page-create',
@@ -19,7 +19,7 @@ export class WelcomePageCreateComponent implements OnInit {
 
   registrationForm = this.formBuilder.group({
     name: ['', Validators.required],
-    itemsType: [ItemType.FIBONACCI, Validators.required],
+    itemsType: [ItemsType.FIBONACCI, Validators.required],
     role: RoleType.PARTICIPANT,
     group: '',
   });
