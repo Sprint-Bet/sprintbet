@@ -59,6 +59,11 @@ export class VoteRepositoryService {
     return this.httpClient.put<boolean>(url, { lock: false });
   }
 
+  changeItems(roomId: string, itemsType: ItemsType): Observable<string[]> {
+    const url = `${this.baseUrl}/rooms/${roomId}/items`;
+    return this.httpClient.put<string[]>(url, { itemsType });
+  }
+
   finishGame(roomId: string): Observable<HttpResponse<any>> {
     const url = `${this.baseUrl}/rooms/${roomId}`;
     return this.httpClient.delete(url, { observe: 'response' });

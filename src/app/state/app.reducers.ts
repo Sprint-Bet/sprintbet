@@ -34,6 +34,9 @@ import {
   roomGuardReconnectVoterSuccessAction,
   roomGuardReconnectVoterFailAction,
   roomGuardReconnectVoterRequestAction,
+  roomPageChangeRoomItemsFailAction,
+  roomPageChangeRoomItemsSuccessAction,
+  roomPageChangeRoomItemsClickedAction,
 } from './app.actions';
 import { RoleType } from '../enums/role-type.enum';
 
@@ -132,6 +135,15 @@ const appReducer = createReducer(
   ),
   on(roomPageChangeRoleFailAction,
     (state, { error }): AppState => ({ ...state, loading: false, error })
+  ),
+  on(roomPageChangeRoomItemsClickedAction,
+    (state): AppState => ({ ...state, loading: true })
+  ),
+  on(roomPageChangeRoomItemsSuccessAction,
+    (state): AppState => ({ ...state, loading: false, error: null })
+  ),
+  on(roomPageChangeRoomItemsFailAction,
+    (state, { error }): AppState => ({ ...state, loading: false, error }),
   ),
 
   /**

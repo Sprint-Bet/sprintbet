@@ -108,6 +108,18 @@ export class VoteService {
   }
 
   /**
+   * Dealer changes voting items for the room
+   * @param itemsType the item type for the room
+   */
+  changeItems(itemsType: ItemsType): Observable<string[]> {
+    return this.store.pipe(
+      select(roomSelector),
+      first(),
+      switchMap(room => this.voteRepositoryService.changeItems(room.id, itemsType)),
+    );
+  }
+
+  /**
    * Finish game and delete room
    */
   finishGame(): Observable<HttpResponse<any>> {
