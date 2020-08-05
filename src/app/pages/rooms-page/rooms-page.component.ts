@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
 import { votersSelector, votingLockedSelector, myInformationSelector, roomSelector } from '@src/app/state/app.selectors';
@@ -6,6 +6,7 @@ import { map, filter, first } from 'rxjs/operators';
 import { RoleType } from '@src/app/enums/role-type.enum';
 import { roomPageNavigatedAction } from '@src/app/state/app.actions';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-rooms-page',
@@ -51,6 +52,7 @@ export class RoomsPageComponent implements OnInit {
     private store: Store<AppState>,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    @Inject(DOCUMENT) private document: HTMLDocument 
   ) { }
 
   ngOnInit() {
@@ -72,8 +74,41 @@ export class RoomsPageComponent implements OnInit {
   }
 
   copyUrlToClipboard(): void {
-    navigator.clipboard.writeText(window.location.href);
-    alert("Copied room link to clipboard!");
+    let url = '';
+
+    this.room$.pipe(filter(room => !!room), first()).subscribe(room => {
+      url = `https://sprintbet.herokuapp.com/rooms?id=${room.id}`;
+    });
+
+    this.copyTextToClipboard(url);
+
+    alert(`Copied room link to clipboard:\n${url}`);
+  }
+
+  copyTextToClipboard(text) {
+    // Create a textbox field where we can insert text to. 
+    var copyFrom = this.document.createElement("textarea");
+  
+    // Set the text content to be the text you wished to copy.
+    copyFrom.textContent = text;
+  
+    // Append the textbox field into the body as a child. 
+    // "execCommand()" only works when there exists selected text, and the text is inside 
+    // document.body (meaning the text is part of a valid rendered HTML element).
+    this.document.body.appendChild(copyFrom);
+  
+    // Select all the text!
+    copyFrom.select();
+  
+    // Execute command
+    this.document.execCommand('copy');
+  
+    // (Optional) De-select the text using blur(). 
+    copyFrom.blur();
+  
+    // Remove the textbox field from the document.body, so no other JavaScript nor 
+    // other elements can get access to document
+    this.document.body.removeChild(copyFrom);
   }
 
 }

@@ -15,6 +15,7 @@
     "default_popup": "index.html"
   },
   "permissions": [
-    "https://sprintbetapi.herokuapp.com/"
+    "https://sprintbetapi.herokuapp.com/",
+    "clipboardWrite"
   ]
 }
