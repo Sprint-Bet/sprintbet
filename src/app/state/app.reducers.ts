@@ -120,9 +120,7 @@ const appReducer = createReducer(
   on(roomPageSetMyInformationAction,
     (state, { myInformation }): AppState => ({
       ...state,
-      myInformation,
-      room: myInformation.room,
-      votingLocked: myInformation.room.locked
+      myInformation
     })
   ),
   on(roomPageChangeRoleClickedAction,
