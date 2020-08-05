@@ -118,7 +118,12 @@ const appReducer = createReducer(
     (state, { error }): AppState => ({ ...state, loading: false, error })
   ),
   on(roomPageSetMyInformationAction,
-    (state, { myInformation }): AppState => ({ ...state, myInformation, votingLocked: myInformation.room.locked })
+    (state, { myInformation }): AppState => ({
+      ...state,
+      myInformation,
+      room: myInformation.room,
+      votingLocked: myInformation.room.locked
+    })
   ),
   on(roomPageChangeRoleClickedAction,
     (state): AppState => ({ ...state, loading: true })
@@ -159,14 +164,7 @@ const appReducer = createReducer(
     (): AppState => (initialAppState)
   ),
   on(signalRVotingUpdatedAction,
-    (state, { updatedVoters }): AppState => ({
-      ...state,
-      voters: updatedVoters,
-      myInformation: {
-        ...state.myInformation,
-        room: updatedVoters[0].room
-      }
-    })
+    (state, { voters: updatedVoters }): AppState => ({ ...state, voters: updatedVoters })
   ),
   on(signalRVotingLockedAction,
     (state): AppState => ({ ...state, votingLocked: true })

@@ -143,7 +143,7 @@ export class AppEffects {
 
   getMyInformation$: Observable<Action> = createEffect(
     () => this.actions$.pipe(
-      ofType(roomPageVotersLoadedSuccessAction),
+      ofType(roomPageVotersLoadedSuccessAction, signalRVotingUpdatedAction),
       withLatestFrom(this.store.pipe(select(sessionIdSelector))),
       map(([action, sessionId]) => action.voters.find(voter => voter.id === sessionId)),
       map(myInformation => roomPageSetMyInformationAction({ myInformation }))
@@ -154,7 +154,7 @@ export class AppEffects {
     () => this.actions$.pipe(
       ofType(roomPageVotersLoadedSuccessAction),
       switchMap(() => this.voteHubService.listenFor<Voter[]>(HubEvents.VotingUpdated)),
-      map(updatedVoters => signalRVotingUpdatedAction({ updatedVoters })),
+      map(updatedVoters => signalRVotingUpdatedAction({ voters: updatedVoters })),
     )
   );
 

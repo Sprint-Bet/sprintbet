@@ -227,7 +227,7 @@ export const signalRDisconnectionFailAction = createAction(
 );
 export const signalRVotingUpdatedAction = createAction(
     ActionType.SIGNAL_R_VOTING_UPDATED,
-    props<{ updatedVoters: Voter[] }>()
+    props<{ voters: Voter[] }>()
 );
 export const signalRVotingLockedAction = createAction(
     ActionType.SIGNAL_R_VOTING_LOCKED
