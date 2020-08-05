@@ -20,11 +20,11 @@ export class VotersComponent implements OnInit {
   @Input() room: Room;
 
   get spectators(): Voter[] {
-    return this.voters.filter(voter => +voter.role === +RoleType.SPECTATOR);
+    return !!this.voters && this.voters.filter(voter => +voter.role === +RoleType.SPECTATOR);
   }
 
   get participants(): Voter[] {
-    return this.voters.filter(voter => +voter.role === +RoleType.PARTICIPANT);
+    return !!this.voters && this.voters.filter(voter => +voter.role === +RoleType.PARTICIPANT);
   }
 
   showMembers: MemberTypes = {
