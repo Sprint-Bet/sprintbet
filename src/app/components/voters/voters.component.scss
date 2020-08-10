@@ -10,6 +10,7 @@
   display: inline-flex;
   min-width: ($voter-container-width / 2) - $xsmall;
   max-width: $voter-container-width;
+  position: relative;
 
   .name {
     align-self: center;

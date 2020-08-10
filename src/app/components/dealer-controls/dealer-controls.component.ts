@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AppState } from '@src/app/state/app.state';
 import { Store, Action } from '@ngrx/store';
-import { roomPageLockClickedAction, roomPageClearVotesClickedAction } from '@src/app/state/app.actions';
+import { roomPageLockClickedAction, roomPageClearVotesClickedAction, roomPageChangeRoomItemsClickedAction } from '@src/app/state/app.actions';
 import { Voter } from '@src/app/model/dtos/voter';
 import { RoleType } from '@src/app/enums/role-type.enum';
+import { ItemsType } from '@src/app/enums/items-type.enum';
 
 @Component({
   selector: 'app-dealer-controls',
@@ -51,9 +52,14 @@ export class DealerControlsComponent implements OnInit {
     this.confirmAction('Reset all votes?', roomPageClearVotesClickedAction());
   }
 
-  confirmAction(message: string, action: Action) {
+  private confirmAction(message: string, action: Action) {
     if (confirm(message)) {
       this.store.dispatch(action);
     }
+  }
+
+  itemsChanged(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.store.dispatch(roomPageChangeRoomItemsClickedAction({ itemsType: target.value as ItemsType }));
   }
 }

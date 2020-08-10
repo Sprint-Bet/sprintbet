@@ -5,6 +5,7 @@ import { NewVoter } from '../model/dtos/new-voter';
 import { Vote } from '../model/dtos/vote';
 import { Room } from '../model/dtos/room';
 import { RoleType } from '../enums/role-type.enum';
+import { ItemsType } from '../enums/items-type.enum';
 
 export enum ActionType {
     NAVIGATION_TO_APP_COMPONENT = '[Navigation] Started the app',
@@ -38,6 +39,9 @@ export enum ActionType {
     ROOM_PAGE_CHANGE_ROLE_CLICKED = '[Room page] Change role',
     ROOM_PAGE_CHANGE_ROLE_SUCCESS = '[Room page] Changed role successfully',
     ROOM_PAGE_CHANGE_ROLE_FAIL = '[Room page] Failed to change role',
+    ROOM_PAGE_CHANGE_ROOM_ITEMS_CLICKED = '[Room page] Change room items',
+    ROOM_PAGE_CHANGE_ROOM_ITEMS_SUCCESS = '[Room page] Changed room items successfully',
+    ROOM_PAGE_CHANGE_ROOM_ITEMS_FAIL = '[Room page] Failed to change room items',
     SIGNAL_R_CONNECTION_START = '[Signal R] Signal R connection started',
     SIGNAL_R_CONNECTION_SUCCESS = '[Signal R] Signal R connected successfully',
     SIGNAL_R_CONNECTION_FAIL = '[Signal R] Signal R failed to connect',
@@ -185,6 +189,18 @@ export const roomPageChangeRoleFailAction = createAction(
   ActionType.ROOM_PAGE_CHANGE_ROLE_FAIL,
   props<{ error: HttpErrorResponse }>()
 );
+export const roomPageChangeRoomItemsClickedAction = createAction(
+    ActionType.ROOM_PAGE_CHANGE_ROOM_ITEMS_CLICKED,
+    props<{ itemsType: ItemsType }>()
+  );
+export const roomPageChangeRoomItemsSuccessAction = createAction(
+    ActionType.ROOM_PAGE_CHANGE_ROOM_ITEMS_SUCCESS,
+    props<{ newItems: string[] }>()
+);
+export const roomPageChangeRoomItemsFailAction = createAction(
+    ActionType.ROOM_PAGE_CHANGE_ROOM_ITEMS_FAIL,
+    props<{ error: HttpErrorResponse }>()
+);
 
 /**
  * Signal r actions
@@ -211,7 +227,7 @@ export const signalRDisconnectionFailAction = createAction(
 );
 export const signalRVotingUpdatedAction = createAction(
     ActionType.SIGNAL_R_VOTING_UPDATED,
-    props<{ updatedVoters: Voter[] }>()
+    props<{ voters: Voter[] }>()
 );
 export const signalRVotingLockedAction = createAction(
     ActionType.SIGNAL_R_VOTING_LOCKED

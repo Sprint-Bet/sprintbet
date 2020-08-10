@@ -47,7 +47,10 @@ import {
   roomGuardReconnectVoterSuccessAction,
   roomGuardReconnectVoterFailAction,
   signalRConnectionStartAction,
-  roomGuardNavigatedAction
+  roomGuardNavigatedAction,
+  roomPageChangeRoomItemsClickedAction,
+  roomPageChangeRoomItemsSuccessAction,
+  roomPageChangeRoomItemsFailAction
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -140,7 +143,7 @@ export class AppEffects {
 
   getMyInformation$: Observable<Action> = createEffect(
     () => this.actions$.pipe(
-      ofType(roomPageVotersLoadedSuccessAction),
+      ofType(roomPageVotersLoadedSuccessAction, signalRVotingUpdatedAction),
       withLatestFrom(this.store.pipe(select(sessionIdSelector))),
       map(([action, sessionId]) => action.voters.find(voter => voter.id === sessionId)),
       map(myInformation => roomPageSetMyInformationAction({ myInformation }))
@@ -151,7 +154,7 @@ export class AppEffects {
     () => this.actions$.pipe(
       ofType(roomPageVotersLoadedSuccessAction),
       switchMap(() => this.voteHubService.listenFor<Voter[]>(HubEvents.VotingUpdated)),
-      map(updatedVoters => signalRVotingUpdatedAction({ updatedVoters })),
+      map(updatedVoters => signalRVotingUpdatedAction({ voters: updatedVoters })),
     )
   );
 
@@ -205,6 +208,16 @@ export class AppEffects {
       mergeMap(action => this.voteService.changeRole(action.voterId, action.role).pipe(
         map(updatedRole => roomPageChangeRoleSuccessAction({ updatedRole })),
         catchError(error => of(roomPageChangeRoleFailAction({ error }))),
+      ))
+    )
+  );
+
+  changeRoomItems$: Observable<Action> = createEffect(
+    () => this.actions$.pipe(
+      ofType(roomPageChangeRoomItemsClickedAction),
+      mergeMap(action => this.voteService.changeItems(action.itemsType).pipe(
+        map(newItems => roomPageChangeRoomItemsSuccessAction({ newItems })),
+        catchError(error => of(roomPageChangeRoomItemsFailAction({ error }))),
       ))
     )
   );

@@ -7,7 +7,7 @@ import { Voter } from '../model/dtos/voter';
 export class VotesAreMatching implements PipeTransform {
 
   transform(participants: Voter[]): boolean {
-    if (!participants || participants.length < 2) {
+    if (!participants || participants.length < 2 || !participants[0].point) {
       return false;
     }
 

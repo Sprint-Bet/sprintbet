@@ -6,6 +6,16 @@
   border-color: $primary;
   color: $primary-text;
 
+  &.dealer {
+    color: $secondary-text;
+    font-weight: bold;
+  }
+
+  &.icon-button {
+    padding-left: $xsmall;
+    padding-right: $xsmall;
+  }
+
   &:hover {
     background-color: shade($primary, $shade-modifier);
     border-color: shade($primary, $shade-modifier);
