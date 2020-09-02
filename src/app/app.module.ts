@@ -50,7 +50,10 @@ import { DealerIconComponent } from '@src/app/components/dealer-icon/dealer-icon
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    StoreModule.forRoot({ appState : reducer }),
+    StoreModule.forRoot({
+      appState : reducer,
+      featureState: reducer,
+    }),
     EffectsModule.forRoot([AppEffects]),
     // Hopefully this is fixed now...
     // https://github.com/ngrx/platform/issues/1054
