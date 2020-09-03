@@ -24,6 +24,8 @@ import { WelcomePageCreateComponent } from '@src/app/pages/welcome-page-create/w
 import { WelcomePageJoinComponent } from '@src/app/pages/welcome-page-join/welcome-page-join.component';
 import { ErrorReconnectingComponent } from '@src/app/pages/error-reconnecting/error-reconnecting.component';
 import { AlertComponent } from '@src/app/components/alert/alert.component';
+import { VotesAreMatching } from '@src/app/pipes/votes-are-matching.pipe';
+import { DealerIconComponent } from '@src/app/components/dealer-icon/dealer-icon.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { AlertComponent } from '@src/app/components/alert/alert.component';
     WelcomePageJoinComponent,
     ErrorReconnectingComponent,
     AlertComponent,
+    VotesAreMatching,
+    DealerIconComponent,
   ],
   imports: [
     ReactiveFormsModule,

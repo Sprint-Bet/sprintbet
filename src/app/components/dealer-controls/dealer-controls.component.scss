@@ -1,5 +1,15 @@
 @import "variables";
+@import "mixins";
 
 .dealer-controls-container {
   width: $form-width;
+  background-color: tint($primary, $tint-modifier);
+  border-radius: 0.25rem;
+  display: inline-flex;
+}
+
+select {
+  font-weight: bold;
+  align-self: center;
+  width: $dealer-select-width;
 }

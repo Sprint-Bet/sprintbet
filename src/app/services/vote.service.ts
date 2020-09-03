@@ -12,6 +12,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Room } from '../model/dtos/room';
 import { VoteHubService } from './hub-services/vote-hub.service';
 import { RoleType } from '../enums/role-type.enum';
+import { ItemsType } from '../enums/items-type.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,7 @@ export class VoteService {
    * Creates a new room
    * @param itemsType Determines which voting items to create the room with
    */
-  createRoom(itemsType: string = 'fibonacci'): Observable<Room> {
+  createRoom(itemsType: ItemsType = ItemsType.FIBONACCI): Observable<Room> {
     const connectionId = this.voteHubService.connection.connectionId;
     return this.voteRepositoryService.createRoom(itemsType, connectionId);
   }
@@ -103,6 +104,18 @@ export class VoteService {
       select(roomSelector),
       first(),
       switchMap(room => this.voteRepositoryService.clearVotes(room.id)),
+    );
+  }
+
+  /**
+   * Dealer changes voting items for the room
+   * @param itemsType the item type for the room
+   */
+  changeItems(itemsType: ItemsType): Observable<string[]> {
+    return this.store.pipe(
+      select(roomSelector),
+      first(),
+      switchMap(room => this.voteRepositoryService.changeItems(room.id, itemsType)),
     );
   }
 

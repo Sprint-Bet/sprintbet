@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { Vote } from '@src/app/model/dtos/vote';
 import { Store } from '@ngrx/store';
 import { AppState } from '@src/app/state/app.state';
@@ -41,7 +41,26 @@ export class VotingCardsComponent implements OnInit {
 
   clicked(value: string) {
     this.selectedValue = value === this.selectedValue ? '' : value;
-    const vote = { point: this.selectedValue } as Vote;
+    this.sendVote(this.selectedValue);
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    const selection = Number.parseInt(event.key);
+    
+    const isSelectableOption = Number.isInteger(selection)
+      && selection > 0
+      && selection <= this.items.length;
+    
+    if (!isSelectableOption) {
+      return;
+    }
+
+    this.sendVote(this.items[selection - 1]);
+  }
+
+  private sendVote(selection: string) {
+    const vote = { point: selection } as Vote;
     this.store.dispatch(roomPageVoteClickedAction({ vote }));
   }
 
