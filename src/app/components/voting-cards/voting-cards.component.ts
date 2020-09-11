@@ -46,6 +46,10 @@ export class VotingCardsComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
+    if (this.locked) {
+      return;
+    }
+
     const selection = Number.parseInt(event.key);
     
     const isSelectableOption = Number.isInteger(selection)
