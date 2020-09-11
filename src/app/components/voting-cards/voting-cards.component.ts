@@ -13,7 +13,6 @@ import { Voter } from '@src/app/model/dtos/voter';
 export class VotingCardsComponent implements OnInit {
   @Input()
   set myInformation(myInfo: Voter) {
-    this.selectedValue = myInfo.point;
     this.items = myInfo.room.items;
   }
 
