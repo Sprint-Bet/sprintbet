@@ -28,7 +28,6 @@
 
   <div *ngIf="showMembers[membersType]" class="card pt-2 px-2">
     <div *ngFor="let member of members" class="mr-2 mb-2 voter">
-      
       <span [ngClass]="{'me': member.id === myInformation?.id, 'admin-icon': member.id === room?.dealerId }"
         class="mr-2 name" [title]="member.name">
         <app-dealer-icon *ngIf="member.id === room?.dealerId"></app-dealer-icon>
