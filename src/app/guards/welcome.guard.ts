@@ -24,20 +24,24 @@ export class WelcomeGuard implements CanActivate {
 
     const hasRoomIdQuery = route.queryParamMap.has('id');
 
-    const rejoinRoomUrlTree = this.router.createUrlTree(['rooms']);
+    const roomUrlTree = this.router.createUrlTree(['rooms']);
 
-    const roomSignupUrlTree = this.router.createUrlTree(['/', 'join'], {
+    const joinRoomUrlTree = this.router.createUrlTree(['/', 'join'], {
       queryParams: route.queryParams,
       queryParamsHandling: 'merge'
     });
+
+    if (route.queryParamMap.has('error')) {
+      return true;
+    }
 
     return this.store.pipe(
       select(sessionIdSelector),
       map(stateId => !!stateId || this.localStorageService.getItem(StorageKey.SESSION_ID)),
       map(hasId => hasId
-        ? rejoinRoomUrlTree
+        ? roomUrlTree
         : hasRoomIdQuery
-          ? roomSignupUrlTree
+          ? joinRoomUrlTree
           : true
       ),
     );

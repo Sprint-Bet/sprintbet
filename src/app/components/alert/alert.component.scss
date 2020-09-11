@@ -1,0 +1,14 @@
+@import "variables";
+
+.alert {
+  padding: $small $base;
+}
+
+// Make button focus look less wierd!
+button.close {
+  height: fit-content;
+  padding-top: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 4px;
+}

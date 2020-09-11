@@ -31,7 +31,8 @@ export class VoteRepositoryService {
 
   castVote(voterId: string, vote: Vote): Observable<string> {
     const url = `${this.baseUrl}/voters/${voterId}/point`;
-    return this.httpClient.put<string>(url, vote);
+    const options = { responseType: 'text' as 'json'};
+    return this.httpClient.put<string>(url, vote, options);
   }
 
   leaveRoom(voterId: string, connectionId: string): Observable<HttpResponse<any>> {

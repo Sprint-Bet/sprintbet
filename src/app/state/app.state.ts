@@ -23,5 +23,5 @@ export const initialAppState: AppState = {
   myInformation: null,
   sessionId: null,
   room: null,
-  signalRConnected: false
+  signalRConnected: null
 };

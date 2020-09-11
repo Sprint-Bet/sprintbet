@@ -23,6 +23,7 @@ import { RoomControlsComponent } from '@src/app/components/room-controls/room-co
 import { WelcomePageCreateComponent } from '@src/app/pages/welcome-page-create/welcome-page-create.component';
 import { WelcomePageJoinComponent } from '@src/app/pages/welcome-page-join/welcome-page-join.component';
 import { ErrorReconnectingComponent } from '@src/app/pages/error-reconnecting/error-reconnecting.component';
+import { AlertComponent } from '@src/app/components/alert/alert.component';
 import { VotesAreMatching } from '@src/app/pipes/votes-are-matching.pipe';
 import { DealerIconComponent } from '@src/app/components/dealer-icon/dealer-icon.component';
 
@@ -41,6 +42,7 @@ import { DealerIconComponent } from '@src/app/components/dealer-icon/dealer-icon
     WelcomePageCreateComponent,
     WelcomePageJoinComponent,
     ErrorReconnectingComponent,
+    AlertComponent,
     VotesAreMatching,
     DealerIconComponent,
   ],
