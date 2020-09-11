@@ -11,9 +11,16 @@ import { Voter } from '@src/app/model/dtos/voter';
   styleUrls: ['./voting-cards.component.scss']
 })
 export class VotingCardsComponent implements OnInit {
+  private _myInformation: Voter;
+
   @Input()
   set myInformation(myInfo: Voter) {
+    this._myInformation = myInfo;
     this.items = myInfo.room.items;
+  }
+
+  get myInformation(): Voter {
+    return this._myInformation;
   }
 
   @Input()
@@ -49,17 +56,20 @@ export class VotingCardsComponent implements OnInit {
       return;
     }
 
-    const selection = Number.parseInt(event.key);
-    
-    const isSelectableOption = Number.isInteger(selection)
-      && selection > 0
-      && selection <= this.items.length;
+    const keySelection = Number.parseInt(event.key);
+    const isSelectableOption = Number.isInteger(keySelection)
+      && keySelection > 0
+      && keySelection <= this.items.length;
     
     if (!isSelectableOption) {
       return;
     }
 
-    this.sendVote(this.items[selection - 1]);
+    const currentSelection = this.myInformation.point;
+    const newSelection = this.items[keySelection - 1];
+    const valueToSend = currentSelection === newSelection ? '' : newSelection;
+
+    this.sendVote(valueToSend);
   }
 
   private sendVote(selection: string) {
