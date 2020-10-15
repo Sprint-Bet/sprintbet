@@ -13,6 +13,7 @@ import { Room } from '../model/dtos/room';
 import { VoteHubService } from './hub-services/vote-hub.service';
 import { RoleType } from '../enums/role-type.enum';
 import { ItemsType } from '../enums/items-type.enum';
+import { NewVoterResponse } from '../model/dtos/new-voter-response';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class VoteService {
    * Registers a new voter with a post request, returns sessionId token
    * @param newVoter voter info used for setup
    */
-  registerVoter(newVoter: NewVoter): Observable<Voter> {
+  registerVoter(newVoter: NewVoter): Observable<NewVoterResponse> {
     const connectionId = this.voteHubService.connection.connectionId;
     return this.voteRepositoryService.registerVoter(newVoter, connectionId);
   }

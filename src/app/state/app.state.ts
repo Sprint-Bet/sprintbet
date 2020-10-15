@@ -10,6 +10,7 @@ export interface AppState {
   registrationInfo: NewVoter;
   myInformation: Voter;
   sessionId: string;
+  token: string;
   room: Room;
   signalRConnected: boolean;
 }
@@ -22,6 +23,7 @@ export const initialAppState: AppState = {
   registrationInfo: null,
   myInformation: null,
   sessionId: null,
+  token: null,
   room: null,
   signalRConnected: null
 };

@@ -38,6 +38,7 @@ import {
   roomPageChangeRoomItemsFailAction,
   roomPageChangeRoomItemsSuccessAction,
   roomPageChangeRoomItemsClickedAction,
+  addTokenToStateAction,
 } from './app.actions';
 import { RoleType } from '../enums/role-type.enum';
 
@@ -50,13 +51,13 @@ const appReducer = createReducer(
     (state): AppState => ({ ...state, loading: true })
   ),
   on(welcomePageJoinRoomSuccessAction,
-    (state, { createdVoter }): AppState => ({
+    (state, { newVoterResponse } ): AppState => ({
       ...state,
       loading: false,
-      myInformation: createdVoter,
+      myInformation: newVoterResponse.voter,
       error: null,
-      room: createdVoter.room,
-      votingLocked: createdVoter.room.locked
+      room: newVoterResponse.voter.room,
+      votingLocked: newVoterResponse.voter.room.locked
     })
   ),
   on(welcomePageJoinRoomFailAction,
@@ -77,6 +78,9 @@ const appReducer = createReducer(
    */
   on(storedIdNotFoundInStateAction,
     (state, { sessionId }): AppState => ({ ...state, loading: false, sessionId, error: null })
+  ),
+  on(addTokenToStateAction,
+    (state, { token }): AppState => ({ ...state, loading: false, token, error: null })
   ),
 
   /**
