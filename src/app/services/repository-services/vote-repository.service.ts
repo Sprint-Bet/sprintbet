@@ -30,9 +30,13 @@ export class VoteRepositoryService {
     return this.httpClient.get<Voter[]>(url, { params: { roomId } });
   }
 
-  castVote(voterId: string, vote: Vote): Observable<string> {
+  castVote(voterId: string, vote: Vote, token: string): Observable<string> {
     const url = `${this.baseUrl}/voters/${voterId}/point`;
-    const options = { responseType: 'text' as 'json'};
+    const headers = { 'Authorization' : `Bearer ${token}` };
+    const options = {
+      responseType: 'text' as 'json',
+      headers
+    };
     return this.httpClient.put<string>(url, vote, options);
   }
 

@@ -18,6 +18,11 @@ export const sessionIdSelector = createSelector(
     state => state.sessionId
 );
 
+export const tokenSelector = createSelector(
+  appStateSelector,
+  state => state.token
+);
+
 export const votingLockedSelector = createSelector(
     appStateSelector,
     state => state.votingLocked

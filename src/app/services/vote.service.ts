@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap, filter, first } from 'rxjs/operators';
+import { switchMap, filter, first, withLatestFrom } from 'rxjs/operators';
 import { Voter } from '../model/dtos/voter';
 import { NewVoter } from '../model/dtos/new-voter';
 import { VoteRepositoryService } from './repository-services/vote-repository.service';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../state/app.state';
-import { sessionIdSelector, roomSelector } from '../state/app.selectors';
+import { sessionIdSelector, roomSelector, tokenSelector } from '../state/app.selectors';
 import { Vote } from '../model/dtos/vote';
 import { HttpResponse } from '@angular/common/http';
 import { Room } from '../model/dtos/room';
@@ -64,7 +64,10 @@ export class VoteService {
       select(sessionIdSelector),
       filter(sessionId => !!sessionId),
       first(),
-      switchMap(sessionId => this.voteRepositoryService.castVote(sessionId, vote)),
+      withLatestFrom(this.store.pipe(select(tokenSelector))),
+      switchMap(([sessionId, token]) => {
+        return this.voteRepositoryService.castVote(sessionId, vote, token);
+      }),
     );
   }
 
