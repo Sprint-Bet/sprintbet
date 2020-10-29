@@ -26,6 +26,10 @@ export class VoteService {
     private voteHubService: VoteHubService,
   ) { }
 
+  
+  /* Dealer functions */
+
+
   /**
    * Registers a new voter with a post request, returns sessionId token
    * @param newVoter voter info used for setup
@@ -72,22 +76,35 @@ export class VoteService {
   }
 
   /**
-   * Leave the current game / room
-   * @param sessionId id of the voter to remove from room
-   */
-  leaveRoom(sessionId: string): Observable<HttpResponse<any>> {
-    const connectionId = this.voteHubService.connection.connectionId;
-    return this.voteRepositoryService.leaveRoom(sessionId, connectionId);
-  }
-
-  /**
    * Change the role of the voter to player (0) or spectator (1)
    * @param voterId Id of the voter
    * @param role Role that the voter wishes to change to
    */
   changeRole(voterId: string, role: RoleType): Observable<string> {
-    return this.voteRepositoryService.changeRole(voterId, role);
+    return this.store.pipe(
+      select(tokenSelector),
+      first(),
+      switchMap(token => this.voteRepositoryService.changeRole(voterId, role, token))
+    );
   }
+
+  /**
+   * Leave the current game / room
+   * @param sessionId id of the voter to remove from room
+   */
+  leaveRoom(sessionId: string): Observable<HttpResponse<any>> {
+    const connectionId = this.voteHubService.connection.connectionId;
+    // return this.voteRepositoryService.leaveRoom(sessionId, connectionId);
+    return this.store.pipe(
+      select(tokenSelector),
+      first(),
+      switchMap(token => this.voteRepositoryService.leaveRoom(sessionId, connectionId, token))
+    );
+  }
+
+
+  /* Dealer functions */
+
 
   /**
    * Dealer locks voting
