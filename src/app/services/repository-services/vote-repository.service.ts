@@ -76,7 +76,7 @@ export class VoteRepositoryService {
   leaveRoom(voterId: string, connectionId: string, token: string): Observable<HttpResponse<any>> {
     const url = `${environment.apiUrl}/voters/${voterId}`;
     const options: Options = { headers: { connectionId }, observe: 'response' as 'body' };
-    return this.httpClient.delete<any>(url, this.optionsWithAuth(token, options));
+    return this.httpClient.delete<HttpResponse<any>>(url, this.optionsWithAuth(token, options));
   }
 
   reconnectVoter(voterId: string, connectionId: string): Observable<Voter> {
@@ -102,13 +102,14 @@ export class VoteRepositoryService {
     return this.httpClient.put<boolean>(url, { lock: false }, this.optionsWithAuth(token));
   }
 
-  changeItems(roomId: string, itemsType: ItemsType): Observable<string[]> {
+  changeItems(roomId: string, itemsType: ItemsType, token: string): Observable<string[]> {
     const url = `${environment.apiUrl}/rooms/${roomId}/items`;
-    return this.httpClient.put<string[]>(url, { itemsType });
+    return this.httpClient.put<string[]>(url, { itemsType }, this.optionsWithAuth(token));
   }
 
-  finishGame(roomId: string): Observable<HttpResponse<any>> {
+  finishGame(roomId: string, token: string): Observable<HttpResponse<any>> {
     const url = `${environment.apiUrl}/rooms/${roomId}`;
-    return this.httpClient.delete(url, { observe: 'response' });
+    const options: Options = this.optionsWithAuth(token, { observe: 'response' as 'body' });
+    return this.httpClient.delete<HttpResponse<any>>(url, options);
   }
 }
