@@ -113,7 +113,8 @@ export class VoteService {
     return this.store.pipe(
       select(roomSelector),
       first(),
-      switchMap(room => this.voteRepositoryService.lockVoting(room.id)),
+      withLatestFrom(this.store.pipe(select(tokenSelector))),
+      switchMap(([room, token]) => this.voteRepositoryService.lockVoting(room.id, token)),
     );
   }
 
@@ -124,7 +125,8 @@ export class VoteService {
     return this.store.pipe(
       select(roomSelector),
       first(),
-      switchMap(room => this.voteRepositoryService.clearVotes(room.id)),
+      withLatestFrom(this.store.pipe(select(tokenSelector))),
+      switchMap(([room, token]) => this.voteRepositoryService.clearVotes(room.id, token)),
     );
   }
 

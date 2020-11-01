@@ -92,14 +92,14 @@ export class VoteRepositoryService {
     return this.httpClient.post<Room>(url, { itemsType }, { headers: { connectionId } });
   }
 
-  lockVoting(roomId: string): Observable<boolean> {
+  lockVoting(roomId: string, token: string): Observable<boolean> {
     const url = `${environment.apiUrl}/rooms/${roomId}/locked`;
-    return this.httpClient.put<boolean>(url, { lock: true });
+    return this.httpClient.put<boolean>(url, { lock: true }, this.optionsWithAuth(token));
   }
 
-  clearVotes(roomId: string): Observable<boolean> {
+  clearVotes(roomId: string, token: string): Observable<boolean> {
     const url = `${environment.apiUrl}/rooms/${roomId}/locked`;
-    return this.httpClient.put<boolean>(url, { lock: false });
+    return this.httpClient.put<boolean>(url, { lock: false }, this.optionsWithAuth(token));
   }
 
   changeItems(roomId: string, itemsType: ItemsType): Observable<string[]> {
