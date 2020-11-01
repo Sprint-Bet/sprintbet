@@ -12,8 +12,7 @@
     "build": "ng build --aot --prod",
     "build:staging": "ng build --aot --configuration=staging",
     "build:local": "ng build",    
-    "postinstall": "ng build --aot --prod --configuration=staging",
-    "build:postinstall": "ng build --aot --prod --env=${environment}",
+    "postinstall": "ng build --aot --configuration=${ENVIRONMENT_KEY}",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
