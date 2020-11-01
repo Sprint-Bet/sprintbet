@@ -10,7 +10,10 @@
     "preview": "tns preview",
     "ng": "ng",
     "build": "ng build --aot --prod",
-    "build:local": "ng build",
+    "build:staging": "ng build --aot --configuration=staging",
+    "build:local": "ng build",    
+    "postinstall": "ng build --aot --prod --configuration=staging",
+    "build:postinstall": "ng build --aot --prod --env=${environment}",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
