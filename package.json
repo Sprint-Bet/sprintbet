@@ -11,8 +11,8 @@
     "ng": "ng",
     "build": "ng build --aot --prod",
     "build:staging": "ng build --aot --configuration=staging",
-    "build:local": "ng build",    
-    "postinstall": "ng build --aot --configuration=${ENVIRONMENT_KEY}",
+    "build:local": "ng build",
+    "heroku-postbuild": "ng build --aot --configuration=${ENVIRONMENT_KEY}",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
