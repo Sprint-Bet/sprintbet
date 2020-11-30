@@ -8,6 +8,7 @@ import { Store, select } from '@ngrx/store';
 import { sessionIdSelector, myInformationSelector, signalRConnectedSelector } from '../state/app.selectors';
 import { map, switchMap, first, filter, mapTo } from 'rxjs/operators';
 import { storedIdNotFoundInStateAction, roomGuardReconnectVoterRequestAction, roomGuardNavigatedAction, addTokenToStateAction } from '../state/app.actions';
+import { JwtService } from '../services/jwt.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class RoomGuard implements CanActivate {
     first(),
   );
 
+  // Consider changing sessionId name, globally
   private sessionId$ = this.store.pipe(
     select(sessionIdSelector),
   );
@@ -37,6 +39,7 @@ export class RoomGuard implements CanActivate {
     private localStorageService: LocalStorageService,
     private store: Store<AppState>,
     private router: Router,
+    private jwtService: JwtService,
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | boolean | UrlTree {
@@ -44,19 +47,28 @@ export class RoomGuard implements CanActivate {
     this.store.dispatch(roomGuardNavigatedAction());
 
     // If session ID is immediately available in store (also not from refresh), allow safe passage
-    this.sessionId$.pipe(
-      first()
-    ).subscribe(sessionId => {
-      if (!!sessionId) {
-        return true;
-      }
-    });
+    // this.sessionId$.pipe(
+    //   first()
+    // ).subscribe(sessionId => {
+    //   if (!!sessionId) {
+    //     return true;
+    //   }
+    // });
 
     // Prepare rejection url
     const welcomeUrlTree = this.router.createUrlTree(['/'], {
       queryParams: route.queryParams,
       queryParamsHandling: 'merge'
     });
+
+    // Prepare token expired url
+    const tokenExpiredUrlTree = welcomeUrlTree;
+    tokenExpiredUrlTree.queryParams = { ...route.queryParams, error: true };
+
+    const storedToken = this.localStorageService.getItem(StorageKey.TOKEN);
+    if (!!storedToken && this.jwtService.hasTokenExpired(storedToken)) {
+      return tokenExpiredUrlTree;
+    }
 
     // If a session ID is found in local storage, request voter and set as mine
     combineLatest(
@@ -71,11 +83,11 @@ export class RoomGuard implements CanActivate {
 
     // Wait to confirm either no id found or a valid voter to be set
     return this.hasId$.pipe(
-        switchMap(hasId => iif(
-            () => hasId,
-            this.validInfo$.pipe(mapTo(true)),
-            of(welcomeUrlTree)
-        ))
+      switchMap(hasId => iif(
+        () => hasId,
+        this.validInfo$.pipe(mapTo(true)),
+        of(welcomeUrlTree)
+      ))
     );
   }
 

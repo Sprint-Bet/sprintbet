@@ -39,6 +39,7 @@ import {
   roomPageChangeRoomItemsSuccessAction,
   roomPageChangeRoomItemsClickedAction,
   addTokenToStateAction,
+  jwtGuardTokenExpiredAction,
 } from './app.actions';
 import { RoleType } from '../enums/role-type.enum';
 
@@ -194,6 +195,9 @@ const appReducer = createReducer(
   ),
   on(roomGuardReconnectVoterFailAction,
     (state, { error }): AppState => ({ ...state, loading: false, error })
+  ),
+  on(jwtGuardTokenExpiredAction,
+    (_, { message }): AppState => ({ ...initialAppState, error: { message } })
   ),
 
   /**

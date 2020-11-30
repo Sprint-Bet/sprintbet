@@ -60,7 +60,8 @@ export enum ActionType {
     GUARD_GET_VOTER_FAIL = '[Room guard] Room guard failed to request a voter',
     GUARD_ID_NOT_FOUND_IN_STATE = '[Room guard] Adding local storage id to the state',
     GUARD_ADD_TOKEN_TO_STATE = '[Room guard] Adding local storage token to the state',
-    ERROR_HANDLING_DISMISS_CLICKED = '[Error handling] Dismiss alert popover clicked'
+    JTW_GUARD_TOKEN_EXPIRED = '[Jwt guard] Token expired',
+    ERROR_HANDLING_DISMISS_CLICKED = '[Error handling] Dismiss alert popover clicked',
 }
 
 /**
@@ -140,8 +141,7 @@ export const roomPageVoteFailAction = createAction(
     props<{ error: HttpErrorResponse }>()
 );
 export const roomPageLeaveConfirmedAction = createAction(
-    ActionType.ROOM_PAGE_LEAVE_CONFIRMED,
-    props<{ sessionId: string }>()
+    ActionType.ROOM_PAGE_LEAVE_CONFIRMED
 );
 export const roomPageLeaveSuccessAction = createAction(
     ActionType.ROOM_PAGE_LEAVE_SUCCESS
@@ -269,6 +269,10 @@ export const roomGuardReconnectVoterSuccessAction = createAction(
 export const roomGuardReconnectVoterFailAction = createAction(
   ActionType.GUARD_GET_VOTER_FAIL,
   props<{ error: HttpErrorResponse }>()
+);
+export const jwtGuardTokenExpiredAction = createAction(
+    ActionType.JTW_GUARD_TOKEN_EXPIRED,
+    props<{ message: string }>()
 );
 
 /**

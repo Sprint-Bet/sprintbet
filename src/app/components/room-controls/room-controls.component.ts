@@ -35,7 +35,7 @@ export class RoomControlsComponent implements OnInit {
   quitRoom() {
     this.isDealer
       ? this.confirmAction('End the game?', roomPageFinishClickedAction())
-      : this.confirmAction('Leave room?', roomPageLeaveConfirmedAction({ sessionId: this.myInformation.id }));
+      : this.confirmAction('Leave room?', roomPageLeaveConfirmedAction());
   }
 
   updateRole() {

@@ -52,7 +52,8 @@ import {
   welcomeComponentJoinNavigatedAction,
   roomPageChangeRoomItemsClickedAction,
   roomPageChangeRoomItemsSuccessAction,
-  roomPageChangeRoomItemsFailAction
+  roomPageChangeRoomItemsFailAction,
+  jwtGuardTokenExpiredAction
 } from './app.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -208,8 +209,8 @@ export class AppEffects {
 
   leaveRoom$: Observable<Action> = createEffect(
     () => this.actions$.pipe(
-      ofType(roomPageLeaveConfirmedAction),
-      mergeMap(action => this.voteService.leaveRoom(action.sessionId).pipe(
+      ofType(roomPageLeaveConfirmedAction, jwtGuardTokenExpiredAction),
+      mergeMap((_) => this.voteService.leaveRoom().pipe(
         map(() => roomPageLeaveSuccessAction()),
         catchError(error => of(roomPageLeaveFailAction({ error }))),
       )),

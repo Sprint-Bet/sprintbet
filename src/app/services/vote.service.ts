@@ -69,9 +69,7 @@ export class VoteService {
       filter(sessionId => !!sessionId),
       first(),
       withLatestFrom(this.store.pipe(select(tokenSelector))),
-      switchMap(([sessionId, token]) => {
-        return this.voteRepositoryService.castVote(sessionId, vote, token);
-      }),
+      switchMap(([sessionId, token]) => this.voteRepositoryService.castVote(sessionId, vote, token)),
     );
   }
 
@@ -90,15 +88,17 @@ export class VoteService {
 
   /**
    * Leave the current game / room
-   * @param sessionId id of the voter to remove from room
    */
-  leaveRoom(sessionId: string): Observable<HttpResponse<any>> {
+  leaveRoom(): Observable<HttpResponse<any>> {
+    debugger;
     const connectionId = this.voteHubService.connection.connectionId;
-    // return this.voteRepositoryService.leaveRoom(sessionId, connectionId);
+
     return this.store.pipe(
-      select(tokenSelector),
+      select(sessionIdSelector),
+      filter(sessionId => !!sessionId),
       first(),
-      switchMap(token => this.voteRepositoryService.leaveRoom(sessionId, connectionId, token))
+      withLatestFrom(this.store.pipe(select(tokenSelector))),
+      switchMap(([sessionId, token]) => this.voteRepositoryService.leaveRoom(sessionId, connectionId, token))
     );
   }
 

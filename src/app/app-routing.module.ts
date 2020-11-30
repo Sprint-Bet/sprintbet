@@ -8,6 +8,7 @@ import { WelcomePageCreateComponent } from './pages/welcome-page-create/welcome-
 import { WelcomePageJoinComponent } from './pages/welcome-page-join/welcome-page-join.component';
 import { WelcomeGuard } from './guards/welcome.guard';
 import { ErrorReconnectingComponent } from './pages/error-reconnecting/error-reconnecting.component';
+import { JwtGuard } from './guards/jwt.guard';
 
 const routes: Routes = [
   {
@@ -21,7 +22,9 @@ const routes: Routes = [
     data: {
       title: 'Welcome'
     },
-    canActivate: [ WelcomeGuard ]
+    canActivate: [
+      WelcomeGuard,
+    ]
   },
   {
     path: 'new',
@@ -43,7 +46,9 @@ const routes: Routes = [
     data: {
       title: 'Rooms'
     },
-    canActivate: [RoomGuard]
+    canActivate: [
+      RoomGuard,
+    ]
   },
   {
     path: 'error-reconnecting',
