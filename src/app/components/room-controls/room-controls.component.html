@@ -1,0 +1,10 @@
+<div class="mb-3">
+  <button class="btn btn-primary" (click)="updateRole()">
+    <span *ngIf="isPlayer">Just watch</span>
+    <span *ngIf="!isPlayer">Let me vote!</span>
+  </button>
+  <button class="btn btn-primary ml-2" (click)="quitRoom()">
+    <span *ngIf="isDealer">Close room</span>
+    <span *ngIf="!isDealer">Leave room</span>
+  </button>
+</div>

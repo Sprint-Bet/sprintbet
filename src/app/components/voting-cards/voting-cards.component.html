@@ -1,0 +1,6 @@
+<div class="mb-3 cards-container" [ngClass]="{locked: locked}">
+  <button *ngFor="let item of items" class="card" (click)="clicked(item)"
+    [ngClass]="{selected: selectedValue === item}" [disabled]="locked">
+    {{ item }}
+  </button>
+</div>

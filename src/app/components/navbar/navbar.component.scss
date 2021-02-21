@@ -1,0 +1,21 @@
+@import "variables";
+
+nav {
+  background-color: $primary;
+  color: white;
+  padding: $xxsmall $small;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: $nav-width;
+
+  h1 {
+    display: flex;
+    margin-right: $xsmall;
+  }
+
+  img {
+    margin-left: $xsmall;
+    height: $xlarge;
+  }
+}

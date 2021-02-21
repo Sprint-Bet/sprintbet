@@ -1,0 +1,37 @@
+@import "variables";
+@import "mixins";
+
+.btn-primary {
+  background-color: $primary;
+  border-color: $primary;
+  color: $primary-text;
+
+  &.dealer {
+    color: $secondary-text;
+    font-weight: bold;
+  }
+
+  &.icon-button {
+    padding-left: $xxsmall;
+    padding-right: $xxsmall;
+  }
+
+  &:hover {
+    background-color: shade($primary, $shade-modifier);
+    border-color: shade($primary, $shade-modifier);
+  }
+
+  &:focus {
+    background-color: $primary;
+    border-color: $primary;
+  }
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  cursor: not-allowed;
+
+  background-color: tint($primary, $tint-modifier);
+  border-color: tint($primary, $tint-modifier);
+  pointer-events: none;
+  opacity: 1;
+}

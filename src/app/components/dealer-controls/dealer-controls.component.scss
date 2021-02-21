@@ -1,0 +1,31 @@
+@import "variables";
+@import "mixins";
+
+.dealer-controls-container {
+  width: $form-width;
+  background-color: tint($primary, $tint-modifier);
+  border-radius: 0.25rem;
+  display: inline-flex;
+
+  button {
+    padding-top: 0px;
+    padding-bottom: 0px;
+
+    img {
+      width: $medium;
+      margin-right: $xxsmall;
+    }
+
+    span {
+      font-size: 1rem;
+      vertical-align: middle;
+      margin-right: $xxsmall;
+    }
+  }
+}
+
+select {
+  font-weight: bold;
+  align-self: center;
+  width: $dealer-select-width;
+}

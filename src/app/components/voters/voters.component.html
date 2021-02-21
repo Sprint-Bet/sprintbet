@@ -1,0 +1,45 @@
+<div *ngIf="((participants | votesAreMatching) && votingLocked)" class="fireworks-container">
+  <div class="fireworks-before"></div>
+  <div class="fireworks-after"></div>
+</div>
+
+<div class="voters-container">
+  <ng-container *ngIf="voters">
+    <div *ngIf="participants.length > 0" class="mb-2">
+      <ng-container [ngTemplateOutlet]="votersTemplate"
+        [ngTemplateOutletContext]="{members: participants, membersType: 'Participants'}">
+      </ng-container>
+    </div>
+    <div *ngIf="spectators.length > 0" class="mb-2">
+      <ng-container [ngTemplateOutlet]="votersTemplate"
+        [ngTemplateOutletContext]="{members: spectators, membersType: 'Spectators'}">
+      </ng-container>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #votersTemplate let-members="members" let-membersType="membersType">
+  <button class="btn btn-primary mb-2" type="button"
+    (click)="showMembers[membersType] = !showMembers[membersType]">
+    <span *ngIf="showMembers[membersType]">&#x25B2;</span>
+    <span *ngIf="!showMembers[membersType]">&#x25BC;</span>
+    {{ membersType }} ({{ members.length }})
+  </button>
+
+  <div *ngIf="showMembers[membersType]" class="card pt-2 px-2">
+    <div *ngFor="let member of members" class="mr-2 mb-2 voter">
+      <span [ngClass]="{'me': member.id === myInformation?.id, 'admin-icon': member.id === room?.dealerId }"
+        class="mr-2 name" [title]="member.name">
+        <app-dealer-icon *ngIf="member.id === room?.dealerId"></app-dealer-icon>
+        {{ member.name | slice: 0:15 }}
+        <span *ngIf="member.name.length > 15">...</span>
+      </span>
+      <div *ngIf="member.role.toString() === '0'"
+        class="d-flex flex-row align-items-center justify-content-center card point-card locked"
+        [ngClass]="{'locked': votingLocked, 'voted': !votingLocked && member.point}">
+        <span *ngIf="!votingLocked && member.point">✓</span>
+        <span *ngIf="votingLocked">{{ member.point }}</span>
+      </div>
+    </div>
+  </div>
+</ng-template>

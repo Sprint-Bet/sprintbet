@@ -1,0 +1,41 @@
+@import "variables";
+@import "fireworks";
+
+.voters-container {
+  font-size: $base;
+  width: $voter-container-width;
+}
+
+.voter {
+  display: inline-flex;
+  min-width: ($voter-container-width / 2) - $xsmall;
+  max-width: $voter-container-width;
+  position: relative;
+
+  .name {
+    align-self: center;
+
+    &.me {
+      font-weight: bold;
+    }
+  }
+}
+
+.point-card {
+  text-align: center;
+  height: 40px;
+  width: 30px;
+  background-image: url("/assets/img/card-small.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  border-color: black;
+
+  &.voted {
+    font-weight: bold;
+  }
+
+  &.locked {
+    background-image: none;
+    font-size: $small;
+  }
+}
