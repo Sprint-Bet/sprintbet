@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { Observable, fromEvent, from, of } from 'rxjs';
+import { Observable, fromEvent, from, of, bindCallback } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
+import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
 
 @Injectable({
   providedIn: 'root'
@@ -74,7 +75,10 @@ export class VoteHubService {
    * @returns The return object but as an observable
    */
   listenFor<T>(eventName: string): Observable<T> {
-    return fromEvent(this.connection, eventName);
+    return fromEvent(
+      this.connection as unknown as FromEventTarget<T>,
+      eventName
+    );
   }
 
   /**

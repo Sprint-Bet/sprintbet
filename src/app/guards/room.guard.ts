@@ -47,11 +47,15 @@ export class RoomGuard implements CanActivate {
     this.sessionId$.pipe(
       first()
     ).subscribe(sessionId => {
-      if (!!sessionId) {
-        return true;
-      }
+      // if (!!sessionId) {
+      //   return true;
+      // }
 
-      return;
+      // return;
+
+      return !!sessionId
+        ? true
+        : null;
     });
 
     // Prepare rejection url

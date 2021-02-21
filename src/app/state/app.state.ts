@@ -42,7 +42,7 @@ export const initialAppState: AppState = {
   votingLocked: false,
   voters: [],
   loading: false,
-  error: {},
+  error: null,
   registrationInfo: initialRegistrationInfo,
   myInformation: InitialMyInformation,
   sessionId: "",
