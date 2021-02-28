@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AppState } from '@src/app/state/app.state';
+import { AppState, InitialMyInformation } from 'src/app/state/app.state';
 import { Store, Action } from '@ngrx/store';
-import { roomPageLeaveConfirmedAction, roomPageChangeRoleClickedAction, roomPageFinishClickedAction } from '@src/app/state/app.actions';
-import { Voter } from '@src/app/model/dtos/voter';
-import { RoleType } from '@src/app/enums/role-type.enum';
+import { roomPageLeaveConfirmedAction, roomPageChangeRoleClickedAction, roomPageFinishClickedAction } from 'src/app/state/app.actions';
+import { Voter } from 'src/app/model/dtos/voter';
+import { RoleType } from 'src/app/enums/role-type.enum';
 
 @Component({
   selector: 'app-room-controls',
@@ -11,10 +11,12 @@ import { RoleType } from '@src/app/enums/role-type.enum';
   styleUrls: ['./room-controls.component.scss']
 })
 export class RoomControlsComponent implements OnInit {
-  @Input() isDealer: boolean;
+  @Input() isDealer = false;
 
   @Input()
   set myInformation(myInformation: Voter) {
+    if (!myInformation) return;
+
     this._myInformation = myInformation;
     this.isPlayer = +myInformation.role === +RoleType.PARTICIPANT;
   }
@@ -22,7 +24,7 @@ export class RoomControlsComponent implements OnInit {
     return this._myInformation;
   }
 
-  private _myInformation: Voter;
+  private _myInformation: Voter = InitialMyInformation;
   isPlayer = true;
 
   constructor(
@@ -35,13 +37,13 @@ export class RoomControlsComponent implements OnInit {
   quitRoom() {
     this.isDealer
       ? this.confirmAction('End the game?', roomPageFinishClickedAction())
-      : this.confirmAction('Leave room?', roomPageLeaveConfirmedAction({ sessionId: this.myInformation.id }));
+      : this.confirmAction('Leave room?', roomPageLeaveConfirmedAction({ sessionId: this?.myInformation?.id }));
   }
 
   updateRole() {
     this.isPlayer
-      ? this.store.dispatch(roomPageChangeRoleClickedAction({ voterId: this.myInformation.id, role: RoleType.SPECTATOR }))
-      : this.store.dispatch(roomPageChangeRoleClickedAction({ voterId: this.myInformation.id, role: RoleType.PARTICIPANT }));
+      ? this.store.dispatch(roomPageChangeRoleClickedAction({ voterId: this?.myInformation?.id, role: RoleType.SPECTATOR }))
+      : this.store.dispatch(roomPageChangeRoleClickedAction({ voterId: this?.myInformation?.id, role: RoleType.PARTICIPANT }));
   }
 
   /**

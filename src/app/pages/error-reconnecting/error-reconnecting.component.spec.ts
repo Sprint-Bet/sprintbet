@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorReconnectingComponent } from '@src/app/pages/error-reconnecting/error-reconnecting.component';
+import { ErrorReconnectingComponent } from 'src/app/pages/error-reconnecting/error-reconnecting.component';
 
 describe('ErrorReconnectingComponent', () => {
   let component: ErrorReconnectingComponent;

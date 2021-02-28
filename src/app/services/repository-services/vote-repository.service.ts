@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { environment } from '@src/environments/environment';
+import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { NewVoter } from '../../model/dtos/new-voter';
 import { Voter } from '../../model/dtos/voter';
-import { Vote } from '@src/app/model/dtos/vote';
-import { Room } from '@src/app/model/dtos/room';
-import { RoleType } from '@src/app/enums/role-type.enum';
-import { ItemsType } from '@src/app/enums/items-type.enum';
+import { Vote } from 'src/app/model/dtos/vote';
+import { Room } from 'src/app/model/dtos/room';
+import { RoleType } from 'src/app/enums/role-type.enum';
+import { ItemsType } from 'src/app/enums/items-type.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -35,12 +35,12 @@ export class VoteRepositoryService {
     return this.httpClient.put<string>(url, vote, options);
   }
 
-  leaveRoom(voterId: string, connectionId: string): Observable<HttpResponse<any>> {
+  leaveRoom(voterId: string | undefined, connectionId: string): Observable<HttpResponse<any>> {
     const url = `${this.baseUrl}/voters/${voterId}`;
     return this.httpClient.delete(url, { headers: { connectionId }, observe: 'response' });
   }
 
-  changeRole(voterId: string, role: RoleType): Observable<string> {
+  changeRole(voterId: string | undefined, role: RoleType): Observable<string> {
     const url = `${this.baseUrl}/voters/${voterId}/role`;
     return this.httpClient.put<string>(url, { role });
   }

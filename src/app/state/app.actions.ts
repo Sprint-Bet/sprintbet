@@ -135,7 +135,7 @@ export const roomPageVoteFailAction = createAction(
 );
 export const roomPageLeaveConfirmedAction = createAction(
     ActionType.ROOM_PAGE_LEAVE_CONFIRMED,
-    props<{ sessionId: string }>()
+    props<{ sessionId: string | undefined }>()
 );
 export const roomPageLeaveSuccessAction = createAction(
     ActionType.ROOM_PAGE_LEAVE_SUCCESS
@@ -188,7 +188,7 @@ export const roomPageFinishFailAction = createAction(
 );
 export const roomPageChangeRoleClickedAction = createAction(
   ActionType.ROOM_PAGE_CHANGE_ROLE_CLICKED,
-  props<{ voterId: string, role: RoleType }>()
+  props<{ voterId: string | undefined, role: RoleType }>()
 );
 export const roomPageChangeRoleSuccessAction = createAction(
   ActionType.ROOM_PAGE_CHANGE_ROLE_SUCCESS,

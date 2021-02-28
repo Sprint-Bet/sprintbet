@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DealerControlsComponent } from '@src/app/components/dealer-controls/dealer-controls.component';
+import { DealerControlsComponent } from 'src/app/components/dealer-controls/dealer-controls.component';
 
 describe('DealerControlsComponent', () => {
   let component: DealerControlsComponent;

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WelcomePageJoinComponent } from '@src/app/pages/welcome-page-join/welcome-page-join.component';
+import { WelcomePageJoinComponent } from 'src/app/pages/welcome-page-join/welcome-page-join.component';
 
 describe('WelcomePageJoinComponent', () => {
   let component: WelcomePageJoinComponent;

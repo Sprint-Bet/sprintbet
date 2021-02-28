@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, HostListener } from '@angular/core';
-import { Vote } from '@src/app/model/dtos/vote';
+import { Vote } from 'src/app/model/dtos/vote';
 import { Store } from '@ngrx/store';
-import { AppState } from '@src/app/state/app.state';
-import { roomPageVoteClickedAction } from '@src/app/state/app.actions';
-import { Voter } from '@src/app/model/dtos/voter';
+import { AppState, InitialMyInformation } from 'src/app/state/app.state';
+import { roomPageVoteClickedAction } from 'src/app/state/app.actions';
+import { Voter } from 'src/app/model/dtos/voter';
 
 @Component({
   selector: 'app-voting-cards',
@@ -11,10 +11,12 @@ import { Voter } from '@src/app/model/dtos/voter';
   styleUrls: ['./voting-cards.component.scss']
 })
 export class VotingCardsComponent implements OnInit {
-  private _myInformation: Voter;
+  private _myInformation: Voter = InitialMyInformation;
+  private _locked = false;
 
   @Input()
   set myInformation(myInfo: Voter) {
+    if (!myInfo) return;
     this._myInformation = myInfo;
     this.items = myInfo.room.items;
   }
@@ -34,8 +36,7 @@ export class VotingCardsComponent implements OnInit {
     return this._locked;
   }
 
-  private _locked: boolean;
-  items = [];
+  items: string[]  = [];
   selectedValue = '';
 
   constructor(
@@ -60,12 +61,12 @@ export class VotingCardsComponent implements OnInit {
     const isSelectableOption = Number.isInteger(keySelection)
       && keySelection > 0
       && keySelection <= this.items.length;
-    
+
     if (!isSelectableOption) {
       return;
     }
 
-    const currentSelection = this.myInformation.point;
+    const currentSelection = this.myInformation?.point;
     const newSelection = this.items[keySelection - 1];
     const valueToSend = currentSelection === newSelection ? '' : newSelection;
 

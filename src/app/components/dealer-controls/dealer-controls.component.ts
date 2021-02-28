@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AppState } from '@src/app/state/app.state';
+import { AppState, InitialMyInformation } from 'src/app/state/app.state';
 import { Store, Action } from '@ngrx/store';
-import { roomPageLockClickedAction, roomPageClearVotesClickedAction, roomPageChangeRoomItemsClickedAction } from '@src/app/state/app.actions';
-import { Voter } from '@src/app/model/dtos/voter';
-import { RoleType } from '@src/app/enums/role-type.enum';
-import { ItemsType } from '@src/app/enums/items-type.enum';
+import { roomPageLockClickedAction, roomPageClearVotesClickedAction, roomPageChangeRoomItemsClickedAction } from 'src/app/state/app.actions';
+import { Voter } from 'src/app/model/dtos/voter';
+import { RoleType } from 'src/app/enums/role-type.enum';
+import { ItemsType } from 'src/app/enums/items-type.enum';
 
 @Component({
   selector: 'app-dealer-controls',
@@ -12,11 +12,13 @@ import { ItemsType } from '@src/app/enums/items-type.enum';
   styleUrls: ['./dealer-controls.component.scss']
 })
 export class DealerControlsComponent implements OnInit {
-  @Input() voters: Voter[];
-  @Input() votingLocked: boolean;
+  @Input() voters: Voter[] = [];
+  @Input() votingLocked = false;
 
   @Input()
   set myInformation(myInformation: Voter) {
+    if (!myInformation) return;
+
     this._myInformation = myInformation;
     this.isPlayer = +myInformation.role === +RoleType.PARTICIPANT;
   }
@@ -24,7 +26,7 @@ export class DealerControlsComponent implements OnInit {
     return this._myInformation;
   }
 
-  private _myInformation: Voter;
+  private _myInformation = InitialMyInformation;
   isPlayer = false;
 
   constructor(

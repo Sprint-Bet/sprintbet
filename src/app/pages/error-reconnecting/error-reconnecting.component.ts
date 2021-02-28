@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AppState } from '@src/app/state/app.state';
+import { AppState } from 'src/app/state/app.state';
 import { Store } from '@ngrx/store';
-import { signalRDisconnectionStartAction } from '@src/app/state/app.actions';
+import { signalRDisconnectionStartAction } from 'src/app/state/app.actions';
 
 @Component({
   selector: 'app-error-reconnecting',

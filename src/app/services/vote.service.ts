@@ -30,7 +30,7 @@ export class VoteService {
    * @param newVoter voter info used for setup
    */
   registerVoter(newVoter: NewVoter): Observable<Voter> {
-    const connectionId = this.voteHubService.connection.connectionId;
+    const connectionId = this.voteHubService.connection.connectionId || "";
     return this.voteRepositoryService.registerVoter(newVoter, connectionId);
   }
 
@@ -39,7 +39,7 @@ export class VoteService {
    * @param itemsType Determines which voting items to create the room with
    */
   createRoom(itemsType: ItemsType = ItemsType.FIBONACCI): Observable<Room> {
-    const connectionId = this.voteHubService.connection.connectionId;
+    const connectionId = this.voteHubService.connection.connectionId || "";
     return this.voteRepositoryService.createRoom(itemsType, connectionId);
   }
 
@@ -50,7 +50,7 @@ export class VoteService {
     return this.store.pipe(
       select(roomSelector),
       first(),
-      switchMap(room => this.voteRepositoryService.getVotersForRoom(room.id)),
+      switchMap(room => this.voteRepositoryService.getVotersForRoom(room?.id || '')),
     );
   }
 
@@ -71,8 +71,8 @@ export class VoteService {
    * Leave the current game / room
    * @param sessionId id of the voter to remove from room
    */
-  leaveRoom(sessionId: string): Observable<HttpResponse<any>> {
-    const connectionId = this.voteHubService.connection.connectionId;
+  leaveRoom(sessionId: string | undefined): Observable<HttpResponse<any>> {
+    const connectionId = this.voteHubService.connection.connectionId || "";
     return this.voteRepositoryService.leaveRoom(sessionId, connectionId);
   }
 
@@ -81,7 +81,7 @@ export class VoteService {
    * @param voterId Id of the voter
    * @param role Role that the voter wishes to change to
    */
-  changeRole(voterId: string, role: RoleType): Observable<string> {
+  changeRole(voterId: string | undefined, role: RoleType): Observable<string> {
     return this.voteRepositoryService.changeRole(voterId, role);
   }
 
@@ -92,7 +92,7 @@ export class VoteService {
     return this.store.pipe(
       select(roomSelector),
       first(),
-      switchMap(room => this.voteRepositoryService.lockVoting(room.id)),
+      switchMap(room => this.voteRepositoryService.lockVoting(room?.id || '')),
     );
   }
 
@@ -103,7 +103,7 @@ export class VoteService {
     return this.store.pipe(
       select(roomSelector),
       first(),
-      switchMap(room => this.voteRepositoryService.clearVotes(room.id)),
+      switchMap(room => this.voteRepositoryService.clearVotes(room?.id || '')),
     );
   }
 
@@ -115,7 +115,7 @@ export class VoteService {
     return this.store.pipe(
       select(roomSelector),
       first(),
-      switchMap(room => this.voteRepositoryService.changeItems(room.id, itemsType)),
+      switchMap(room => this.voteRepositoryService.changeItems(room?.id || '', itemsType)),
     );
   }
 
@@ -126,7 +126,7 @@ export class VoteService {
     return this.store.pipe(
       select(roomSelector),
       first(),
-      switchMap(room => this.voteRepositoryService.finishGame(room.id)),
+      switchMap(room => this.voteRepositoryService.finishGame(room?.id || '')),
     );
   }
 
@@ -135,7 +135,7 @@ export class VoteService {
    * @param voterId voter to reconnect
    */
   reconnectVoter(voterId: string): Observable<Voter> {
-    const connectionId = this.voteHubService.connection.connectionId;
+    const connectionId = this.voteHubService.connection.connectionId || "";
     return this.voteRepositoryService.reconnectVoter(voterId, connectionId);
   }
 

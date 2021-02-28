@@ -60,11 +60,13 @@ import { VoteHubService } from '../services/hub-services/vote-hub.service';
 import { Voter } from '../model/dtos/voter';
 import { HubEvents } from '../services/hub-services/hubEvents.enum';
 import { LocalStorageService } from '../services/local-storage.service';
-import { StorageKey } from '@src/app/enums/storage-key.enum';
-import { AppState } from './app.state';
+import { StorageKey } from 'src/app/enums/storage-key.enum';
+import { AppState, InitialMyInformation } from './app.state';
 import { sessionIdSelector, roomSelector, registrationInfoSelector, signalRConnectedSelector } from './app.selectors';
 import { HubMethods } from '../services/hub-services/hubMethods.enum';
 import { HubConnectionState } from '@microsoft/signalr';
+import { RoleType } from '../enums/role-type.enum';
+import { ItemsType } from '../enums/items-type.enum';
 
 @Injectable()
 export class AppEffects {
@@ -94,7 +96,11 @@ export class AppEffects {
     () => this.actions$.pipe(
       ofType(welcomePageCreateRoomSuccessAction),
       withLatestFrom(this.store.pipe(select(registrationInfoSelector))),
-      map(([action, registrationInfo]) => ({ ...registrationInfo, group: action.createdRoom.id })),
+      map(([action, registrationInfo]) => {
+        return !!registrationInfo
+          ? { ...registrationInfo, group: action.createdRoom.id }
+          : { name: '', group: '', role: '' as RoleType, itemsType: '' as ItemsType }
+      }),
       mergeMap(registrationInfo => this.voteService.registerVoter(registrationInfo).pipe(
         map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
         catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
@@ -149,7 +155,11 @@ export class AppEffects {
       ofType(roomPageVotersLoadedSuccessAction, signalRVotingUpdatedAction),
       withLatestFrom(this.store.pipe(select(sessionIdSelector))),
       map(([action, sessionId]) => action.voters.find(voter => voter.id === sessionId)),
-      map(myInformation => roomPageSetMyInformationAction({ myInformation }))
+      map(myInformation => {
+        return !myInformation
+          ? roomPageSetMyInformationAction({ myInformation: InitialMyInformation })
+          : roomPageSetMyInformationAction({ myInformation })
+      })
     )
   );
 
@@ -312,7 +322,7 @@ export class AppEffects {
     () => this.actions$.pipe(
       ofType(roomPageFinishSuccessAction),
       switchMap(() => this.store.pipe(select(roomSelector), first())),
-      mergeMap(room => this.voteHubService.invoke<void>(HubMethods.FinishGame, room.id).pipe(
+      mergeMap(room => this.voteHubService.invoke<void>(HubMethods.FinishGame, room?.id).pipe(
         map(() => signalRDisconnectionStartAction()),
         catchError(error => of(signalRInformVotersGameFinishedFail({ error }))),
       )),

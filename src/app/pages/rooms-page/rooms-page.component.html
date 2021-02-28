@@ -1,5 +1,5 @@
 <div>
-  <div class="d-inline-flex align-items-center"> 
+  <div class="d-inline-flex align-items-center">
     <h2 *ngIf="(room$ | async) as room" class="mr-2 my-2">
       Room {{ room.id }}
     </h2>
@@ -13,22 +13,22 @@
     <span><strong>Voted</strong>&nbsp;{{ (voted$ | async)?.length }}</span>
   </p>
   <app-dealer-controls *ngIf="isDealer$ | async"
-    [voters]="allVoters$ | async"
-    [votingLocked]="votingLocked$ | async"
-    [myInformation]="myInformation$ | async">
+    [voters]="(allVoters$ | async) || []"
+    [votingLocked]="(votingLocked$ | async) || false"
+    [myInformation]="(myInformation$ | async) || initialMyInformation">
   </app-dealer-controls>
   <app-room-controls
-    [isDealer]="isDealer$ | async"
-    [myInformation]="myInformation$ | async">
+    [isDealer]="(isDealer$ | async) || false"
+    [myInformation]="(myInformation$ | async) || initialMyInformation">
   </app-room-controls>
   <app-voting-cards *ngIf="isParticipant$ | async"
-    [locked]="votingLocked$ | async"
-    [myInformation]="myInformation$ | async">
+    [locked]="(votingLocked$ | async) || false"
+    [myInformation]="(myInformation$ | async) || initialMyInformation">
   </app-voting-cards>
   <app-voters
-    [votingLocked]="votingLocked$ | async"
-    [voters]="allVoters$ | async"
-    [myInformation]="myInformation$ | async"
-    [room]="room$ | async">
+    [votingLocked]="(votingLocked$ | async) || false"
+    [voters]="(allVoters$ | async) || []"
+    [myInformation]="(myInformation$ | async) || initialMyInformation"
+    [room]="(room$ | async) || initialMyInformation.room">
   </app-voters>
 </div>

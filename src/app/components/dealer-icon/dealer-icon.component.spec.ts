@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DealerIconComponent } from '@src/app/components/dealer-icon/dealer-icon.component';
+import { DealerIconComponent } from 'src/app/components/dealer-icon/dealer-icon.component';
 
 describe('DealerIconComponent', () => {
   let component: DealerIconComponent;
