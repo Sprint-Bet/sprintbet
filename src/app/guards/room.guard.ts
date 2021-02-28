@@ -7,7 +7,7 @@ import { AppState } from '../state/app.state';
 import { Store, select } from '@ngrx/store';
 import { sessionIdSelector, myInformationSelector, signalRConnectedSelector } from '../state/app.selectors';
 import { map, switchMap, first, filter, mapTo } from 'rxjs/operators';
-import { storedIdNotFoundInStateAction, roomGuardReconnectVoterRequestAction, roomGuardNavigatedAction } from '../state/app.actions';
+import { storedIdNotFoundInStateAction, roomGuardReconnectVoterRequestAction, roomGuardNavigatedAction, addTokenToStateAction } from '../state/app.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -87,9 +87,15 @@ export class RoomGuard implements CanActivate {
     const storedId = this.localStorageService.getItem(StorageKey.SESSION_ID);
     if (!sessionId && !!storedId) {
       this.store.dispatch(storedIdNotFoundInStateAction({ sessionId: storedId }));
+      this.addStoredTokenToState();
     }
 
     return !!storedId;
+  }
+
+  private addStoredTokenToState(): void {
+    const token = this.localStorageService.getItem(StorageKey.TOKEN);
+    this.store.dispatch(addTokenToStateAction({ token }));
   }
 
 }

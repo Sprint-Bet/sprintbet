@@ -96,7 +96,7 @@ export class AppEffects {
       withLatestFrom(this.store.pipe(select(registrationInfoSelector))),
       map(([action, registrationInfo]) => ({ ...registrationInfo, group: action.createdRoom.id })),
       mergeMap(registrationInfo => this.voteService.registerVoter(registrationInfo).pipe(
-        map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
+        map(newVoterResponse => welcomePageJoinRoomSuccessAction({ newVoterResponse })),
         catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
       ))
     )
@@ -106,7 +106,7 @@ export class AppEffects {
     () => this.actions$.pipe(
       ofType(welcomePageJoinRoomClickedAction),
       mergeMap(action => this.voteService.registerVoter(action.registrationInfo).pipe(
-        map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
+        map(newVoterResponse => welcomePageJoinRoomSuccessAction({ newVoterResponse })),
         catchError((error: HttpErrorResponse) => of(welcomePageJoinRoomFailAction({ error }))),
       ))
     )
@@ -118,7 +118,15 @@ export class AppEffects {
   saveIdToLocalStorage$: Observable<void> = createEffect(
     () => this.actions$.pipe(
       ofType(welcomePageJoinRoomSuccessAction),
-      map(action => this.localStorageService.setItem(StorageKey.SESSION_ID, action.createdVoter.id)),
+      map(action => this.localStorageService.setItem(StorageKey.SESSION_ID, action.newVoterResponse.voter.id)),
+    ),
+    { dispatch: false }
+  );
+
+  saveTokenToLocalStorage$: Observable<void> = createEffect(
+    () => this.actions$.pipe(
+      ofType(welcomePageJoinRoomSuccessAction),
+      map(action => this.localStorageService.setItem(StorageKey.TOKEN, action.newVoterResponse.token)),
     ),
     { dispatch: false }
   );
@@ -126,7 +134,10 @@ export class AppEffects {
   routeToRoomPage$: Observable<boolean> = createEffect(
     () => this.actions$.pipe(
       ofType(welcomePageJoinRoomSuccessAction),
-      switchMap(action => this.router.navigate(['rooms'], { queryParams: { id: action.createdVoter.room.id } })),
+      switchMap(action => this.router.navigate(
+        ['rooms'],
+        { queryParams: { id: action.newVoterResponse.voter.room.id } }
+      )),
     ),
     { dispatch: false }
   );
@@ -263,6 +274,14 @@ export class AppEffects {
     () => this.actions$.pipe(
       ofType(signalRDisconnectionSuccessAction),
       map(_ => this.localStorageService.deleteItem(StorageKey.SESSION_ID)),
+    ),
+    { dispatch: false }
+  );
+
+  wipeTokenFromLocalStorage$: Observable<void> = createEffect(
+    () => this.actions$.pipe(
+      ofType(signalRDisconnectionSuccessAction),
+      map(_ => this.localStorageService.deleteItem(StorageKey.TOKEN)),
     ),
     { dispatch: false }
   );

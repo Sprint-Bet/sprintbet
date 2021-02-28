@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap, filter, first } from 'rxjs/operators';
+import { switchMap, filter, first, withLatestFrom } from 'rxjs/operators';
 import { Voter } from '../model/dtos/voter';
 import { NewVoter } from '../model/dtos/new-voter';
 import { VoteRepositoryService } from './repository-services/vote-repository.service';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../state/app.state';
-import { sessionIdSelector, roomSelector } from '../state/app.selectors';
+import { sessionIdSelector, roomSelector, tokenSelector } from '../state/app.selectors';
 import { Vote } from '../model/dtos/vote';
 import { HttpResponse } from '@angular/common/http';
 import { Room } from '../model/dtos/room';
 import { VoteHubService } from './hub-services/vote-hub.service';
 import { RoleType } from '../enums/role-type.enum';
 import { ItemsType } from '../enums/items-type.enum';
+import { NewVoterResponse } from '../model/dtos/new-voter-response';
 
 @Injectable({
   providedIn: 'root'
@@ -25,11 +26,15 @@ export class VoteService {
     private voteHubService: VoteHubService,
   ) { }
 
+  
+  /* Dealer functions */
+
+
   /**
    * Registers a new voter with a post request, returns sessionId token
    * @param newVoter voter info used for setup
    */
-  registerVoter(newVoter: NewVoter): Observable<Voter> {
+  registerVoter(newVoter: NewVoter): Observable<NewVoterResponse> {
     const connectionId = this.voteHubService.connection.connectionId;
     return this.voteRepositoryService.registerVoter(newVoter, connectionId);
   }
@@ -63,7 +68,23 @@ export class VoteService {
       select(sessionIdSelector),
       filter(sessionId => !!sessionId),
       first(),
-      switchMap(sessionId => this.voteRepositoryService.castVote(sessionId, vote)),
+      withLatestFrom(this.store.pipe(select(tokenSelector))),
+      switchMap(([sessionId, token]) => {
+        return this.voteRepositoryService.castVote(sessionId, vote, token);
+      }),
+    );
+  }
+
+  /**
+   * Change the role of the voter to player (0) or spectator (1)
+   * @param voterId Id of the voter
+   * @param role Role that the voter wishes to change to
+   */
+  changeRole(voterId: string, role: RoleType): Observable<string> {
+    return this.store.pipe(
+      select(tokenSelector),
+      first(),
+      switchMap(token => this.voteRepositoryService.changeRole(voterId, role, token))
     );
   }
 
@@ -73,17 +94,17 @@ export class VoteService {
    */
   leaveRoom(sessionId: string): Observable<HttpResponse<any>> {
     const connectionId = this.voteHubService.connection.connectionId;
-    return this.voteRepositoryService.leaveRoom(sessionId, connectionId);
+    // return this.voteRepositoryService.leaveRoom(sessionId, connectionId);
+    return this.store.pipe(
+      select(tokenSelector),
+      first(),
+      switchMap(token => this.voteRepositoryService.leaveRoom(sessionId, connectionId, token))
+    );
   }
 
-  /**
-   * Change the role of the voter to player (0) or spectator (1)
-   * @param voterId Id of the voter
-   * @param role Role that the voter wishes to change to
-   */
-  changeRole(voterId: string, role: RoleType): Observable<string> {
-    return this.voteRepositoryService.changeRole(voterId, role);
-  }
+
+  /* Dealer functions */
+
 
   /**
    * Dealer locks voting
@@ -92,7 +113,8 @@ export class VoteService {
     return this.store.pipe(
       select(roomSelector),
       first(),
-      switchMap(room => this.voteRepositoryService.lockVoting(room.id)),
+      withLatestFrom(this.store.pipe(select(tokenSelector))),
+      switchMap(([room, token]) => this.voteRepositoryService.lockVoting(room.id, token)),
     );
   }
 
@@ -103,7 +125,8 @@ export class VoteService {
     return this.store.pipe(
       select(roomSelector),
       first(),
-      switchMap(room => this.voteRepositoryService.clearVotes(room.id)),
+      withLatestFrom(this.store.pipe(select(tokenSelector))),
+      switchMap(([room, token]) => this.voteRepositoryService.clearVotes(room.id, token)),
     );
   }
 
@@ -115,7 +138,8 @@ export class VoteService {
     return this.store.pipe(
       select(roomSelector),
       first(),
-      switchMap(room => this.voteRepositoryService.changeItems(room.id, itemsType)),
+      withLatestFrom(this.store.pipe(select(tokenSelector))),
+      switchMap(([room, token]) => this.voteRepositoryService.changeItems(room.id, itemsType, token)),
     );
   }
 
@@ -126,7 +150,8 @@ export class VoteService {
     return this.store.pipe(
       select(roomSelector),
       first(),
-      switchMap(room => this.voteRepositoryService.finishGame(room.id)),
+      withLatestFrom(this.store.pipe(select(tokenSelector))),
+      switchMap(([room, token]) => this.voteRepositoryService.finishGame(room.id, token)),
     );
   }
 

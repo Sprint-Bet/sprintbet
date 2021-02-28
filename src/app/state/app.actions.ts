@@ -6,6 +6,7 @@ import { Vote } from '../model/dtos/vote';
 import { Room } from '../model/dtos/room';
 import { RoleType } from '../enums/role-type.enum';
 import { ItemsType } from '../enums/items-type.enum';
+import { NewVoterResponse } from '../model/dtos/new-voter-response';
 
 export enum ActionType {
     NAVIGATION_TO_APP_COMPONENT = '[Navigation] Started the app',
@@ -58,6 +59,7 @@ export enum ActionType {
     GUARD_GET_VOTER_SUCCESS = '[Room guard] Room guard successfully requested a voter',
     GUARD_GET_VOTER_FAIL = '[Room guard] Room guard failed to request a voter',
     GUARD_ID_NOT_FOUND_IN_STATE = '[Room guard] Adding local storage id to the state',
+    GUARD_ADD_TOKEN_TO_STATE = '[Room guard] Adding local storage token to the state',
     ERROR_HANDLING_DISMISS_CLICKED = '[Error handling] Dismiss alert popover clicked'
 }
 
@@ -92,7 +94,7 @@ export const welcomePageJoinRoomClickedAction = createAction(
 );
 export const welcomePageJoinRoomSuccessAction = createAction(
     ActionType.WELCOME_PAGE_JOIN_ROOM_SUCCESS,
-    props<{ createdVoter: Voter }>()
+    props<{ newVoterResponse: NewVoterResponse }>()
 );
 export const welcomePageJoinRoomFailAction = createAction(
     ActionType.WELCOME_PAGE_JOIN_ROOM_FAIL,
@@ -117,6 +119,10 @@ export const welcomePageCreateRoomFailAction = createAction(
 export const storedIdNotFoundInStateAction = createAction(
     ActionType.GUARD_ID_NOT_FOUND_IN_STATE,
     props<{ sessionId: string }>()
+);
+export const addTokenToStateAction = createAction(
+    ActionType.GUARD_ADD_TOKEN_TO_STATE,
+    props<{ token: string }>()
 );
 
 /**

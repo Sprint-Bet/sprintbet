@@ -23,8 +23,8 @@ export class AlertComponent implements OnInit {
 
     const sprintBetError = error.error && error.error.errors && error.error.errors[0].errorMessage;
     this.errorMessage = sprintBetError
-      || this._error.error
       || this._error.message
+      || this._error.error
       || 'No details available for this error';
   }
 
