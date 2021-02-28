@@ -5,7 +5,7 @@
     "start": "node server.js",
     "start:local": "ng serve --aot -o --port=8888",
     "ng": "ng",
-    "build": "ng build --aot --prod",
+    "build": "ng build --prod",
     "build:local": "ng build",
     "test": "ng test",
     "lint": "ng lint",
