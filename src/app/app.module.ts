@@ -52,13 +52,7 @@ import { DealerIconComponent } from './components/dealer-icon/dealer-icon.compon
     HttpClientModule,
     StoreModule.forRoot({ appState : reducer }),
     EffectsModule.forRoot([AppEffects]),
-    // Hopefully this is fixed now...
-    // https://github.com/ngrx/platform/issues/1054
-    StoreDevtoolsModule.instrument({
-      name: 'Sprint Bet Devtools',
-      maxAge: 25,
-      logOnly: environment.production
-    })
+    environment.extModules
   ],
   providers: [
     Title
