@@ -7,6 +7,8 @@
     "ng": "ng",
     "build": "ng build --prod",
     "build:local": "ng build",
+    "build:staging": "ng build --aot --configuration=staging",
+    "heroku-postbuild": "ng build --aot --configuration=${ENVIRONMENT_KEY}",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
