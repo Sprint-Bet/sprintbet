@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NewVoter } from '@src/app/model/dtos/new-voter';
-import { AppState } from '@src/app/state/app.state';
+import { NewVoter } from 'src/app/model/dtos/new-voter';
+import { AppState } from 'src/app/state/app.state';
 import { Store, select } from '@ngrx/store';
-import { welcomePageCreateRoomClickedAction, welcomeComponentCreateNavigatedAction } from '@src/app/state/app.actions';
-import { loadingSelector } from '@src/app/state/app.selectors';
+import { welcomePageCreateRoomClickedAction, welcomeComponentCreateNavigatedAction } from 'src/app/state/app.actions';
+import { loadingSelector } from 'src/app/state/app.selectors';
 import { ActivatedRoute } from '@angular/router';
-import { RoleType } from '@src/app/enums/role-type.enum';
-import { ItemsType } from '@src/app/enums/items-type.enum';
+import { RoleType } from 'src/app/enums/role-type.enum';
+import { ItemsType } from 'src/app/enums/items-type.enum';
 
 @Component({
   selector: 'app-welcome-page-create',

@@ -3,11 +3,14 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "PlanningPokerAngular": {
+    "SprintBet": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
         }
       },
       "root": "",
@@ -17,14 +20,13 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/PlanningPokerAngular",
+            "outputPath": "dist/SprintBet",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
-              "src/favicon.ico",
               "src/assets",
               "src/manifest.json"
             ],
@@ -50,22 +52,47 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
+                }
+              ]
+            },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
                 }
               ]
             }
@@ -74,18 +101,22 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "PlanningPokerAngular:build"
+            "aot": true,
+            "browserTarget": "SprintBet:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "PlanningPokerAngular:build:production"
+              "browserTarget": "SprintBet:build:production"
+            },
+            "staging": {
+              "browserTarget": "SprintBet:build:staging"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "PlanningPokerAngular:build"
+            "browserTarget": "SprintBet:build"
           }
         },
         "test": {
@@ -96,7 +127,6 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
@@ -128,20 +158,19 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "PlanningPokerAngular:serve"
+            "devServerTarget": "SprintBet:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "PlanningPokerAngular:serve:production"
+              "devServerTarget": "SprintBet:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "PlanningPokerAngular",
+  "defaultProject": "SprintBet",
   "cli": {
-    "defaultCollection": "@nativescript/schematics",
-    "analytics": "d2d81604-b789-4597-aa14-885935de7941"
+    "analytics": "f05cf6d3-b650-4512-9e90-4a0097bd2577"
   }
 }

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WelcomePageCreateComponent } from '@src/app/pages/welcome-page-create/welcome-page-create.component';
+import { WelcomePageCreateComponent } from 'src/app/pages/welcome-page-create/welcome-page-create.component';
 
 describe('WelcomePageCreateComponent', () => {
   let component: WelcomePageCreateComponent;

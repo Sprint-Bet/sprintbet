@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NewVoter } from '@src/app/model/dtos/new-voter';
-import { AppState } from '@src/app/state/app.state';
+import { NewVoter } from 'src/app/model/dtos/new-voter';
+import { AppState } from 'src/app/state/app.state';
 import { Store, select } from '@ngrx/store';
-import { welcomePageJoinRoomClickedAction, welcomeComponentJoinNavigatedAction } from '@src/app/state/app.actions';
-import { loadingSelector } from '@src/app/state/app.selectors';
+import { welcomePageJoinRoomClickedAction, welcomeComponentJoinNavigatedAction } from 'src/app/state/app.actions';
+import { loadingSelector } from 'src/app/state/app.selectors';
 import { ActivatedRoute } from '@angular/router';
-import { RoleType } from '@src/app/enums/role-type.enum';
+import { RoleType } from 'src/app/enums/role-type.enum';
 
 @Component({
   selector: 'app-welcome-page-join',
@@ -37,7 +37,7 @@ export class WelcomePageJoinComponent implements OnInit {
 
     const roomId = this.activatedRoute.snapshot.queryParamMap.get('id');
     if (!!roomId) {
-      this.registrationForm.get('group').setValue(roomId);
+      this.registrationForm.get('group')?.setValue(roomId);
       this.hasGroupIdQuery = true;
     }
   }

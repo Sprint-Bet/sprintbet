@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AppState } from '@src/app/state/app.state';
+import { AppState } from 'src/app/state/app.state';
 import { Store } from '@ngrx/store';
-import { errorHandlingDismissAlertClickedAction } from '@src/app/state/app.actions';
+import { errorHandlingDismissAlertClickedAction } from 'src/app/state/app.actions';
 
 @Component({
   selector: 'app-alert',
@@ -10,17 +10,15 @@ import { errorHandlingDismissAlertClickedAction } from '@src/app/state/app.actio
   styleUrls: ['./alert.component.scss']
 })
 export class AlertComponent implements OnInit {
-  private _error: HttpErrorResponse;
+  private _error: HttpErrorResponse = {} as HttpErrorResponse;
 
-  errorMessage: string;
+  errorMessage: string = '';
 
   @Input()
   set error(error: HttpErrorResponse) {
-    this._error = error;
-    if (!error) {
-      return;
-    }
+    if (!error) return;
 
+    this._error = error;
     const sprintBetError = error.error && error.error.errors && error.error.errors[0].errorMessage;
     this.errorMessage = sprintBetError
       || this._error.error

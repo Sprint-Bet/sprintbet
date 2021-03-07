@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { WelcomePageComponent } from '@src/app/pages/welcome-page/welcome-page.component';
-import { PageNotFoundComponent } from '@src/app/pages/page-not-found/page-not-found.component';
 import { RoomsPageComponent } from './pages/rooms-page/rooms-page.component';
 import { RoomGuard } from './guards/room.guard';
 import { WelcomePageCreateComponent } from './pages/welcome-page-create/welcome-page-create.component';
 import { WelcomePageJoinComponent } from './pages/welcome-page-join/welcome-page-join.component';
 import { WelcomeGuard } from './guards/welcome.guard';
 import { ErrorReconnectingComponent } from './pages/error-reconnecting/error-reconnecting.component';
+import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AppState } from '@src/app/state/app.state';
+import { AppState } from 'src/app/state/app.state';
 import { Store } from '@ngrx/store';
-import { welcomeComponentNavigatedAction } from '@src/app/state/app.actions';
+import { welcomeComponentNavigatedAction } from 'src/app/state/app.actions';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

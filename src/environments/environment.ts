@@ -2,11 +2,20 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+
 export const environment = {
   production: false,
   // apiUrl: 'https://localhost:5001'
   // apiUrl: 'https://localhost:44394'
-  apiUrl: 'https://sprintbetapi.herokuapp.com'
+  apiUrl: 'https://sprintbetapi.herokuapp.com',
+  /**
+   * Hopefully this is fixed now...
+   * https://github.com/ngrx/platform/issues/1054
+   */
+  extModules: StoreDevtoolsModule.instrument({
+    maxAge: 25
+  }),
 };
 
 /*

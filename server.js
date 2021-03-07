@@ -23,11 +23,11 @@ const forceSSL = function() {
 app.use(forceSSL());
 
 // Serve static files....
-app.use(express.static(__dirname + '/dist/PlanningPokerAngular'));
+app.use(express.static(__dirname + '/dist/SprintBet'));
 
 // Send all requests to index.html
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname + '/dist/PlanningPokerAngular/index.html'));
+  res.sendFile(path.join(__dirname + '/dist/SprintBet/index.html'));
 });
 
 // default Heroku PORT
