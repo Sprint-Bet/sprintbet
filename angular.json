@@ -28,6 +28,7 @@
             "aot": true,
             "assets": [
               "src/assets",
+              "src/health.html",
               "src/manifest.json"
             ],
             "styles": [
@@ -127,7 +128,8 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "src/assets"
+              "src/assets",
+              "src/health.html"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
