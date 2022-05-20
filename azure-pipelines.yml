@@ -25,48 +25,48 @@ stages:
 
   # --- STAGING --- #
 
-  - template: /templates/tmpl-create-image.yml
-    parameters:
-      name: BuildDockerImageStaging
-      display_name: Build Staging Image
-      environment: staging
-      region: NEU
+  # - template: /templates/tmpl-create-image.yml
+  #   parameters:
+  #     name: BuildDockerImageStaging
+  #     display_name: Build Staging Image
+  #     environment: staging
+  #     region: NEU
 
-  # move to separate file?
-  - stage: DeployToStaging
-    displayName: 'Deploy to Staging'
-    dependsOn:
-      - BuildDockerImageStaging
-    jobs:
-      - template: /templates/pipeline/jobs/tmpl-pipeline-k8s-deploy-v2.yml@adoTemplatesAzure
-        parameters:
-          name: DeployToStaging
-          display_name: 'Deploy To Staging Environment'
-          agent_pool: '${{ variables.agent_pool }}'
-          docker_registry_service_connection_name: '${{ variables.docker_registry_service_connection_name_staging_NEU }}'
-          docker_registry_url: '${{ variables.docker_registry_url_staging_NEU }}'
-          docker_repository_name: '${{ variables.docker_repository_name }}'
-          deployment_environment: '${{ variables.deployment_environment_staging_NEU }}'
-          kubernetes_service_connection_name: '${{ variables.aks_service_connection_staging_NEU }}'
-          manifest_path: '$(System.DefaultWorkingDirectory)/.k8s/manifests'
-          manifest_file_name: '${{ variables.manifest_file_name_staging }}'
-          aks_deployment_name: '${{ variables.aks_deployment_name_staging }}'
-          namespace: '${{ variables.namespace }}'
-          url: '${{ variables.domain_staging }}'
+  # # move to separate file?
+  # - stage: DeployToStaging
+  #   displayName: 'Deploy to Staging'
+  #   dependsOn:
+  #     - BuildDockerImageStaging
+  #   jobs:
+  #     - template: /templates/pipeline/jobs/tmpl-pipeline-k8s-deploy-v2.yml@adoTemplatesAzure
+  #       parameters:
+  #         name: DeployToStaging
+  #         display_name: 'Deploy To Staging Environment'
+  #         agent_pool: '${{ variables.agent_pool }}'
+  #         docker_registry_service_connection_name: '${{ variables.docker_registry_service_connection_name_staging_NEU }}'
+  #         docker_registry_url: '${{ variables.docker_registry_url_staging_NEU }}'
+  #         docker_repository_name: '${{ variables.docker_repository_name }}'
+  #         deployment_environment: '${{ variables.deployment_environment_staging_NEU }}'
+  #         kubernetes_service_connection_name: '${{ variables.aks_service_connection_staging_NEU }}'
+  #         manifest_path: '$(System.DefaultWorkingDirectory)/.k8s/manifests'
+  #         manifest_file_name: '${{ variables.manifest_file_name_staging }}'
+  #         aks_deployment_name: '${{ variables.aks_deployment_name_staging }}'
+  #         namespace: '${{ variables.namespace }}'
+  #         url: '${{ variables.domain_staging }}'
 
-  # move to separate file?
-  - stage: PollStagingURL
-    displayName: 'Poll Staging URL'
-    dependsOn:
-      - DeployToStaging
-    jobs:
-      - template: /templates/pipeline/jobs/tmpl-pipeline-poll-url.yml@adoTemplatesAzure
-        parameters:
-          name: 'PollUrl'
-          agent_pool: '${{ variables.agent_pool }}'
-          timeout_in_minutes: 5
-          wait_time_between_poll_in_seconds: 10
-          url: '${{ variables.domain_staging }}'
-          display_name: 'Poll Url'
+  # # move to separate file?
+  # - stage: PollStagingURL
+  #   displayName: 'Poll Staging URL'
+  #   dependsOn:
+  #     - DeployToStaging
+  #   jobs:
+  #     - template: /templates/pipeline/jobs/tmpl-pipeline-poll-url.yml@adoTemplatesAzure
+  #       parameters:
+  #         name: 'PollUrl'
+  #         agent_pool: '${{ variables.agent_pool }}'
+  #         timeout_in_minutes: 5
+  #         wait_time_between_poll_in_seconds: 10
+  #         url: '${{ variables.domain_staging }}'
+  #         display_name: 'Poll Url'
 
   # --- STAGING --- #
