@@ -1,0 +1,52 @@
+variables:
+  # Shared variables
+  agent_pool: 'ubuntu-latest'
+  node_version: 14.x
+  build_command: 'run build'
+  namespace: into-discovery
+  production_image_tag: $(Build.BuildId)
+
+  # Docker
+  docker_registry_service_connection_name_transient_NEU: ACRNEUTSTDGXX01
+  docker_registry_service_connection_name_staging_NEU: ACRNEUTSTDGXX01
+  docker_registry_service_connection_name_preprod_NEU: ACRNEUPRDDGXX01
+  docker_registry_service_connection_name_production_NEU: ACRNEUPRDDGXX01
+
+  docker_registry_url_transient_NEU: acrneutstdgxx01.azurecr.io
+  docker_registry_url_staging_NEU: acrneutstdgxx01.azurecr.io
+  docker_registry_url_preprod_NEU: acrneuprddgxx01.azurecr.io
+  docker_registry_url_production_NEU: acrneuprddgxx01.azurecr.io
+
+  docker_repository_name: into-tooling-sprintbet
+
+  # Environments
+  deployment_environment_transient_NEU: Into-Discovery-NEU-Dev-Test
+  deployment_environment_staging_NEU: Into-Discovery-NEU-Dev-Test
+  deployment_environment_preprod_NEU: Into-Discovery-Prod-NorthEurope
+  deployment_environment_production_NEU: Into-Discovery-Prod-NorthEurope
+
+  # k8s
+  aks_deployment_name_transient: into-tooling-sprintbet-$(System.PullRequest.PullRequestId)
+  aks_deployment_name_staging: into-tooling-sprintbet
+  aks_deployment_name_preprod: into-tooling-sprintbet-preprod
+  aks_deployment_name_production: into-tooling-sprintbet
+
+  manifest_file_name_transient: transient.yml
+  manifest_file_name_staging: staging.yml
+  manifest_file_name_production_ROW: production.yml
+
+  # AKS Service connections
+  aks_service_connection_transient_NEU: Into-Discovery-DevTest-NorthEurope-AKS039
+  aks_service_connection_staging_NEU: Into-Discovery-DevTest-NorthEurope-AKS039
+  aks_service_connection_production_NEU: Into-Discovery-Prod-NorthEurope-AKS984
+  aks_service_connection_preprod_NEU: Into-Discovery-Prod-NorthEurope-AKS984
+
+  # App Gateways
+  application_gateway_name_transient: AGWNEUTSTAKS039
+  azurerm_service_connection_transient: "DigitalSystems Dev/Test"
+
+  # Domains
+  domain_transient: sprintbet.tooling-test-intofuture.co.uk
+  domain_preprod: preprod-sprintbet.partnerportal.intoglobal.com
+  domain_production: sprintbet.partnerportal.intoglobal.com
+  domain_staging: sprintbet.tooling-staging-intofuture.co.uk

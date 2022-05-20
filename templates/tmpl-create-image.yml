@@ -1,0 +1,30 @@
+parameters:
+- name: name
+  type: string
+
+- name: display_name
+  type: string
+
+- name: depends_on
+  type: object
+  default: []
+
+- name: environment
+    type: string
+
+- name: region
+    type: string
+
+stages:
+  - stage: ${{ parameters.name }}
+    displayName: ${{ parameters.display_name }}
+    dependsOn: ${{ parameters.depends_on }}
+    jobs:
+      - template: /templates/pipeline/jobs/tmpl-pipeline-docker-build-push.yml@adoTemplatesAzure
+        parameters:
+          name: BuildPush${{ parameters.environment }}${{ parameters.region }}
+          display_name: 'Build and Push ${{ parameters.environment }} ${{ parameters.region }} Docker Image'
+          agent_pool: $(agent_pool)
+          docker_registry_service_connection_name: $(docker_registry_service_connection_name_${{ parameters.environment }}_${{ parameters.region }})
+          docker_repository_name: $(docker_repository_name)
+          docker_file_path: $(System.DefaultWorkingDirectory)/SprintBet/Dockerfile
