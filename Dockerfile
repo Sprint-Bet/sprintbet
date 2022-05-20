@@ -1,7 +1,7 @@
 FROM node:12.16.1 as builder
 WORKDIR /app
 COPY . .
-RUN npm ci && npm run ng build --prod
+RUN npm ci && npm run build
 
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html

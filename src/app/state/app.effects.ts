@@ -132,7 +132,7 @@ export class AppEffects {
   routeToRoomPage$: Observable<boolean> = createEffect(
     () => this.actions$.pipe(
       ofType(welcomePageJoinRoomSuccessAction),
-      switchMap(action => this.router.navigate(['rooms'], { queryParams: { id: action.createdVoter.room.id } })),
+      switchMap(action => this.router.navigate(['room'], { queryParams: { id: action.createdVoter.room.id } })),
     ),
     { dispatch: false }
   );

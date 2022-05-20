@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RoomsPageComponent } from './pages/rooms-page/rooms-page.component';
+import { RoomPageComponent } from './pages/room-page/room-page.component';
 import { RoomGuard } from './guards/room.guard';
 import { WelcomePageCreateComponent } from './pages/welcome-page-create/welcome-page-create.component';
 import { WelcomePageJoinComponent } from './pages/welcome-page-join/welcome-page-join.component';
@@ -12,11 +12,6 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'welcome',
-    pathMatch: 'full',
-  },
-  {
-    path: 'welcome',
     component: WelcomePageComponent,
     data: {
       title: 'Welcome'
@@ -38,10 +33,10 @@ const routes: Routes = [
     }
   },
   {
-    path: 'rooms',
-    component: RoomsPageComponent,
+    path: 'room',
+    component: RoomPageComponent,
     data: {
-      title: 'Rooms'
+      title: 'Room'
     },
     canActivate: [RoomGuard]
   },

@@ -24,7 +24,7 @@ export class WelcomeGuard implements CanActivate {
 
     const hasRoomIdQuery = route.queryParamMap.has('id');
 
-    const roomUrlTree = this.router.createUrlTree(['rooms']);
+    const roomUrlTree = this.router.createUrlTree(['room']);
 
     const joinRoomUrlTree = this.router.createUrlTree(['/', 'join'], {
       queryParams: route.queryParams,

@@ -7,16 +7,16 @@ import { RoleType } from 'src/app/enums/role-type.enum';
 import { roomPageNavigatedAction } from 'src/app/state/app.actions';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Room } from 'src/app/model/dtos/room';
 import { Voter } from 'src/app/model/dtos/voter';
 
 @Component({
   selector: 'app-rooms-page',
-  templateUrl: './rooms-page.component.html',
-  styleUrls: ['./rooms-page.component.scss']
+  templateUrl: './room-page.component.html',
+  styleUrls: ['./room-page.component.scss']
 })
-export class RoomsPageComponent implements OnInit {
+export class RoomPageComponent implements OnInit {
   initialMyInformation: Voter = InitialMyInformation;
 
   votingLocked$ = this.store.pipe(select(votingLockedSelector));

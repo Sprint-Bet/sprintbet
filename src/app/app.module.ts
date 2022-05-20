@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { RoomsPageComponent } from './pages/rooms-page/rooms-page.component';
+import { RoomPageComponent } from './pages/room-page/room-page.component';
 import { VotingCardsComponent } from './components/voting-cards/voting-cards.component';
 import { VotersComponent } from './components/voters/voters.component';
 import { StoreModule } from '@ngrx/store';
@@ -32,7 +32,7 @@ import { DealerIconComponent } from './components/dealer-icon/dealer-icon.compon
     WelcomePageComponent,
     NavbarComponent,
     PageNotFoundComponent,
-    RoomsPageComponent,
+    RoomPageComponent,
     VotingCardsComponent,
     VotersComponent,
     DealerControlsComponent,
