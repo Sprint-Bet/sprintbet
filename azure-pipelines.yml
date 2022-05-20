@@ -1,6 +1,5 @@
 trigger:
   batch: true
-
   branches:
     include:
       - main
@@ -22,4 +21,3 @@ stages:
       display_name: Build Production Image (ROW)
       environment: production
       region: NEU
-      

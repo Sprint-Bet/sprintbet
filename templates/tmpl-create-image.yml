@@ -10,10 +10,10 @@ parameters:
   default: []
 
 - name: environment
-    type: string
+  type: string
 
 - name: region
-    type: string
+  type: string
 
 stages:
   - stage: ${{ parameters.name }}
