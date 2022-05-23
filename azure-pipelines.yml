@@ -15,22 +15,22 @@ variables:
   - template: templates/tmpl-variables.yml
 
 stages:
-  - template: /templates/tmpl-create-image.yml
-    parameters:
-      name: BuildDockerImageProductionROW
-      display_name: Build Production Image (ROW)
-      environment: production
-      region: NEU
+  # - template: /templates/tmpl-create-image.yml
+  #   parameters:
+  #     name: BuildDockerImageProductionROW
+  #     display_name: Build Production Image (ROW)
+  #     environment: production
+  #     region: NEU
 
 
   # --- STAGING --- #
 
-  # - template: /templates/tmpl-create-image.yml
-  #   parameters:
-  #     name: BuildDockerImageStaging
-  #     display_name: Build Staging Image
-  #     environment: staging
-  #     region: NEU
+  - template: /templates/tmpl-create-image.yml
+    parameters:
+      name: BuildDockerImageStaging
+      display_name: Build Staging Image
+      environment: staging
+      region: NEU
 
   # # move to separate file?
   # - stage: DeployToStaging
