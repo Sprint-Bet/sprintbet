@@ -13,6 +13,7 @@ resources:
 variables:
 - template: /templates/template-variables.yml
 
+# TODO: Match the api with the improvements made in this repo (to all files)
 stages:
   - template: /templates/template-image-create.yml
     parameters:
@@ -20,16 +21,12 @@ stages:
       display_name: Build Staging Image
       environment: staging
       region: NEU
-
-  # - template: /Templates/tmpl-deploy-image.yml
-  #   parameters:
-  #     name: DeployToStaging
-  #     display_name: Deploy to Staging
-  #     depends_on: [ BuildDockerImageStaging ] 
-  #     environment: staging
-  #     region: NEU
-  #     manifest: $(manifest_file_name_staging)
-  #     image_tag: $(image_tag)
-
-  # TODO: copy back improvements to api pipeline (all files)
-  
+  - template: /Templates/tmpl-deploy-image.yml
+    parameters:
+      name: DeployToStaging
+      display_name: Deploy to Staging
+      depends_on: [ BuildDockerImageStaging ] 
+      environment: staging
+      region: NEU
+      manifest_file_name: staging.yml
+      image_tag: $(image_tag)

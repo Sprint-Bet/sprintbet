@@ -1,0 +1,45 @@
+parameters:
+- name: name
+  type: string
+
+- name: display_name
+  type: string
+
+- name: depends_on
+  type: object
+  default: []
+
+- name: environment
+  type: string
+
+- name: region
+  type: string
+
+- name: manifest_file_name
+  type: string
+
+- name: image_tag
+  type: string
+
+stages:
+  - stage: ${{ parameters.name }}
+    displayName: ${{ parameters.display_name }}
+    dependsOn: ${{ parameters.depends_on }}
+    jobs:
+    - template: /templates/pipeline/jobs/tmpl-pipeline-k8s-deploy-v2.yml@adoTemplatesAzure
+      parameters:
+        name: Deploy${{ parameters.environment }}${{ parameters.region }}
+        display_name: 'Deploy to ${{ parameters.environment }} in ${{ parameters.region }}'
+        agent_pool: $(agent_pool)
+        docker_registry_service_connection_name: $(docker_registry_service_connection_name_${{ parameters.environment }}_${{ parameters.region }})
+        docker_registry_url: $(docker_registry_url_${{ parameters.environment }}_${{ parameters.region }})
+        docker_repository_name: $(docker_repository_name)
+        deployment_environment: $(deployment_environment_${{ parameters.environment }}_${{ parameters.region }})
+        kubernetes_service_connection_name: $(kubernetes_service_connection_name_${{ parameters.environment }}_${{ parameters.region }})
+        manifest_path: $(System.DefaultWorkingDirectory)/.k8s/manifests
+        manifest_file_name: ${{ parameters.manifest_file_name }}
+        aks_deployment_name: $(aks_deployment_name_${{ parameters.environment }})
+        namespace: $(namespace)
+        url: $(domain_${{ parameters.environment }})
+        artifact_name: manifest_${{ parameters.environment }}_${{ parameters.region }}
+        image_tag: ${{ parameters.image_tag }}

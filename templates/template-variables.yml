@@ -35,10 +35,6 @@ variables:
   aks_deployment_name_preprod: into-tooling-sprintbet-preprod
   aks_deployment_name_production: into-tooling-sprintbet
 
-  manifest_file_name_transient: transient.yml
-  manifest_file_name_staging: staging.yml
-  manifest_file_name_production_ROW: production.yml
-
   # AKS Service connections
   kubernetes_service_connection_name_transient_NEU: Into-Discovery-DevTest-NorthEurope-AKS039
   kubernetes_service_connection_name_staging_NEU: Into-Discovery-DevTest-NorthEurope-AKS039
