@@ -1,10 +1,14 @@
 variables:
+  
+  # For emergency rollback, update this value to a specific tag name
+  image_tag: $(Build.BuildId)
+
   # Shared variables
-  agent_pool: 'ubuntu-latest'
+  agent_pool: ubuntu-latest
   node_version: 14.x
   build_command: 'run build'
+  # TODO: update this and API
   namespace: into-discovery
-  production_image_tag: $(Build.BuildId)
 
   # Docker
   docker_registry_service_connection_name_transient_NEU: ACRNEUTSTDGXX01
@@ -36,10 +40,10 @@ variables:
   manifest_file_name_production_ROW: production.yml
 
   # AKS Service connections
-  aks_service_connection_transient_NEU: Into-Discovery-DevTest-NorthEurope-AKS039
-  aks_service_connection_staging_NEU: Into-Discovery-DevTest-NorthEurope-AKS039
-  aks_service_connection_production_NEU: Into-Discovery-Prod-NorthEurope-AKS984
-  aks_service_connection_preprod_NEU: Into-Discovery-Prod-NorthEurope-AKS984
+  kubernetes_service_connection_name_transient_NEU: Into-Discovery-DevTest-NorthEurope-AKS039
+  kubernetes_service_connection_name_staging_NEU: Into-Discovery-DevTest-NorthEurope-AKS039
+  kubernetes_service_connection_name_production_NEU: Into-Discovery-Prod-NorthEurope-AKS984
+  kubernetes_service_connection_name_preprod_NEU: Into-Discovery-Prod-NorthEurope-AKS984
 
   # App Gateways
   application_gateway_name_transient: AGWNEUTSTAKS039
@@ -50,3 +54,4 @@ variables:
   domain_preprod: preprod-sprintbet.partnerportal.intoglobal.com
   domain_production: sprintbet.partnerportal.intoglobal.com
   domain_staging: sprintbet.staging-intofuture.co.uk
+  

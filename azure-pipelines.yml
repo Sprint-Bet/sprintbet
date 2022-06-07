@@ -1,72 +1,35 @@
 trigger:
-  batch: true
   branches:
     include:
-      - main
+    - main
 
 resources:
   repositories:
-    - repository: adoTemplatesAzure
-      type: git
-      name: Into.Infrastructure/Into.Ado.Templates
-      ref: main
+  - repository: adoTemplatesAzure
+    type: git
+    name: Into.Infrastructure/Into.Ado.Templates
+    ref: main
 
 variables:
-  - template: templates/tmpl-variables.yml
+- template: /templates/template-variables.yml
 
 stages:
-  # - template: /templates/tmpl-create-image.yml
-  #   parameters:
-  #     name: BuildDockerImageProductionROW
-  #     display_name: Build Production Image (ROW)
-  #     environment: production
-  #     region: NEU
-
-
-  # --- STAGING --- #
-
-  - template: /templates/tmpl-create-image.yml
+  - template: /templates/template-image-create.yml
     parameters:
       name: BuildDockerImageStaging
       display_name: Build Staging Image
       environment: staging
       region: NEU
 
-  # # move to separate file?
-  # - stage: DeployToStaging
-  #   displayName: 'Deploy to Staging'
-  #   dependsOn:
-  #     - BuildDockerImageStaging
-  #   jobs:
-  #     - template: /templates/pipeline/jobs/tmpl-pipeline-k8s-deploy-v2.yml@adoTemplatesAzure
-  #       parameters:
-  #         name: DeployToStaging
-  #         display_name: 'Deploy To Staging Environment'
-  #         agent_pool: '${{ variables.agent_pool }}'
-  #         docker_registry_service_connection_name: '${{ variables.docker_registry_service_connection_name_staging_NEU }}'
-  #         docker_registry_url: '${{ variables.docker_registry_url_staging_NEU }}'
-  #         docker_repository_name: '${{ variables.docker_repository_name }}'
-  #         deployment_environment: '${{ variables.deployment_environment_staging_NEU }}'
-  #         kubernetes_service_connection_name: '${{ variables.aks_service_connection_staging_NEU }}'
-  #         manifest_path: '$(System.DefaultWorkingDirectory)/.k8s/manifests'
-  #         manifest_file_name: '${{ variables.manifest_file_name_staging }}'
-  #         aks_deployment_name: '${{ variables.aks_deployment_name_staging }}'
-  #         namespace: '${{ variables.namespace }}'
-  #         url: '${{ variables.domain_staging }}'
+  # - template: /Templates/tmpl-deploy-image.yml
+  #   parameters:
+  #     name: DeployToStaging
+  #     display_name: Deploy to Staging
+  #     depends_on: [ BuildDockerImageStaging ] 
+  #     environment: staging
+  #     region: NEU
+  #     manifest: $(manifest_file_name_staging)
+  #     image_tag: $(image_tag)
 
-  # # move to separate file?
-  # - stage: PollStagingURL
-  #   displayName: 'Poll Staging URL'
-  #   dependsOn:
-  #     - DeployToStaging
-  #   jobs:
-  #     - template: /templates/pipeline/jobs/tmpl-pipeline-poll-url.yml@adoTemplatesAzure
-  #       parameters:
-  #         name: 'PollUrl'
-  #         agent_pool: '${{ variables.agent_pool }}'
-  #         timeout_in_minutes: 5
-  #         wait_time_between_poll_in_seconds: 10
-  #         url: '${{ variables.domain_staging }}'
-  #         display_name: 'Poll Url'
-
-  # --- STAGING --- #
+  # TODO: copy back improvements to api pipeline (all files)
+  
