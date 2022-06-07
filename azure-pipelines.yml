@@ -21,7 +21,7 @@ stages:
       display_name: Build Staging Image
       environment: staging
       region: NEU
-  - template: /Templates/template-image-deploy.yml
+  - template: /templates/template-image-deploy.yml
     parameters:
       name: DeployToStaging
       display_name: Deploy to Staging
