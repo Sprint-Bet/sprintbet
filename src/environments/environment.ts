@@ -6,13 +6,7 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 export const environment = {
   production: false,
-  // apiUrl: 'https://localhost:5001'
-  // apiUrl: 'https://localhost:44394'
-  apiUrl: 'https://sprintbetapi.herokuapp.com',
-  /**
-   * Hopefully this is fixed now...
-   * https://github.com/ngrx/platform/issues/1054
-   */
+  apiUrl: 'https://sprintbet-api.staging-intofuture.co.uk',
   extModules: StoreDevtoolsModule.instrument({
     maxAge: 25
   }),

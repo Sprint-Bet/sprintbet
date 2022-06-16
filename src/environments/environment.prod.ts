@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://sprintbetapi.herokuapp.com',
+  apiUrl: 'https://sprintbet-api.staging-intofuture.co.uk',
   extModules: [],
 };

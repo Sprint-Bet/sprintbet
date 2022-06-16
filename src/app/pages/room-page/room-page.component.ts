@@ -81,7 +81,7 @@ export class RoomPageComponent implements OnInit {
     let url = '';
 
     this.room$.pipe(filter(room => !!room), first()).subscribe(room => {
-      url = `https://sprintbet.herokuapp.com/rooms?id=${room.id}`;
+      url = `${window.location.href}rooms?id=${room.id}`;
     });
 
     this.copyTextToClipboard(url);
