@@ -17,8 +17,11 @@ export class VotingCardsComponent implements OnInit {
   @Input()
   set myInformation(myInfo: Voter) {
     if (!myInfo) return;
+
     this._myInformation = myInfo;
     this.items = myInfo.room.items;
+
+    if (myInfo?.point) this.selectedValue = myInfo.point;
   }
 
   get myInformation(): Voter {
