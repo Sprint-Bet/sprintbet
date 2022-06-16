@@ -32,7 +32,7 @@ spec:
         - containerPort: 80
         readinessProbe:
           httpGet:
-            path: /health
+            path: /health.html
             port: 80
           periodSeconds: 3
           timeoutSeconds: 1
