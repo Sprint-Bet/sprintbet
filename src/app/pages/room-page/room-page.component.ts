@@ -21,10 +21,11 @@ export class RoomPageComponent implements OnInit {
 
   votingLocked$ = this.store.pipe(select(votingLockedSelector));
   room$: Observable<Room> = this.store.pipe(select(roomSelector));
+
   myInformation$: Observable<Voter> = this.store.pipe(
     select(myInformationSelector),
-    filter(myInformation => !!myInformation),
-  ) ;
+    filter(myInformation => !!myInformation)
+  );
 
   isDealer$: Observable<boolean> = this.myInformation$.pipe(
     map(myInformation => myInformation.room.dealerId === myInformation.id),
