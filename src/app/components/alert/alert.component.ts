@@ -10,25 +10,7 @@ import { errorHandlingDismissAlertClickedAction } from 'src/app/state/app.action
   styleUrls: ['./alert.component.scss']
 })
 export class AlertComponent implements OnInit {
-  private _error: HttpErrorResponse = {} as HttpErrorResponse;
-
-  errorMessage: string = '';
-
-  @Input()
-  set error(error: HttpErrorResponse) {
-    if (!error) return;
-
-    this._error = error;
-    const sprintBetError = error.error && error.error.errors && error.error.errors[0].errorMessage;
-    this.errorMessage = sprintBetError
-      || this._error.error
-      || this._error.message
-      || 'No details available for this error';
-  }
-
-  get error(): HttpErrorResponse {
-    return this._error;
-  }
+  @Input() error: HttpErrorResponse | null = null;
 
   constructor(
     private store: Store<AppState>
@@ -40,5 +22,4 @@ export class AlertComponent implements OnInit {
   dismissAlert() {
     this.store.dispatch(errorHandlingDismissAlertClickedAction());
   }
-
 }
