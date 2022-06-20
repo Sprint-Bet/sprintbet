@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { Observable, fromEvent, from, of, bindCallback } from 'rxjs';
+import { Observable, fromEvent, from, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
@@ -22,7 +22,8 @@ export class VoteHubService {
   setupConnection(): HubConnection {
     const connection = new HubConnectionBuilder()
       .withUrl(`${this.baseUrl}/voteHub`)
-      .configureLogging(LogLevel.Warning)
+      .configureLogging(LogLevel.Debug)
+      .withAutomaticReconnect()
       .build();
 
     return connection;
@@ -32,9 +33,13 @@ export class VoteHubService {
    * Starts the Signal R Hub connection
    */
   startConnection(): Observable<void> {
-    this.connection.onreconnecting(_ => console.log('Reconnecting...'));
-    this.connection.onreconnected(id => console.log(`Reconnected: ${id}`));
-    this.connection.onclose(error => !!error && console.log(`Closing: ${error}`));
+    this.connection.onreconnecting(error => !!error ? console.warn(`Error reconnecting: ${error}`) : console.warn('Reconnecting...'));
+    this.connection.onreconnected(id => console.warn(`Reconnected: ${id}`));
+    this.connection.onclose(error => !!error && console.warn(`Closing: ${error}`));
+
+    // Trying to avoid timeout disconnect errors
+    this.connection.keepAliveIntervalInMilliseconds = 10000;
+    this.connection.serverTimeoutInMilliseconds = 60000;
 
     return from(this.connection.start());
   }
