@@ -30,7 +30,7 @@ export class VoteService {
    * @param newVoter voter info used for setup
    */
   registerVoter(newVoter: NewVoter): Observable<Voter> {
-    const connectionId = this.voteHubService.connection.connectionId || "";
+    const connectionId = this.voteHubService.connection.connectionId || '';
     return this.voteRepositoryService.registerVoter(newVoter, connectionId);
   }
 
@@ -39,7 +39,7 @@ export class VoteService {
    * @param itemsType Determines which voting items to create the room with
    */
   createRoom(itemsType: ItemsType = ItemsType.FIBONACCI): Observable<Room> {
-    const connectionId = this.voteHubService.connection.connectionId || "";
+    const connectionId = this.voteHubService.connection.connectionId || '';
     return this.voteRepositoryService.createRoom(itemsType, connectionId);
   }
 
@@ -72,7 +72,7 @@ export class VoteService {
    * @param sessionId id of the voter to remove from room
    */
   leaveRoom(sessionId: string | undefined): Observable<HttpResponse<any>> {
-    const connectionId = this.voteHubService.connection.connectionId || "";
+    const connectionId = this.voteHubService.connection.connectionId || '';
     return this.voteRepositoryService.leaveRoom(sessionId, connectionId);
   }
 
@@ -135,7 +135,7 @@ export class VoteService {
    * @param voterId voter to reconnect
    */
   reconnectVoter(voterId: string): Observable<Voter> {
-    const connectionId = this.voteHubService.connection.connectionId || "";
+    const connectionId = this.voteHubService.connection.connectionId || '';
     return this.voteRepositoryService.reconnectVoter(voterId, connectionId);
   }
 

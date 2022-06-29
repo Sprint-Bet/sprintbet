@@ -92,7 +92,7 @@ export class RoomPageComponent implements OnInit {
 
   copyTextToClipboard(text: string) {
     // Create a textbox field where we can insert text to.
-    var copyFrom = this.document.createElement("textarea");
+    const copyFrom = this.document.createElement('textarea');
 
     // Set the text content to be the text you wished to copy.
     copyFrom.textContent = text;
