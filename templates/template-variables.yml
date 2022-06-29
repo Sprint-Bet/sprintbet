@@ -8,7 +8,7 @@ variables:
   node_version: 14.x
   build_command: 'run build'
   # TODO: update this and API
-  namespace: into-discovery
+  namespace: into-tooling
 
   # Docker
   docker_registry_service_connection_name_transient_NEU: ACRNEUTSTDGXX01
@@ -24,10 +24,10 @@ variables:
   docker_repository_name: into-tooling-sprintbet
 
   # Environments
-  deployment_environment_transient_NEU: Into-Discovery-NEU-Dev-Test
-  deployment_environment_staging_NEU: Into-Discovery-NEU-Dev-Test
-  deployment_environment_preprod_NEU: Into-Discovery-Prod-NorthEurope
-  deployment_environment_production_NEU: Into-Discovery-Prod-NorthEurope
+  deployment_environment_transient_NEU: Into-Tooling-NEU-Dev-Test
+  deployment_environment_staging_NEU: Into-Tooling-NEU-Dev-Test
+  deployment_environment_preprod_NEU: Into-Tooling-Prod-NorthEurope
+  deployment_environment_production_NEU: Into-Tooling-Prod-NorthEurope
 
   # k8s
   aks_deployment_name_transient: into-tooling-sprintbet-$(System.PullRequest.PullRequestId)
@@ -36,10 +36,10 @@ variables:
   aks_deployment_name_production: into-tooling-sprintbet
 
   # AKS Service connections
-  kubernetes_service_connection_name_transient_NEU: Into-Discovery-DevTest-NorthEurope-AKS039
-  kubernetes_service_connection_name_staging_NEU: Into-Discovery-DevTest-NorthEurope-AKS039
-  kubernetes_service_connection_name_production_NEU: Into-Discovery-Prod-NorthEurope-AKS984
-  kubernetes_service_connection_name_preprod_NEU: Into-Discovery-Prod-NorthEurope-AKS984
+  kubernetes_service_connection_name_transient_NEU: Into-Tooling-DevTest-NorthEurope-AKS039
+  kubernetes_service_connection_name_staging_NEU: Into-Tooling-DevTest-NorthEurope-AKS039
+  kubernetes_service_connection_name_production_NEU: Into-Tooling-Prod-NorthEurope-AKS984
+  kubernetes_service_connection_name_preprod_NEU: Into-Tooling-Prod-NorthEurope-AKS984
 
   # App Gateways
   application_gateway_name_transient: AGWNEUTSTAKS039
