@@ -2,11 +2,11 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 export const environment = {
   production: false,
-  apiUrl: 'https://sprintbet-api.staging-intofuture.co.uk',
+  apiUrl: 'http://localhost:45174',
   extModules: StoreDevtoolsModule.instrument({
     maxAge: 25
   }),

@@ -5,24 +5,24 @@ import { RoleType } from '../enums/role-type.enum';
 import { ItemsType } from '../enums/items-type.enum';
 
 const initialRegistrationInfo: NewVoter = {
-  name: "",
+  name: '',
   role: RoleType.PARTICIPANT,
-  group: "",
+  group: '',
   itemsType: ItemsType.FIBONACCI,
 };
 
 const initialRoom: Room = {
-  id: "",
-  dealerId: "",
+  id: '',
+  dealerId: '',
   locked: false,
   items: []
 };
 
 export const InitialMyInformation: Voter = {
-  name: "",
-  id: "",
+  name: '',
+  id: '',
   role: RoleType.PARTICIPANT,
-  point: "",
+  point: '',
   room: initialRoom
 };
 
@@ -45,7 +45,7 @@ export const initialAppState: AppState = {
   error: null,
   registrationInfo: initialRegistrationInfo,
   myInformation: InitialMyInformation,
-  sessionId: "",
+  sessionId: '',
   room: initialRoom,
   signalRConnected: false
 };

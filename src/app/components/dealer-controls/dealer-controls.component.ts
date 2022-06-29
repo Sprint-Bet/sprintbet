@@ -17,7 +17,7 @@ export class DealerControlsComponent implements OnInit {
 
   @Input()
   set myInformation(myInformation: Voter) {
-    if (!myInformation) return;
+    if (!myInformation) { return; }
 
     this._myInformation = myInformation;
     this.isPlayer = +myInformation.role === +RoleType.PARTICIPANT;

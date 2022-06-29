@@ -99,7 +99,7 @@ export class AppEffects {
       map(([action, registrationInfo]) => {
         return !!registrationInfo
           ? { ...registrationInfo, group: action.createdRoom.id }
-          : { name: '', group: '', role: '' as RoleType, itemsType: '' as ItemsType }
+          : { name: '', group: '', role: '' as RoleType, itemsType: '' as ItemsType };
       }),
       mergeMap(registrationInfo => this.voteService.registerVoter(registrationInfo).pipe(
         map(createdVoter => welcomePageJoinRoomSuccessAction({ createdVoter })),
@@ -158,7 +158,7 @@ export class AppEffects {
       map(myInformation => {
         return !myInformation
           ? roomPageSetMyInformationAction({ myInformation: InitialMyInformation })
-          : roomPageSetMyInformationAction({ myInformation })
+          : roomPageSetMyInformationAction({ myInformation });
       })
     )
   );
