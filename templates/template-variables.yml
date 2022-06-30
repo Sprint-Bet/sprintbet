@@ -7,7 +7,6 @@ variables:
   agent_pool: ubuntu-latest
   node_version: 14.x
   build_command: 'run build'
-  # TODO: update this and API
   namespace: into-tooling
 
   # Docker

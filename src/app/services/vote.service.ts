@@ -49,8 +49,9 @@ export class VoteService {
   getVoters(): Observable<Voter[]> {
     return this.store.pipe(
       select(roomSelector),
+      filter(room => !!room?.id),
       first(),
-      switchMap(room => this.voteRepositoryService.getVotersForRoom(room?.id || '')),
+      switchMap(room => this.voteRepositoryService.getVotersForRoom(room.id || '')),
     );
   }
 
