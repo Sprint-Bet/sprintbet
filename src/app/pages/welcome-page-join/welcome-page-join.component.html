@@ -1,5 +1,6 @@
-<h1>{{ title }}</h1>
-<form [formGroup]="registrationForm" (ngSubmit)="onSubmit(registrationForm)">
+<div class="page">
+  <h1>{{ title }}</h1>
+  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit(registrationForm)">
     <div class="form-group">
       <label for="nameInput">Name</label>
       <input formControlName="name" type="text" class="form-control" id="nameInput" placeholder="Enter your name">
@@ -8,8 +9,8 @@
       <label for="groupInput">Group id</label>
       <input formControlName="group" type="text" class="form-control" id="groupInput" placeholder="Enter the group id">
     </div>
-    <div class="form-group d-flex align-items-center mt-4">
-      <button class="btn btn-primary mr-2" type="submit"
+    <div class="form-group d-flex align-items-center justify-content-center mt-4">
+      <button class="btn btn-primary" type="submit"
         [disabled]="registrationForm.invalid || (loading$ | async)">
         Join game
       </button>
@@ -17,9 +18,10 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group d-flex justify-content-center">
       <a [routerLink]="['/']" class="btn btn-primary">
         Back
       </a>
     </div>
-</form>
+  </form>
+</div>

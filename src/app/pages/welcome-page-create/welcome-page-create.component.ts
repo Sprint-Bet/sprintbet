@@ -19,9 +19,11 @@ export class WelcomePageCreateComponent implements OnInit {
 
   registrationForm = this.formBuilder.group({
     name: ['', Validators.required],
+    roomName: '',
     itemsType: [ItemsType.FIBONACCI, Validators.required],
     role: RoleType.PARTICIPANT,
-    group: '',
+    // TODO: can't remember why this is here...
+    group: ''
   });
 
   loading$ = this.store.pipe(select(loadingSelector));
@@ -40,5 +42,4 @@ export class WelcomePageCreateComponent implements OnInit {
     const registrationInfo = form.value as NewVoter;
     this.store.dispatch(welcomePageCreateRoomClickedAction({ registrationInfo }));
   }
-
 }

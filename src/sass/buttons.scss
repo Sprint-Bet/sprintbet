@@ -3,7 +3,7 @@
 
 .btn-primary {
   background-color: $primary;
-  border-color: $primary;
+  border-color: black;
   color: $primary-text;
 
   &.dealer {
@@ -18,7 +18,7 @@
 
   &:hover {
     background-color: shade($primary, $shade-modifier);
-    border-color: shade($primary, $shade-modifier);
+    border-color: black;
   }
 
   &:focus {
@@ -32,6 +32,5 @@
 
   background-color: tint($primary, $tint-modifier);
   border-color: tint($primary, $tint-modifier);
-  pointer-events: none;
   opacity: 1;
 }

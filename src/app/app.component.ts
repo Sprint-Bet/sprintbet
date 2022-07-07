@@ -30,8 +30,13 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => this.router)
-    ).subscribe((event) => {
+    ).subscribe((_) => {
       const title = this.getTitle(this.router.routerState, this.router.routerState.root).join(' | ');
+
+      if (!title) {
+        return;
+      }
+
       this.titleService.setTitle(title + ' | Sprint Bet');
     });
   }

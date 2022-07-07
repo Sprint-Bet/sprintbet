@@ -8,6 +8,7 @@ import { Vote } from 'src/app/model/dtos/vote';
 import { Room } from 'src/app/model/dtos/room';
 import { RoleType } from 'src/app/enums/role-type.enum';
 import { ItemsType } from 'src/app/enums/items-type.enum';
+import { NewRoom } from '@src/app/model/dtos/new-room';
 
 @Injectable({
   providedIn: 'root'
@@ -45,9 +46,9 @@ export class VoteRepositoryService {
     return this.httpClient.put<string>(url, { role });
   }
 
-  createRoom(itemsType: ItemsType, connectionId: string): Observable<Room> {
+  createRoom(newRoom: NewRoom, connectionId: string): Observable<Room> {
     const url = `${this.baseUrl}/rooms`;
-    return this.httpClient.post<Room>(url, { itemsType }, { headers: { connectionId } });
+    return this.httpClient.post<Room>(url, { newRoom }, { headers: { connectionId } });
   }
 
   lockVoting(roomId: string): Observable<boolean> {

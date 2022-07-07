@@ -2,7 +2,8 @@
 
 .dealer-icon {
     position: absolute;
-    left: -($xsmall / 2);
-    top: -$small;
+    left: -$xxsmall * 1.5;
+    top: -$xxsmall * 3.5;
     transform: rotate(-20deg);
+    width: $xxsmall * 5;
 }

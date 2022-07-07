@@ -85,7 +85,10 @@ export class AppEffects {
   createRoom$: Observable<Action> = createEffect(
     () => this.actions$.pipe(
       ofType(welcomePageCreateRoomClickedAction),
-      mergeMap(action => this.voteService.createRoom(action.registrationInfo.itemsType).pipe(
+      mergeMap(action => this.voteService.createRoom({
+        itemsType: action.registrationInfo.itemsType,
+        name: action.registrationInfo.roomName
+      }).pipe(
         map(createdRoom => welcomePageCreateRoomSuccessAction({ createdRoom })),
         catchError((error: HttpErrorResponse) => of(welcomePageCreateRoomFailAction({ error }))),
       ))

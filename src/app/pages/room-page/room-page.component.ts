@@ -7,73 +7,66 @@ import { RoleType } from 'src/app/enums/role-type.enum';
 import { roomPageNavigatedAction } from 'src/app/state/app.actions';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
-import { Observable } from 'rxjs';
-import { Room } from 'src/app/model/dtos/room';
-import { Voter } from 'src/app/model/dtos/voter';
+import { combineLatest } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-rooms-page',
+  selector: 'app-room-page',
   templateUrl: './room-page.component.html',
   styleUrls: ['./room-page.component.scss']
 })
 export class RoomPageComponent implements OnInit {
-  initialMyInformation: Voter = InitialMyInformation;
+  initialMyInformation = InitialMyInformation;
+
+  myInformation$ = this.store.pipe(select(myInformationSelector));
 
   votingLocked$ = this.store.pipe(select(votingLockedSelector));
-  room$: Observable<Room> = this.store.pipe(select(roomSelector));
 
-  myInformation$: Observable<Voter> = this.store.pipe(
-    select(myInformationSelector),
-  );
+  room$ = this.store.pipe(select(roomSelector));
 
-  isDealer$: Observable<boolean> = this.myInformation$.pipe(
+  isDealer$ = this.myInformation$.pipe(
     map(myInformation => myInformation.room.dealerId === myInformation.id),
   );
 
-  isParticipant$: Observable<boolean> = this.myInformation$.pipe(
+  isParticipant$ = this.myInformation$.pipe(
     map(myInformation => +myInformation.role === +RoleType.PARTICIPANT),
   );
 
-  allVoters$: Observable<Voter[]> = this.store.pipe(
+  allVoters$ = this.store.pipe(
     select(votersSelector),
     filter(allVoters => !!allVoters),
   );
 
-  participants$: Observable<Voter[]> = this.allVoters$.pipe(
-    map(voters => voters.filter(v => +v.role === +RoleType.PARTICIPANT)),
-  );
-
-  voted$: Observable<Voter[]> = this.participants$.pipe(
-    map(participants => participants.filter(participant => participant.point)),
-  );
-
-  private hasRoomIdQuery$: Observable<boolean> = this.activatedRoute.queryParamMap.pipe(
+  private hasRoomIdQueryParam$ = this.activatedRoute.queryParamMap.pipe(
     first(),
-    map(params => !!params.get('id'))
+    map(queryParamMap => !!queryParamMap.get('id'))
   );
+
+  private roomIdAndValidInfo$ = combineLatest([
+    this.hasRoomIdQueryParam$,
+    this.myInformation$.pipe(filter(myInformation => !!myInformation?.room?.id))
+  ]);
 
   constructor(
     private store: Store<AppState>,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private titleService: Title,
   ) { }
 
   ngOnInit() {
-    this.hasRoomIdQuery$.subscribe(hasRoomIdQuery => {
-      if (hasRoomIdQuery) {
+    this.roomIdAndValidInfo$.pipe(first()).subscribe(([hasRoomIdQueryParam, myInfo]) => {
+      this.titleService.setTitle(`Room: ${myInfo.room?.name || myInfo.room.id} | Sprint Bet`);
+
+      if (hasRoomIdQueryParam) {
         return;
       }
 
-      this.myInformation$.pipe(
-        filter(myInformation => !!myInformation?.room?.id),
-        first()
-      ).subscribe(myInfo => {
-        this.router.navigate([], {
-          relativeTo: this.activatedRoute,
-          queryParams: { id: myInfo.room.id },
-          queryParamsHandling: 'merge'
-        });
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { id: myInfo.room.id },
+        queryParamsHandling: 'merge'
       });
     });
 
@@ -84,7 +77,7 @@ export class RoomPageComponent implements OnInit {
     let url = '';
 
     this.room$.pipe(filter(room => !!room), first()).subscribe(room => {
-      url = `${window.location.href}rooms?id=${room.id}`;
+      url = window.location.href;
     });
 
     this.copyTextToClipboard(url);
