@@ -24,7 +24,6 @@ export class RoomPageComponent implements OnInit {
 
   myInformation$: Observable<Voter> = this.store.pipe(
     select(myInformationSelector),
-    filter(myInformation => !!myInformation)
   );
 
   isDealer$: Observable<boolean> = this.myInformation$.pipe(
@@ -50,14 +49,14 @@ export class RoomPageComponent implements OnInit {
 
   private hasRoomIdQuery$: Observable<boolean> = this.activatedRoute.queryParamMap.pipe(
     first(),
-    map(params => params.has('id'))
+    map(params => !!params.get('id'))
   );
 
   constructor(
     private store: Store<AppState>,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    @Inject(DOCUMENT) private document: HTMLDocument
+    @Inject(DOCUMENT) private document: Document
   ) { }
 
   ngOnInit() {
@@ -66,7 +65,10 @@ export class RoomPageComponent implements OnInit {
         return;
       }
 
-      this.myInformation$.pipe(first()).subscribe(myInfo => {
+      this.myInformation$.pipe(
+        filter(myInformation => !!myInformation?.room?.id),
+        first()
+      ).subscribe(myInfo => {
         this.router.navigate([], {
           relativeTo: this.activatedRoute,
           queryParams: { id: myInfo.room.id },

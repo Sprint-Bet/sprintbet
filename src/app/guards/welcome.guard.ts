@@ -22,11 +22,11 @@ export class WelcomeGuard implements CanActivate {
     route: ActivatedRouteSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    const hasRoomIdQuery = route.queryParamMap.has('id');
+    const hasRoomIdQueryParam = route.queryParamMap.has('id');
 
-    const roomUrlTree = this.router.createUrlTree(['room']);
+    const roomPageUrlTree = this.router.createUrlTree(['room']);
 
-    const joinRoomUrlTree = this.router.createUrlTree(['/', 'join'], {
+    const joinPageUrlTree = this.router.createUrlTree(['/', 'join'], {
       queryParams: route.queryParams,
       queryParamsHandling: 'merge'
     });
@@ -37,13 +37,19 @@ export class WelcomeGuard implements CanActivate {
 
     return this.store.pipe(
       select(sessionIdSelector),
-      map(stateId => !!stateId || this.localStorageService.getItem(StorageKey.SESSION_ID)),
-      map(hasId => hasId
-        ? roomUrlTree
-        : hasRoomIdQuery
-          ? joinRoomUrlTree
-          : true
-      ),
+      map(sessionIdFromState => sessionIdFromState || this.localStorageService.getItem(StorageKey.SESSION_ID)),
+      map(hasSessionId => {
+        if (hasSessionId) {
+          return roomPageUrlTree;
+        }
+
+        if (hasRoomIdQueryParam) {
+          return joinPageUrlTree;
+        }
+        
+        // Allow to welcome page, because they have no room ID in URL or saved session ID
+        return true;
+      }),
     );
   }
 
