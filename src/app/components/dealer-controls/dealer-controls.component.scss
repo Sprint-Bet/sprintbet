@@ -2,23 +2,26 @@
 @import "mixins";
 
 .dealer-controls-container {
-  width: $form-width;
   background-color: tint($primary, $tint-modifier);
   border-radius: 0.25rem;
   display: inline-flex;
+  border: solid 1px black;
+  padding: $xsmall;
 
   button {
-    padding-top: 0px;
-    padding-bottom: 0px;
+    padding-left: $xsmall;
+    padding-right: $xsmall;
+    color: white;
+    display: flex;
+    align-items: center;
 
     img {
-      width: $medium;
+      width: $base;
       margin-right: $xxsmall;
+      margin-bottom: $xxsmall;
     }
 
     span {
-      font-size: 1rem;
-      vertical-align: middle;
       margin-right: $xxsmall;
     }
   }
@@ -28,4 +31,5 @@ select {
   font-weight: bold;
   align-self: center;
   width: $dealer-select-width;
+  border: solid black 1px;
 }

@@ -1,4 +1,5 @@
 <nav>
+  <div class="nav-wrapper container">
     <h1>Sprint Bet<img src="assets/icons/sprint-bet-192.png" alt="Sprint bet icon"></h1>
     <ng-container *ngIf="(signalRConnected$ | async) !== null; else loading">
       <h1 *ngIf="(signalRConnected$ | async)" title="Connected to sprint bet">✓</h1>
@@ -10,4 +11,5 @@
         <span class="sr-only">Loading...</span>
       </div>
     </ng-template>
+  </div>
 </nav>

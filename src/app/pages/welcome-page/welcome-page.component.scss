@@ -1,5 +1,8 @@
-@import "variables";
+@import 'variables';
 
-form {
-    width: $form-width;
+:host {
+    .welcome-buttons {
+        display: flex;
+        justify-content: space-around;
+    }
 }

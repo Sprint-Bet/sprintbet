@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, UrlTree, Router, ActivatedRouteSnapshot } from '@angular/router';
-import { Observable, iif, combineLatest, of } from 'rxjs';
+import { Observable, iif, of, combineLatest } from 'rxjs';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKey } from '../enums/storage-key.enum';
 import { AppState } from '../state/app.state';
@@ -33,6 +33,12 @@ export class RoomGuard implements CanActivate {
     map(sessionId => this.matchStateIdToStoredId(sessionId)),
   );
 
+  private signalRAndValidId$ = combineLatest([
+    this.hasId$,
+    this.sessionId$.pipe(filter(sessionId => !!sessionId), first()),
+    this.signalRConnected$,
+  ])
+
   constructor(
     private localStorageService: LocalStorageService,
     private store: Store<AppState>,
@@ -44,32 +50,17 @@ export class RoomGuard implements CanActivate {
     this.store.dispatch(roomGuardNavigatedAction());
 
     // If session ID is immediately available in store (also not from refresh), allow safe passage
-    this.sessionId$.pipe(
-      first()
-    ).subscribe(sessionId => {
-      // if (!!sessionId) {
-      //   return true;
-      // }
+    this.sessionId$.pipe(first(),
+      map(sessionId => !!sessionId ? true : null)
+    );
 
-      // return;
-
-      return !!sessionId
-        ? true
-        : null;
-    });
-
-    // Prepare rejection url
-    const welcomeUrlTree = this.router.createUrlTree(['/'], {
+    const welcomePageUrlTree = this.router.createUrlTree(['/'], {
       queryParams: route.queryParams,
       queryParamsHandling: 'merge'
     });
 
     // If a session ID is found in local storage, request voter and set as mine
-    combineLatest(
-      this.hasId$,
-      this.sessionId$.pipe(filter(sessionId => !!sessionId), first()),
-      this.signalRConnected$,
-    ).pipe(first()).subscribe(([hasId, sessionId, _]) => {
+    this.signalRAndValidId$.pipe(first()).subscribe(([hasId, sessionId, _]) => {
       if (hasId && !!sessionId) {
         this.store.dispatch(roomGuardReconnectVoterRequestAction({ voterId: sessionId }));
       }
@@ -77,11 +68,11 @@ export class RoomGuard implements CanActivate {
 
     // Wait to confirm either no id found or a valid voter to be set
     return this.hasId$.pipe(
-        switchMap(hasId => iif(
-            () => hasId,
-            this.validInfo$.pipe(mapTo(true)),
-            of(welcomeUrlTree)
-        ))
+      switchMap(hasId => iif(
+        () => hasId,
+        this.validInfo$.pipe(mapTo(true)),
+        of(welcomePageUrlTree)
+      ))
     );
   }
 

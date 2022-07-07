@@ -1,8 +1,8 @@
-<div class="dealer-controls-container admin-icon mb-3 p-2">
+<div class="dealer-controls-container admin-icon mb-3">
   <app-dealer-icon></app-dealer-icon>
   <button class="btn btn-primary dealer icon-button mr-2" (click)="updateLockStatus()"
     [title]="votingLocked ? 'Unlock and reset votes' : 'Lock and reveal votes'">
-    <img [src]="votingLocked ? '/assets/img/icons-unlock-26.png' : '/assets/img/icons-lock-26.png'" />
+    <img [src]="votingLocked ? '/assets/img/lock-unlocked.svg' : '/assets/img/lock-locked.svg'" />
     <span>{{ votingLocked ? 'Reset' : 'Reveal' }}</span>
   </button>
   <select name="itemsType" class="form-control" id="itemsTypeSelect" (change)="itemsChanged($event)">

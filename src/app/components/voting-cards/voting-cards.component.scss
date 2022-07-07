@@ -39,9 +39,11 @@
 
   &:active,
   &.selected {
-    border: solid $primary $card-border-voted;
-    background-color: tint($primary, $tint-modifier);
-    outline: none !important;
+    &:not(:disabled) {
+      border: solid $primary $card-border-voted;
+      background-color: tint($primary, $tint-modifier);
+      outline: none !important;
+    }
   }
 
   &:focus {

@@ -35,9 +35,6 @@ const routes: Routes = [
   {
     path: 'room',
     component: RoomPageComponent,
-    data: {
-      title: 'Room'
-    },
     canActivate: [RoomGuard]
   },
   {
