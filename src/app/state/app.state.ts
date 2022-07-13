@@ -13,6 +13,7 @@ const initialRegistrationInfo: NewVoter = {
 
 const initialRoom: Room = {
   id: '',
+  name: '',
   dealerId: '',
   locked: false,
   items: []

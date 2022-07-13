@@ -1,5 +1,12 @@
 @import 'variables';
 
+.title-section {
+  h2 {
+    max-width: 16rem;
+    text-align: left;
+  }
+}
+
 .share-button {
   width: $large;
 }

@@ -48,7 +48,7 @@ export class VoteRepositoryService {
 
   createRoom(newRoom: NewRoom, connectionId: string): Observable<Room> {
     const url = `${this.baseUrl}/rooms`;
-    return this.httpClient.post<Room>(url, { newRoom }, { headers: { connectionId } });
+    return this.httpClient.post<Room>(url, newRoom, { headers: { connectionId } });
   }
 
   lockVoting(roomId: string): Observable<boolean> {

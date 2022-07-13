@@ -1,14 +1,8 @@
-<div class="alert alert-danger">
-  <div class="row no-gutters header">
-    <div class="col-9">
-      <h4 class="alert-heading">Error</h4>
-    </div>
-    <div class="col-3 d-flex justify-content-end">
-      <button class="close" type="button" aria-label="Close" (click)="dismissAlert()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  </div>
-  <p>{{ error | json }}</p>
-  <p>Please try again!</p>
+<div class="alert alert-danger row">
+  <h4 class="col-12 alert-heading mb-3">Error</h4>
+  <button class="close" type="button" aria-label="Close" (click)="dismissAlert()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <p class="col-12">{{ error | json }}</p>
+  <p class="col-12">Please try again!</p>
 </div>
