@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
+<app-alert *ngIf="(error$ | async) as error" [error]="error"></app-alert>
 <main id="main" class="container">
-  <app-alert *ngIf="(error$ | async) as error" [error]="error"></app-alert>
   <router-outlet></router-outlet>
 </main>

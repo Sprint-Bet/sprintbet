@@ -1,7 +1,7 @@
 <div class="page">
-  <div class="d-inline-flex align-items-center">
-    <h2 *ngIf="(room$ | async) as room" class="mr-2 my-2">
-      {{ room?.name || 'Room: ' + room.id }}
+  <div class="d-inline-flex align-items-start title-section">
+    <h2 *ngIf="(room$ | async) as room;" class="mr-2 mb-3">
+      Room: {{ !room?.name ? room.id : room.name }}
     </h2>
     <button title="Copy room link" class="btn btn-primary dealer icon-button px-1 share-button" (click)="copyUrlToClipboard()">
       <img src="/assets/img/share.svg"/>

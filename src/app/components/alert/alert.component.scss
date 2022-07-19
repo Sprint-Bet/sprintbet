@@ -2,10 +2,15 @@
 
 .alert {
   padding: $small $base;
+  margin-left: $large;
+  margin-right: $large;
+  position: relative;
 }
 
 // Make button focus look less wierd!
 button.close {
+  position: absolute;
+  left: 90%;
   height: fit-content;
   padding-top: 2px;
   padding-left: 4px;
