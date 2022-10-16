@@ -6,9 +6,18 @@
 	],
 	"settings": {
 		"workbench.colorCustomizations": {
-			"activityBar.background": "#023409",
-			"titleBar.activeBackground": "#02480d",
+			"activityBar.background": "#006b6ba5",
+			"titleBar.activeBackground": "#009999b2",
 			"titleBar.activeForeground": "#e9feee"
 		}
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-azuretools.vscode-docker",
+			"mikael.angular-beastcode",
+			"angular.ng-template",
+			"dbaeumer.vscode-eslint",
+			"sibiraj-s.vscode-scss-formatter"
+		]
 	}
 }
