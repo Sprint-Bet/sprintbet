@@ -6,8 +6,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 export const environment = {
   production: false,
-  // apiUrl: 'https://sprintbetapi-production.up.railway.app/voters',
-  apiUrl: 'http://localhost:45174',
+  apiUrl: 'https://sprintbetapi-production.up.railway.app',
+  // apiUrl: 'http://localhost:45174',
   extModules: StoreDevtoolsModule.instrument({
     maxAge: 25
   }),

@@ -15,8 +15,7 @@
     "default_popup": "index.html"
   },
   "permissions": [
-    "https://sprintbetapi.herokuapp.com/",
-    "https://sprintbet-api.staging-intofuture.co.uk/",
+    "https://sprintbetapi-production.up.railway.app/",
     "clipboardWrite"
   ]
 }
